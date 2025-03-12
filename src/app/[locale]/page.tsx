@@ -1,27 +1,25 @@
-"use client";
-
+import { fetchDepartmentsList } from "@/lib/data/fetcher";
+import { parseDepartmentsList } from "@/lib/data/parser";
 import { Link } from "@/i18n/routing";
-import { useTranslations } from "next-intl";
-import { useTheme } from "next-themes";
 
-export default function Home() {
-	const { setTheme } = useTheme();
+export default async function Home() {
+	const test = await fetchDepartmentsList();
 
-	const toggleTheme = () => {
-		setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-	};
-
-	const t = useTranslations();
+	console.log(parseDepartmentsList(test));
 
 	return (
 		<main className="w-full h-full bg-background text-foreground">
 			<h1 className="font-bold text-4xl">Welcome to Mech Timetable</h1>
 			<p>foo bar</p>
-			<button onClick={toggleTheme}>Toggle Theme</button>
-			{/* set system */}
-			<button onClick={() => setTheme("system")}>Set System</button>
-			<span>{t("welcome")}</span>
-			{/* change locale */}
+			<ul>
+				{parseDepartmentsList(test).map((department) => (
+					<li key={department.url}>
+						Link: {department.url}
+						<br />
+						Name: {department.name}
+					</li>
+				))}
+			</ul>
 			<Link href="/" locale="en">
 				En
 			</Link>
