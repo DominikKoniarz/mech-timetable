@@ -13,6 +13,7 @@
 			"laboratoryGroup": "Laboratory group",
 			"computerLaboratoryGroup": "Computer laboratory group",
 			"projectGroup": "Project group",
+			"search": "Search",
 			"validation": {
 				"required": "This field is required",
 				"selectDepartment": "Please select department",

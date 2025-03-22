@@ -11,7 +11,8 @@ import {
 import { useTranslations } from "next-intl";
 import { Department } from "@/types/departments";
 import { Form } from "@/components/ui/form";
-import Selects from "./welcome-selects";
+import WelcomeSelects from "./welcome-selects";
+import SubmitButton from "./submit-button";
 
 type Props = {
 	departments: Department[];
@@ -33,9 +34,10 @@ export default function WelcomeForm({ departments }: Props) {
 	});
 
 	return (
-		<form className="max-w-[400px] mt-10 space-y-4">
+		<form className="w-fit mt-10 space-y-4">
 			<Form {...form}>
-				<Selects departments={departments} />
+				<WelcomeSelects departments={departments} />
+				<SubmitButton />
 			</Form>
 		</form>
 	);

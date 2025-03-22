@@ -13,6 +13,7 @@
 			"laboratoryGroup": "Grupa laboratoryjna",
 			"computerLaboratoryGroup": "Grupa laboratoriów komputerowych",
 			"projectGroup": "Grupa projektowa",
+			"search": "Szukaj",
 			"validation": {
 				"required": "To pole jest wymagane",
 				"selectDepartment": "Proszę wybrać oddział",
