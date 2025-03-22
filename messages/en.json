@@ -9,11 +9,17 @@
 			"text": "Select the department and appropriate groups to see the timetable"
 		},
 		"form": {
-			"required": "This field is required",
-			"selectDepartment": "Please select department",
-			"selectLaboratoryGroup": "Please select laboratory group",
-			"selectComputerLaboratoryGroup": "Please select computer laboratory group",
-			"selectProjectGroup": "Please select project group"
+			"department": "Department",
+			"laboratoryGroup": "Laboratory group",
+			"computerLaboratoryGroup": "Computer laboratory group",
+			"projectGroup": "Project group",
+			"validation": {
+				"required": "This field is required",
+				"selectDepartment": "Please select department",
+				"selectLaboratoryGroup": "Please select laboratory group",
+				"selectComputerLaboratoryGroup": "Please select computer laboratory group",
+				"selectProjectGroup": "Please select project group"
+			}
 		}
 	}
 }

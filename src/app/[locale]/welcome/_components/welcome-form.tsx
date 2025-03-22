@@ -10,13 +10,15 @@ import {
 } from "@/schema/welcome-form-schema";
 import { useTranslations } from "next-intl";
 import { Department } from "@/types/departments";
+import { Form } from "@/components/ui/form";
+import Selects from "./welcome-selects";
 
 type Props = {
 	departments: Department[];
 };
 
 export default function WelcomeForm({ departments }: Props) {
-	const t = useTranslations("welcomePage.form");
+	const t = useTranslations("welcomePage.form.validation");
 
 	const form = useForm({
 		resolver: zodResolver(getWelcomeFormSchema(t, departments)),
@@ -26,9 +28,15 @@ export default function WelcomeForm({ departments }: Props) {
 			computerLaboratoryGroup: COMPUTER_LAB_GROUPS.K01,
 			projectGroup: PROJECT_GROUPS.P01,
 		},
+		mode: "onBlur",
+		reValidateMode: "onChange",
 	});
 
-	console.log(form);
-
-	return <div className="mt-4">WelcomeForm</div>;
+	return (
+		<form className="max-w-[400px] mt-10 space-y-4">
+			<Form {...form}>
+				<Selects departments={departments} />
+			</Form>
+		</form>
+	);
 }

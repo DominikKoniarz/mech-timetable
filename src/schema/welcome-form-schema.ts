@@ -28,7 +28,7 @@ export enum PROJECT_GROUPS {
 }
 
 export const getWelcomeFormSchema = (
-	t: TFunction<"welcomePage.form">,
+	t: TFunction<"welcomePage.form.validation">,
 	departments: Department[]
 ) => {
 	const departmentsNames = departments.map((department) => department.name);

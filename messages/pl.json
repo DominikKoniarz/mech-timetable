@@ -9,11 +9,17 @@
 			"text": "Wybierz oddział oraz odpowiednie grupy, aby zobaczyć plan zajęć"
 		},
 		"form": {
-			"required": "To pole jest wymagane",
-			"selectDepartment": "Proszę wybrać wydział",
-			"selectLaboratoryGroup": "Proszę wybrać grupę laboratoryjną",
-			"selectComputerLaboratoryGroup": "Proszę wybrać grupę laboratoriów komputerowych",
-			"selectProjectGroup": "Proszę wybrać grupę projektową"
+			"department": "Oddział",
+			"laboratoryGroup": "Grupa laboratoryjna",
+			"computerLaboratoryGroup": "Grupa laboratoriów komputerowych",
+			"projectGroup": "Grupa projektowa",
+			"validation": {
+				"required": "To pole jest wymagane",
+				"selectDepartment": "Proszę wybrać oddział",
+				"selectLaboratoryGroup": "Proszę wybrać grupę laboratoryjną",
+				"selectComputerLaboratoryGroup": "Proszę wybrać grupę laboratoriów komputerowych",
+				"selectProjectGroup": "Proszę wybrać grupę projektową"
+			}
 		}
 	}
 }
