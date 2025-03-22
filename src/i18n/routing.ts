@@ -14,6 +14,10 @@ export const routing = defineRouting({
 			en: "/",
 			pl: "/",
 		},
+		"/welcome": {
+			en: "/welcome",
+			pl: "/welcome",
+		},
 	},
 });
 

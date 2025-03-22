@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
-import { getMessages, setRequestLocale } from "next-intl/server";
+import { getLocale, setRequestLocale } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import "../globals.css";
 
@@ -20,13 +20,12 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
 	children,
-	params,
 }: Readonly<{
 	children: React.ReactNode;
 	params: Promise<{ locale: string }>;
 }>) {
-	const { locale } = await params;
-
+	const locale = await getLocale();
+	console.log(locale);
 	if (!routing.locales.includes(locale as (typeof routing.locales)[number])) {
 		notFound();
 	}
@@ -34,12 +33,10 @@ export default async function RootLayout({
 	// Enable static rendering
 	setRequestLocale(locale);
 
-	const messages = await getMessages();
-
 	return (
 		<html lang="en" suppressHydrationWarning>
-			<body className={`${inter.className} antialiased`}>
-				<NextIntlClientProvider messages={messages}>
+			<body className={`${inter.className}`}>
+				<NextIntlClientProvider>
 					<ThemeProvider
 						defaultTheme="system"
 						attribute="class" // causes blinking

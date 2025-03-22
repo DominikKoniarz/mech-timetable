@@ -1,31 +1,25 @@
-import { fetchDepartmentsList } from "@/lib/data/fetcher";
-import { parseDepartmentsList } from "@/lib/data/parser";
-import { Link } from "@/i18n/routing";
+import { redirect } from "@/i18n/routing";
 
 export default async function Home() {
-	const test = await fetchDepartmentsList();
+	redirect({ locale: "pl", href: "/welcome" });
 
-	console.log(parseDepartmentsList(test));
+	// return (
+	// 	<main className="w-full h-full flex flex-col justify-center items-center">
+	// 		<div className="w-fit h-fit">
+	// 			<h1 className="font-bold mx-auto text-4xl">
+	// 				Welcome to Mech Timetable
+	// 			</h1>
+	// 			<p className="mt-2 mx-auto text-base w-fit">
+	// 				Select your department and laboratory group
+	// 			</p>
+	// 		</div>
 
-	return (
-		<main className="w-full h-full bg-background text-foreground">
-			<h1 className="font-bold text-4xl">Welcome to Mech Timetable</h1>
-			<p>foo bar</p>
-			<ul>
-				{parseDepartmentsList(test).map((department) => (
-					<li key={department.url}>
-						Link: {department.url}
-						<br />
-						Name: {department.name}
-					</li>
-				))}
-			</ul>
-			<Link href="/" locale="en">
-				En
-			</Link>
-			<Link href="/" locale="pl">
-				Pl
-			</Link>
-		</main>
-	);
+	// 		{/* <Link href="/" locale="en">
+	// 			En
+	// 		</Link>
+	// 		<Link href="/" locale="pl">
+	// 			Pl
+	// 		</Link> */}
+	// 	</main>
+	// );
 }
