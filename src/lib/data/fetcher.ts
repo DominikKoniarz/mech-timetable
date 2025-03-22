@@ -7,7 +7,12 @@ const DEPARTMENTS_LIST_URL =
 // 	`${DEPARTMENT_DATA_BASE_URL}${department}.html`;
 
 export const fetchDepartmentsList = async (): Promise<string> => {
-	const response = await fetch(DEPARTMENTS_LIST_URL);
+	const response = await fetch(DEPARTMENTS_LIST_URL, {
+		next: {
+			revalidate: 60,
+			tags: ["departments"],
+		},
+	});
 
 	if (!response.ok) {
 		throw new Error("Failed to fetch departments list");
