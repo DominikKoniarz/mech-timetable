@@ -1,8 +1,10 @@
+import { env } from "@/env";
 import {
 	BadRequestError,
 	ForbiddenError,
 	UnauthorizedError,
 } from "@/types/errors";
+import { getTranslations } from "next-intl/server";
 import { createSafeActionClient } from "next-safe-action";
 
 const logActionError = (error: Error) => {
@@ -20,14 +22,14 @@ const logActionError = (error: Error) => {
 		);
 	};
 
-	if (process.env.NODE_ENV === "development") log();
+	if (env.NEXT_PUBLIC_IS_DEV) log();
 
 	// Log only server (500) errors in production
-	if (process.env.NODE_ENV === "production" && isServerError()) log();
+	if (env.NEXT_PUBLIC_IS_PROD && isServerError()) log();
 };
 
 export const actionClient = createSafeActionClient({
-	handleServerError: (error) => {
+	handleServerError: async (error) => {
 		logActionError(error);
 
 		if (error instanceof BadRequestError) {
@@ -42,7 +44,9 @@ export const actionClient = createSafeActionClient({
 			return error.message;
 		}
 
-		return "Internal server error occured! Please try again later.";
+		const t = await getTranslations("safeAction");
+
+		return t("internalServerError");
 	},
 	defaultValidationErrorsShape: "flattened",
 });

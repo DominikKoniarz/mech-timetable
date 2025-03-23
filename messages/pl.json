@@ -22,5 +22,8 @@
 				"selectProjectGroup": "Proszę wybrać grupę projektową"
 			}
 		}
+	},
+	"safeAction": {
+		"internalServerError": "Wystąpił błąd serwera. Spróbuj ponownie później."
 	}
 }
