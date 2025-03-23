@@ -12,17 +12,19 @@ import {
 	LAB_GROUPS,
 	PROJECT_GROUPS,
 } from "@/schema/welcome-form-schema";
+import { useRef } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const useWelcomeForm = (departments: Department[]) => {
-	// TODO: add reCaptcha
-	// const reCaptchaRef = useRef<ReCAPTCHA>(null);
+	const reCaptchaRef = useRef<ReCAPTCHA>(null);
 
 	const t = useTranslations("welcomePage.form.validation");
 
 	const resetFormAndCaptcha = () => {
-		// reCaptchaRef.current?.reset();
+		reCaptchaRef.current?.reset();
 
 		form.reset({
+			reCaptchaToken: "",
 			departmentName: departments[0].name,
 			laboratoryGroup: LAB_GROUPS.L01,
 			computerLaboratoryGroup: COMPUTER_LAB_GROUPS.K01,
@@ -55,21 +57,21 @@ const useWelcomeForm = (departments: Department[]) => {
 
 	const onSubmit = form.handleSubmit(execute);
 
-	// const onFormFocus = () => {
-	// 	reCaptchaRef.current?.execute();
-	// };
+	const onFormFocus = () => {
+		reCaptchaRef.current?.execute();
+	};
 
-	// const onReCaptchaChange = (token: string | null) => {
-	// 	form.setValue("reCaptchaToken", token || "");
-	// };
+	const onReCaptchaChange = (token: string | null) => {
+		form.setValue("reCaptchaToken", token || "");
+	};
 
 	return {
 		form,
 		onSubmit,
 		isPending,
-		// reCaptchaRef,
-		// onFormFocus,
-		// onReCaptchaChange,
+		reCaptchaRef,
+		onFormFocus,
+		onReCaptchaChange,
 	};
 };
 

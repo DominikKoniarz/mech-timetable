@@ -34,6 +34,7 @@ export const getWelcomeFormSchema = (
 	const departmentsNames = departments.map((department) => department.name);
 
 	const welcomeFormSchema = z.object({
+		reCaptchaToken: z.string(),
 		departmentName: z.enum([departmentsNames[0], ...departmentsNames], {
 			required_error: t("selectDepartment"),
 			message: t("selectDepartment"),
