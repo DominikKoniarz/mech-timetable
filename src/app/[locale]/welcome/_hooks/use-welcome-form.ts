@@ -3,7 +3,6 @@ import submitWelcomeFormAction from "@/actions/welcome";
 import { actionError } from "@/lib/action-error";
 import { useTranslations } from "next-intl";
 import { useAction } from "next-safe-action/hooks";
-import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -12,10 +11,11 @@ import {
 	LAB_GROUPS,
 	PROJECT_GROUPS,
 } from "@/schema/welcome-form-schema";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const useWelcomeForm = (departments: Department[]) => {
+	const [isGettingReCaptcha, setIsGettingReCaptcha] = useState(false);
 	const reCaptchaRef = useRef<ReCAPTCHA>(null);
 
 	const t = useTranslations("welcomePage.form.validation");
@@ -38,14 +38,14 @@ const useWelcomeForm = (departments: Department[]) => {
 			resetFormAndCaptcha();
 		},
 		onSuccess: () => {
-			// work here later
-			toast.success("TODO: handle login when cms active");
+			resetFormAndCaptcha();
 		},
 	});
 
 	const form = useForm({
 		resolver: zodResolver(getWelcomeFormSchema(t, departments)),
 		defaultValues: {
+			reCaptchaToken: "",
 			departmentName: departments[0].name,
 			laboratoryGroup: LAB_GROUPS.L01,
 			computerLaboratoryGroup: COMPUTER_LAB_GROUPS.K01,
@@ -55,23 +55,24 @@ const useWelcomeForm = (departments: Department[]) => {
 		reValidateMode: "onChange",
 	});
 
-	const onSubmit = form.handleSubmit(execute);
+	const onSubmit = form.handleSubmit(async (data) => {
+		setIsGettingReCaptcha(true);
+		const token = await reCaptchaRef.current?.executeAsync();
 
-	const onFormFocus = () => {
-		reCaptchaRef.current?.execute();
-	};
+		execute({
+			...data,
+			reCaptchaToken: token ?? "",
+		});
 
-	const onReCaptchaChange = (token: string | null) => {
-		form.setValue("reCaptchaToken", token || "");
-	};
+		// call after execute to be sure that action isPending is set to true
+		setIsGettingReCaptcha(false);
+	});
 
 	return {
 		form,
 		onSubmit,
-		isPending,
+		isPending: isPending || isGettingReCaptcha,
 		reCaptchaRef,
-		onFormFocus,
-		onReCaptchaChange,
 	};
 };
 

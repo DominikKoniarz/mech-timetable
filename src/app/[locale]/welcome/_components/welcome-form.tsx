@@ -13,28 +13,17 @@ type Props = {
 };
 
 export default function WelcomeForm({ departments }: Props) {
-	const {
-		form,
-		onSubmit,
-		isPending,
-		reCaptchaRef,
-		onReCaptchaChange,
-		onFormFocus,
-	} = useWelcomeForm(departments);
+	const { form, onSubmit, isPending, reCaptchaRef } =
+		useWelcomeForm(departments);
 
 	return (
-		<form
-			className="w-fit mt-10 space-y-4"
-			onSubmit={onSubmit}
-			onFocus={onFormFocus}
-		>
+		<form className="w-fit mt-10 space-y-4" onSubmit={onSubmit}>
 			<Form {...form}>
 				<ReCAPTCHA
 					className="hidden"
 					size="invisible"
 					sitekey={env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
 					ref={reCaptchaRef}
-					onChange={onReCaptchaChange}
 				/>
 				<WelcomeSelects departments={departments} />
 				<SubmitButton isPending={isPending} />
