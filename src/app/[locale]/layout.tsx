@@ -39,7 +39,7 @@ export default async function RootLayout({
 				<NextIntlClientProvider>
 					<ThemeProvider
 						defaultTheme="system"
-						attribute="class" // causes blinking
+						// attribute="class" // causes blinking
 						enableSystem
 						disableTransitionOnChange
 					>
