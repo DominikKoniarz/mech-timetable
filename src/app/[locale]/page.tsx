@@ -1,25 +1,12 @@
 import { redirect } from "@/i18n/routing";
+import { getUserPreferences } from "@/lib/data/cookies";
+import { getLocale } from "next-intl/server";
 
 export default async function Home() {
-	redirect({ locale: "pl", href: "/welcome" });
+	const preferences = await getUserPreferences();
 
-	// return (
-	// 	<main className="w-full h-full flex flex-col justify-center items-center">
-	// 		<div className="w-fit h-fit">
-	// 			<h1 className="font-bold mx-auto text-4xl">
-	// 				Welcome to Mech Timetable
-	// 			</h1>
-	// 			<p className="mt-2 mx-auto text-base w-fit">
-	// 				Select your department and laboratory group
-	// 			</p>
-	// 		</div>
+	if (!preferences) redirect({ href: "/welcome", locale: await getLocale() });
 
-	// 		{/* <Link href="/" locale="en">
-	// 			En
-	// 		</Link>
-	// 		<Link href="/" locale="pl">
-	// 			Pl
-	// 		</Link> */}
-	// 	</main>
-	// );
+	// now fetch by preferences and filter out the data
+	return JSON.stringify(preferences);
 }

@@ -3,6 +3,9 @@ import "server-only";
 import type { WelcomeFormSchema } from "@/schema/welcome-form-schema";
 import { BadRequestError, ForbiddenError } from "@/types/errors";
 import { verifyReCaptcha } from "@/lib/re-captcha";
+import { setUserPreferences } from "../data/cookies";
+import { redirect } from "@/i18n/routing";
+import { getLocale } from "next-intl/server";
 
 export const handleWelcomeSubmit = async (data: WelcomeFormSchema) => {
 	if (!data.reCaptchaToken)
@@ -12,5 +15,7 @@ export const handleWelcomeSubmit = async (data: WelcomeFormSchema) => {
 
 	if (!success) throw new ForbiddenError("reCaptcha verification failed");
 
-	console.log(data);
+	await setUserPreferences(data);
+
+	redirect({ href: "/", locale: await getLocale() });
 };
