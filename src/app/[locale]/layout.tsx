@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { getLocale, setRequestLocale } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import "../globals.css";
+import ThemeChange from "./theme-change";
 
 const inter = Inter({
 	subsets: ["latin", "latin-ext"],
@@ -43,6 +44,7 @@ export default async function RootLayout({
 						enableSystem
 						disableTransitionOnChange
 					>
+						<ThemeChange />
 						{children}
 					</ThemeProvider>
 				</NextIntlClientProvider>

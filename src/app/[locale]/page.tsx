@@ -1,9 +1,9 @@
 import { redirect } from "@/i18n/routing";
 import { getUserPreferences } from "@/lib/data/cookies";
-import { fetchDepartmentData, fetchDepartmentsList } from "@/lib/data/fetcher";
+import { fetchDepartmentsList } from "@/lib/data/fetcher";
 import { parseDepartmentsList } from "@/lib/data/parser";
 import { getLocale } from "next-intl/server";
-import * as cheerio from "cheerio";
+// import * as cheerio from "cheerio";
 
 export default async function Home() {
 	const preferences = await getUserPreferences();
@@ -22,7 +22,7 @@ export default async function Home() {
 		return redirect({ href: "/welcome", locale: await getLocale() });
 	}
 
-	const departmentData = await fetchDepartmentData(foundDepartment.url);
+	// const departmentData = await fetchDepartmentData(foundDepartment.url);
 	// const $ = cheerio.load(departmentData);
 
 	// console.log($.toString());
