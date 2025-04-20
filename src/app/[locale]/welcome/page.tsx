@@ -16,6 +16,9 @@ import WelcomeForm from "./_components/welcome-form";
 export default async function Welcome() {
 	const departmentsHtml = await fetchDepartmentsList();
 	const departments = parseDepartmentsList(departmentsHtml);
+	console.log(departments);
+
+	// add cookie checks here
 
 	return (
 		<main className="w-full h-full flex flex-col justify-center items-center">
