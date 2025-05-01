@@ -1,7 +1,6 @@
 import { fetchDepartmentsList } from "@/lib/data/fetcher";
 import { parseDepartmentsList } from "@/lib/data/parser";
-import WelcomeCTA from "./_components/welcome-cta";
-import WelcomeForm from "./_components/welcome-form";
+import WelcomePageView from "@/views/welcome-page/welcome-page-view";
 
 // export const revalidate = 60 * 15; // 15 minutes - getting some errors here
 
@@ -16,14 +15,8 @@ import WelcomeForm from "./_components/welcome-form";
 export default async function Welcome() {
 	const departmentsHtml = await fetchDepartmentsList();
 	const departments = parseDepartmentsList(departmentsHtml);
-	console.log(departments);
 
 	// add cookie checks here
 
-	return (
-		<main className="w-full h-full flex flex-col justify-center items-center">
-			<WelcomeCTA />
-			<WelcomeForm departments={departments} />
-		</main>
-	);
+	return <WelcomePageView departments={departments} />;
 }

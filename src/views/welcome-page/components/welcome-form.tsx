@@ -4,7 +4,7 @@ import { Department } from "@/types/departments";
 import { Form } from "@/components/ui/form";
 import WelcomeSelects from "./welcome-selects";
 import SubmitButton from "./submit-button";
-import useWelcomeForm from "../_hooks/use-welcome-form";
+import useWelcomeForm from "../hooks/use-welcome-form";
 import ReCAPTCHA from "react-google-recaptcha";
 import { env } from "@/env";
 
