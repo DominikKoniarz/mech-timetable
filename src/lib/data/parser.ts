@@ -1,15 +1,16 @@
 import type { Department } from "@/types/departments";
 import type { TableRow } from "@/types/table-rows";
 import type { PreferencesSchema } from "@/schema/preferences-schema";
+import type { TimeEntry } from "@/types/hours";
 import { initClassesTuple } from "./helpers";
-import * as cheerio from "cheerio";
-import { TimeEntry } from "@/types/hours";
 import { WeekType } from "@/types/week";
 import {
 	COMPUTER_LAB_GROUPS,
 	LAB_GROUPS,
 	PROJECT_GROUPS,
 } from "@/schema/welcome-form-schema";
+import * as cheerio from "cheerio";
+import { ClassType } from "@/types/classes";
 
 export const parseDepartmentsList = (html: string): Department[] => {
 	const $ = cheerio.load(html);
@@ -36,34 +37,6 @@ export const parseDepartmentsList = (html: string): Department[] => {
 
 	return departments;
 };
-
-// export const parseHours = (html: string): HoursEntry[] => {
-// 	const $ = cheerio.load(html);
-
-// 	const table = $("table.tabela");
-// 	const hoursCells = table.find("tbody > tr > td.g");
-// 	const hours = hoursCells
-// 		.map(function (_, el) {
-// 			const text = $(el).text().trim();
-// 			const [start, end] = text.split("-").map((time) => time.trim());
-// 			return { start, end };
-// 		})
-// 		.get();
-
-// 	return hours;
-// };
-
-// export const parseCell = (cell: Element, index: number): ClassEntry[] => {
-// 	return [];
-// };
-
-// const parseRow = (row: Element, $: cheerio.CheerioAPI): TableRow => {
-
-// 	const timeEntry: TimeEntry = {
-// 		start: $("td.g").text().split("-")[0].trim(),
-// 		end: $("td.g").text().split("-")[1].trim(),
-// 	};
-// };
 
 export const parseRows = (
 	departmentHtml: string,
@@ -131,23 +104,32 @@ export const parseRows = (
 				if (!room || !subject) return;
 
 				let classHasAssignedGroup: boolean = false;
+				let classType: ClassType = "OTHER";
+
 				Object.values(LAB_GROUPS).forEach((group) => {
 					if (subject.includes(group)) {
 						classHasAssignedGroup = true;
+						classType = "LABORATORY";
 					}
 				});
 
 				Object.values(COMPUTER_LAB_GROUPS).forEach((group) => {
 					if (subject.includes(group)) {
 						classHasAssignedGroup = true;
+						classType = "COMPUTER_LABORATORY";
 					}
 				});
 
 				Object.values(PROJECT_GROUPS).forEach((group) => {
 					if (subject.includes(group)) {
 						classHasAssignedGroup = true;
+						classType = "PROJECT";
 					}
 				});
+
+				if (subject.endsWith("W")) {
+					classType = "LECTURE";
+				}
 
 				if (
 					classHasAssignedGroup &&
@@ -163,6 +145,7 @@ export const parseRows = (
 					subject,
 					room,
 					parity: roomParity,
+					classType,
 				});
 			});
 		});

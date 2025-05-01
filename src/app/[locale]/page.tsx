@@ -4,7 +4,6 @@ import { fetchDepartmentData, fetchDepartmentsList } from "@/lib/data/fetcher";
 import { checkCurrentWeekParity } from "@/lib/data/helpers";
 import { parseDepartmentsList, parseRows } from "@/lib/data/parser";
 import { getLocale } from "next-intl/server";
-// import * as cheerio from "cheerio";
 
 export default async function Home() {
 	const preferences = await getUserPreferences();
@@ -27,51 +26,6 @@ export default async function Home() {
 
 	const rows = parseRows(departmentData, preferences);
 
-	// console.log(rows);
-	// return (
-	// 	<div>
-	// 		<pre>{JSON.stringify(rows, null, 2)}</pre>
-	// 	</div>
-	// );
-
-	// now fetch by preferences and filter out the data
-	// return JSON.stringify(preferences);
-
-	// const godziny = [
-	// 	"00:00 - 00:45",
-	// 	"00:45 - 01:30",
-	// 	"01:30 - 02:15",
-	// 	"02:15 - 03:00",
-	// 	"03:00 - 03:45",
-	// 	"03:45 - 04:30",
-	// 	"04:30 - 05:15",
-	// 	"05:15 - 06:00",
-	// 	"06:00 - 06:45",
-	// 	"06:45 - 07:30",
-	// 	"07:30 - 08:15",
-	// 	"08:15 - 09:00",
-	// 	"09:00 - 09:45",
-	// 	"09:45 - 10:30",
-	// 	"10:30 - 11:15",
-	// 	"11:15 - 12:00",
-	// 	"12:00 - 12:45",
-	// 	"12:45 - 13:30",
-	// 	"13:30 - 14:15",
-	// 	"14:15 - 15:00",
-	// 	"15:00 - 15:45",
-	// 	"15:45 - 16:30",
-	// 	"16:30 - 17:15",
-	// 	"17:15 - 18:00",
-	// 	"18:00 - 18:45",
-	// 	"18:45 - 19:30",
-	// 	"19:30 - 20:15",
-	// 	"20:15 - 21:00",
-	// 	"21:00 - 21:45",
-	// 	"21:45 - 22:30",
-	// 	"22:30 - 23:15",
-	// 	"23:15 - 00:00",
-	// ];
-
 	const dniTygodnia = ["Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek"];
 
 	const parity = checkCurrentWeekParity();
@@ -79,7 +33,7 @@ export default async function Home() {
 	return (
 		<div className="overflow-x-auto">
 			<div className="inline-block min-w-full align-middle">
-				<div className="overflow-hidden border border-border shadow sm:rounded-lg">
+				<div className="overflow-hidden">
 					<table className="min-w-full">
 						<thead className="bg-background">
 							<tr>
@@ -117,6 +71,7 @@ export default async function Home() {
 												<div className="h-24 bg-card rounded-lg">
 													{foundClassEntry &&
 														`${foundClassEntry.subject} ${foundClassEntry.room}`}
+													<div>{foundClassEntry?.classType}</div>
 												</div>
 											</td>
 										);
