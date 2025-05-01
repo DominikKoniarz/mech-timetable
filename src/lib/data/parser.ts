@@ -1,8 +1,7 @@
 import type { Department } from "@/types/departments";
 import type { TableRow } from "@/types/table-rows";
 import type { PreferencesSchema } from "@/schema/preferences-schema";
-import { checkCurrentWeekParity, initClassesTuple } from "./helpers";
-import { ClassEntry } from "@/types/classes";
+import { initClassesTuple } from "./helpers";
 import * as cheerio from "cheerio";
 import { TimeEntry } from "@/types/hours";
 import { WeekType } from "@/types/week";
@@ -54,9 +53,9 @@ export const parseDepartmentsList = (html: string): Department[] => {
 // 	return hours;
 // };
 
-export const parseCell = (cell: Element, index: number): ClassEntry[] => {
-	return [];
-};
+// export const parseCell = (cell: Element, index: number): ClassEntry[] => {
+// 	return [];
+// };
 
 // const parseRow = (row: Element, $: cheerio.CheerioAPI): TableRow => {
 
