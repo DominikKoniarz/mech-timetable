@@ -39,7 +39,7 @@ export const filterPreferencesInput = (
 	preferences: Omit<WelcomeFormSchema, "reCaptchaToken">
 ): PreferencesSchema => {
 	// filter out potential reCaptchaToken from the preferences object
-	// if you are now aware you could pass it with the preferences object even if type is Omit<WelcomeFormSchema, "reCaptchaToken">
+	// if you are not aware you could pass it with the preferences object even if type is Omit<WelcomeFormSchema, "reCaptchaToken">
 	// then you will leak it into the cookie
 	return {
 		departmentName: preferences.departmentName,

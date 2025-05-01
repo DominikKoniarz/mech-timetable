@@ -1,7 +1,8 @@
 import { redirect } from "@/i18n/routing";
 import { getUserPreferences } from "@/lib/data/cookies";
-import { fetchDepartmentsList } from "@/lib/data/fetcher";
-import { parseDepartmentsList } from "@/lib/data/parser";
+import { fetchDepartmentData, fetchDepartmentsList } from "@/lib/data/fetcher";
+import { checkCurrentWeekParity } from "@/lib/data/helpers";
+import { parseDepartmentsList, parseRows } from "@/lib/data/parser";
 import { getLocale } from "next-intl/server";
 // import * as cheerio from "cheerio";
 
@@ -22,13 +23,14 @@ export default async function Home() {
 		return redirect({ href: "/welcome", locale: await getLocale() });
 	}
 
-	// const departmentData = await fetchDepartmentData(foundDepartment.url);
-	// const $ = cheerio.load(departmentData);
+	const departmentData = await fetchDepartmentData(foundDepartment.url);
 
-	// console.log($.toString());
+	const rows = parseRows(departmentData, preferences);
+
+	// console.log(rows);
 	// return (
 	// 	<div>
-	// 		<pre>{$.html()}</pre>
+	// 		<pre>{JSON.stringify(rows, null, 2)}</pre>
 	// 	</div>
 	// );
 
@@ -72,6 +74,8 @@ export default async function Home() {
 
 	const dniTygodnia = ["Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek"];
 
+	const parity = checkCurrentWeekParity();
+
 	return (
 		<div className="overflow-x-auto">
 			<div className="inline-block min-w-full align-middle">
@@ -97,16 +101,26 @@ export default async function Home() {
 							</tr>
 						</thead>
 						<tbody className="bg-background divide-y divide-border">
-							{godziny.map((godzina, index) => (
+							{rows.map((row, index) => (
 								<tr key={index}>
 									<td className="w-32 px-4 py-2 text-sm text-foreground">
-										{godzina}
+										{row.timeEntry.start} - {row.timeEntry.end}
 									</td>
-									{dniTygodnia.map((_, dayIndex) => (
-										<td key={dayIndex} className="px-4 py-2">
-											<div className="h-24 bg-card rounded-lg"></div>
-										</td>
-									))}
+									{row.availableClasses.map((classEntry, dayIndex) => {
+										const foundClassEntry = classEntry.find(
+											(classItem) =>
+												classItem.parity === parity || classItem.parity === null
+										);
+
+										return (
+											<td key={dayIndex} className="px-4 py-2">
+												<div className="h-24 bg-card rounded-lg">
+													{foundClassEntry &&
+														`${foundClassEntry.subject} ${foundClassEntry.room}`}
+												</div>
+											</td>
+										);
+									})}
 								</tr>
 							))}
 						</tbody>

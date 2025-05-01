@@ -9,36 +9,32 @@ const getDepartmentDataUrl = (departmentLinkPart: string) =>
 
 export const fetchDepartmentsList = async (): Promise<string> => {
 	const response = await fetch(DEPARTMENTS_LIST_URL, {
-		// next: {
-		// 	revalidate: 60,
-		// 	tags: ["departments"],
-		// },
+		next: {
+			revalidate: 60 * 15, // 15 minutes
+			// tags: ["departments"],
+		},
 	});
 
 	if (!response.ok) {
 		throw new Error("Failed to fetch departments list");
 	}
 
-	const text = await response.text();
-
-	return text;
+	return response.text();
 };
 
 export const fetchDepartmentData = async (
 	departmentLinkPart: string
 ): Promise<string> => {
 	const response = await fetch(getDepartmentDataUrl(departmentLinkPart), {
-		// next: {
-		// 	revalidate: 60,
-		// 	tags: ["department", departmentLinkPart],
-		// },
+		next: {
+			revalidate: 60 * 15, // 15 minutes
+			// tags: ["department", departmentLinkPart],
+		},
 	});
 
 	if (!response.ok) {
 		throw new Error("Failed to fetch department data");
 	}
 
-	const text = await response.text();
-
-	return text;
+	return response.text();
 };

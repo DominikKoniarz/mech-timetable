@@ -6,7 +6,7 @@ export const routing = defineRouting({
 	locales: ["en", "pl"],
 
 	defaultLocale: "pl",
-	localePrefix: "always",
+	localePrefix: "never",
 	localeDetection: true,
 
 	pathnames: {
@@ -16,7 +16,7 @@ export const routing = defineRouting({
 		},
 		"/welcome": {
 			en: "/welcome",
-			pl: "/welcome",
+			pl: "/witaj",
 		},
 	},
 });

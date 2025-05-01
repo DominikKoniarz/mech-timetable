@@ -11,5 +11,11 @@ export default async function middleware(request: NextRequest) {
 
 export const config = {
 	// Match only internationalized pathnames
-	matcher: ["/", "/(pl|en)/:path*"],
+	matcher: [
+		// "/",
+		// "/(pl|en)/:path*",
+		// "/:path*",
+		// "/((?!api|_next|_vercel|.*\\..*).*)",
+		"/((?!api|_next|_vercel|.*\\..*).*)",
+	],
 };

@@ -25,10 +25,10 @@ const useWelcomeForm = (departments: Department[]) => {
 
 		form.reset({
 			reCaptchaToken: "",
-			departmentName: departments[0].name,
-			laboratoryGroup: LAB_GROUPS.L01,
-			computerLaboratoryGroup: COMPUTER_LAB_GROUPS.K01,
-			projectGroup: PROJECT_GROUPS.P01,
+			departmentName: form.getValues("departmentName"),
+			laboratoryGroup: form.getValues("laboratoryGroup"),
+			computerLaboratoryGroup: form.getValues("computerLaboratoryGroup"),
+			projectGroup: form.getValues("projectGroup"),
 		});
 	};
 
