@@ -23,6 +23,18 @@
 			}
 		}
 	},
+	"mainPage": {
+		"table": {
+			"tableHead": {
+				"hour": "Hour",
+				"monday": "Monday",
+				"tuesday": "Tuesday",
+				"wednesday": "Wednesday",
+				"thursday": "Thursday",
+				"friday": "Friday"
+			}
+		}
+	},
 	"safeAction": {
 		"internalServerError": "Internal server error occurred! Please try again later."
 	}

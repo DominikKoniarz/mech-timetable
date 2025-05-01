@@ -23,6 +23,18 @@
 			}
 		}
 	},
+	"mainPage": {
+		"table": {
+			"tableHead": {
+				"hour": "Godzina",
+				"monday": "Poniedziałek",
+				"tuesday": "Wtorek",
+				"wednesday": "Środa",
+				"thursday": "Czwartek",
+				"friday": "Piątek"
+			}
+		}
+	},
 	"safeAction": {
 		"internalServerError": "Wystąpił błąd serwera. Spróbuj ponownie później."
 	}
