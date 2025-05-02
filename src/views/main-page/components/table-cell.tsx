@@ -17,7 +17,7 @@ export default function TableCell({ classEntries }: Props) {
 	return (
 		<td className="px-4 py-2">
 			<div className="h-24 bg-card rounded-lg flex flex-col justify-center items-center gap-2">
-				{foundClassEntry && foundClassEntry.classType !== "LECTURE" && (
+				{foundClassEntry && (
 					<>
 						<div className="flex flex-row items-center gap-1 text-base">
 							<MdOutlineClass className="text-xl" /> {foundClassEntry.subject}

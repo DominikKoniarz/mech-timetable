@@ -9,7 +9,7 @@
 	--background: #f8f9fa;
 	--foreground: #212529;
 	--main: #0b4951;
-	--accent: #ff6b35;
+	--xd: #ff6b35;
 	--accent-2: #dee2e6;
 	/* --background: oklch(1 0 0);
 	--foreground: oklch(0.145 0 0); */
@@ -92,7 +92,7 @@
 	--background: #121417;
 	--foreground: #eaecef;
 	--main: #0b4951;
-	--accent: #ff6b35;
+	--xd: #ff6b35;
 	--accent-2: #2a2d31;
 	/* --background: oklch(0.145 0 0);
         --foreground: oklch(0.985 0 0); */

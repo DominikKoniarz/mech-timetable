@@ -8,7 +8,7 @@ type Props = {
 
 export default function Timetable({ rows }: Props) {
 	return (
-		<table className="min-w-full w-full table-fixed">
+		<table className="min-w-full relative w-full table-fixed">
 			<TableHead />
 			<TableBody rows={rows} />
 		</table>
