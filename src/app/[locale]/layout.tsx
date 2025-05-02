@@ -5,10 +5,8 @@ import { Link, routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import { getLocale, setRequestLocale } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
-import "../globals.css";
-import { MdOutlineHome } from "react-icons/md";
-import { Button } from "@/components/ui/button";
 import { FaGithub } from "react-icons/fa6";
+import "../globals.css";
 
 const inter = Inter({
 	subsets: ["latin", "latin-ext"],
