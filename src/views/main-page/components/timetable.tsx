@@ -3,14 +3,14 @@ import TableHead from "./table-head";
 import TableBody from "./table-body";
 
 type Props = {
-	rows: TableRow[];
+    rows: TableRow[];
 };
 
 export default function Timetable({ rows }: Props) {
-	return (
-		<table className="min-w-full relative w-full table-fixed">
-			<TableHead />
-			<TableBody rows={rows} />
-		</table>
-	);
+    return (
+        <table className="relative hidden w-full min-w-full table-fixed lg:table">
+            <TableHead />
+            <TableBody rows={rows} />
+        </table>
+    );
 }

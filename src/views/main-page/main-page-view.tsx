@@ -8,9 +8,12 @@ type Props = {
 
 export default function MainPageView({ rows }: Props) {
     return (
-        <div className="h-full w-full">
+        <div className="flex h-full w-full flex-col">
             <MainPageHeader />
-            <main className="overflow-x-auto">
+            <main className="mt-2 h-full overflow-x-auto">
+                <div className="flex h-full w-full items-center justify-center lg:hidden">
+                    Mobile devices are not supported yet. Comming soon!
+                </div>
                 <Timetable rows={rows} />
             </main>
         </div>
