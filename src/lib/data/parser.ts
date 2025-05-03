@@ -2,159 +2,166 @@ import type { Department } from "@/types/departments";
 import type { TableRow } from "@/types/table-rows";
 import type { PreferencesSchema } from "@/schema/preferences-schema";
 import type { TimeEntry } from "@/types/hours";
+import type { ClassType } from "@/types/classes";
 import { initClassesTuple } from "./helpers";
 import { WeekType } from "@/types/week";
 import {
-	COMPUTER_LAB_GROUPS,
-	LAB_GROUPS,
-	PROJECT_GROUPS,
-} from "@/schema/welcome-form-schema";
+    COMPUTER_LAB_GROUPS,
+    LAB_GROUPS,
+    PROJECT_GROUPS,
+} from "@/types/groups";
 import * as cheerio from "cheerio";
-import { ClassType } from "@/types/classes";
 
 export const parseDepartmentsList = (html: string): Department[] => {
-	const $ = cheerio.load(html);
+    const $ = cheerio.load(html);
 
-	const departmentsDiv = $("#oddzialy");
-	if (departmentsDiv.length === 0)
-		throw new Error("Departments list not found");
+    const departmentsDiv = $("#oddzialy");
+    if (departmentsDiv.length === 0)
+        throw new Error("Departments list not found");
 
-	const anchorTags = departmentsDiv.find("p.el a");
-	if (anchorTags.length === 0) throw new Error("Departments not found");
+    const anchorTags = departmentsDiv.find("p.el a");
+    if (anchorTags.length === 0) throw new Error("Departments not found");
 
-	const departments: Department[] = [];
+    const departments: Department[] = [];
 
-	anchorTags.each((_, element) => {
-		const department = $(element).text();
-		const departmentUrl = $(element).attr("href");
+    anchorTags.each((_, element) => {
+        const department = $(element).text();
+        const departmentUrl = $(element).attr("href");
 
-		if (departmentUrl)
-			departments.push({
-				name: department,
-				url: departmentUrl,
-			});
-	});
+        if (departmentUrl)
+            departments.push({
+                name: department,
+                url: departmentUrl,
+            });
+    });
 
-	return departments;
+    return departments;
 };
 
 export const parseRows = (
-	departmentHtml: string,
-	userPreferences: PreferencesSchema
+    departmentHtml: string,
+    userPreferences: PreferencesSchema,
 ): TableRow[] => {
-	const $ = cheerio.load(departmentHtml);
-	const table = $("table.tabela");
+    const $ = cheerio.load(departmentHtml);
+    const table = $("table.tabela");
 
-	if (!table.length) {
-		throw new Error("Table not found");
-	}
+    if (!table.length) {
+        throw new Error("Table not found");
+    }
 
-	// skip the first row (header)
-	const $rows = table.find("tbody > tr").slice(1);
+    // skip the first row (header)
+    const $rows = table.find("tbody > tr").slice(1);
 
-	const parsedRows: TableRow[] = [];
+    const parsedRows: TableRow[] = [];
 
-	$rows.each((_, row) => {
-		const timeEntry: TimeEntry = {
-			start: $(row).find("td.g").text().split("-")[0].trim(),
-			end: $(row).find("td.g").text().split("-")[1].trim(),
-		};
+    $rows.each((_, row) => {
+        const timeEntry: TimeEntry = {
+            start: $(row).find("td.g").text().split("-")[0].trim(),
+            end: $(row).find("td.g").text().split("-")[1].trim(),
+        };
 
-		const classes = initClassesTuple();
+        const classes = initClassesTuple();
 
-		const $cells = $(row).find("td.l");
+        const $cells = $(row).find("td.l");
 
-		$cells.each((cellIndex, cell) => {
-			if (cellIndex >= classes.length) return;
+        $cells.each((cellIndex, cell) => {
+            if (cellIndex >= classes.length) return;
 
-			const possibleClassEntries = $(cell).html()?.split("<br>");
-			if (!possibleClassEntries || possibleClassEntries.length === 0) return;
+            const possibleClassEntries = $(cell).html()?.split("<br>");
+            if (!possibleClassEntries || possibleClassEntries.length === 0)
+                return;
 
-			possibleClassEntries.forEach((possibleClassEntry) => {
-				const wrapped = $("<div></div>").html(possibleClassEntry).toString();
+            possibleClassEntries.forEach((possibleClassEntry) => {
+                const wrapped = $("<div></div>")
+                    .html(possibleClassEntry)
+                    .toString();
 
-				const subjectElement = $(wrapped).find(".p");
-				const rawSubject = subjectElement.text();
+                const subjectElement = $(wrapped).find(".p");
+                const rawSubject = subjectElement.text();
 
-				// cut after - or #
-				let dashOrHashTagIndex = rawSubject.indexOf("-");
-				if (dashOrHashTagIndex === -1) {
-					dashOrHashTagIndex = rawSubject.indexOf("#");
-				}
+                // cut after - or #
+                let dashOrHashTagIndex = rawSubject.indexOf("-");
+                if (dashOrHashTagIndex === -1) {
+                    dashOrHashTagIndex = rawSubject.indexOf("#");
+                }
 
-				let subject = rawSubject;
-				if (dashOrHashTagIndex !== -1) {
-					subject = rawSubject.substring(0, dashOrHashTagIndex).trim();
-				}
+                let subject = rawSubject;
+                if (dashOrHashTagIndex !== -1) {
+                    subject = rawSubject
+                        .substring(0, dashOrHashTagIndex)
+                        .trim();
+                }
 
-				// subject = subject.substring(0, subject.lastIndexOf(" "));
+                // subject = subject.substring(0, subject.lastIndexOf(" "));
 
-				const roomElement = $(wrapped).find(".s");
-				const rawRoom = roomElement.text();
+                const roomElement = $(wrapped).find(".s");
+                const rawRoom = roomElement.text();
 
-				// cut after -p or -n
-				const room = rawRoom.replace(/-p|-n/, "");
+                // cut after -p or -n
+                const room = rawRoom.replace(/-p|-n/, "");
 
-				const roomParity: WeekType | null = rawRoom.endsWith("-p")
-					? WeekType.EVEN
-					: rawRoom.endsWith("-n")
-					? WeekType.ODD
-					: null;
+                const roomParity: WeekType | null = rawRoom.endsWith("-p")
+                    ? WeekType.EVEN
+                    : rawRoom.endsWith("-n")
+                      ? WeekType.ODD
+                      : null;
 
-				if (!room || !subject) return;
+                if (!room || !subject) return;
 
-				let classHasAssignedGroup: boolean = false;
-				let classType: ClassType = "OTHER";
+                let classHasAssignedGroup: boolean = false;
+                let classType: ClassType = "OTHER";
 
-				Object.values(LAB_GROUPS).forEach((group) => {
-					if (subject.includes(group)) {
-						classHasAssignedGroup = true;
-						classType = "LABORATORY";
-					}
-				});
+                Object.values(LAB_GROUPS).forEach((group) => {
+                    if (subject.includes(group)) {
+                        classHasAssignedGroup = true;
+                        classType = "LABORATORY";
+                    }
+                });
 
-				Object.values(COMPUTER_LAB_GROUPS).forEach((group) => {
-					if (subject.includes(group)) {
-						classHasAssignedGroup = true;
-						classType = "COMPUTER_LABORATORY";
-					}
-				});
+                Object.values(COMPUTER_LAB_GROUPS).forEach((group) => {
+                    if (subject.includes(group)) {
+                        classHasAssignedGroup = true;
+                        classType = "COMPUTER_LABORATORY";
+                    }
+                });
 
-				Object.values(PROJECT_GROUPS).forEach((group) => {
-					if (subject.includes(group)) {
-						classHasAssignedGroup = true;
-						classType = "PROJECT";
-					}
-				});
+                Object.values(PROJECT_GROUPS).forEach((group) => {
+                    if (subject.includes(group)) {
+                        classHasAssignedGroup = true;
+                        classType = "PROJECT";
+                    }
+                });
 
-				if (subject.endsWith("W")) {
-					classType = "LECTURE";
-				}
+                if (subject.endsWith("W")) {
+                    classType = "LECTURE";
+                }
 
-				if (
-					classHasAssignedGroup &&
-					!(
-						subject.includes(userPreferences.laboratoryGroup) ||
-						subject.includes(userPreferences.computerLaboratoryGroup) ||
-						subject.includes(userPreferences.projectGroup)
-					)
-				)
-					return;
+                if (
+                    classHasAssignedGroup &&
+                    !(
+                        subject.includes(userPreferences.laboratoryGroup) ||
+                        subject.includes(
+                            userPreferences.computerLaboratoryGroup,
+                        ) ||
+                        subject.includes(userPreferences.projectGroup)
+                    )
+                )
+                    return;
 
-				classes[cellIndex].push({
-					subject,
-					room,
-					parity: roomParity,
-					classType,
-				});
-			});
-		});
+                classes[cellIndex].push({
+                    subject,
+                    room,
+                    parity: roomParity,
+                    classType,
+                });
+            });
+        });
 
-		parsedRows.push({
-			timeEntry,
-			availableClasses: classes,
-		});
-	});
+        parsedRows.push({
+            timeEntry,
+            availableClasses: classes,
+        });
+    });
 
-	return parsedRows;
+    return parsedRows;
 };

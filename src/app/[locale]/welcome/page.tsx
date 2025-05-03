@@ -1,3 +1,4 @@
+import { getUserPreferences } from "@/lib/data/cookies";
 import { fetchDepartmentsList } from "@/lib/data/fetcher";
 import { parseDepartmentsList } from "@/lib/data/parser";
 import WelcomePageView from "@/views/welcome-page/welcome-page-view";
@@ -13,10 +14,16 @@ import WelcomePageView from "@/views/welcome-page/welcome-page-view";
 // };
 
 export default async function Welcome() {
-	const departmentsHtml = await fetchDepartmentsList();
-	const departments = parseDepartmentsList(departmentsHtml);
+    const [departmentsHtml, preferences] = await Promise.all([
+        fetchDepartmentsList(),
+        getUserPreferences(),
+    ]);
+    const departments = parseDepartmentsList(departmentsHtml);
 
-	// add cookie checks here
-
-	return <WelcomePageView departments={departments} />;
+    return (
+        <WelcomePageView
+            departments={departments}
+            userPreferences={preferences}
+        />
+    );
 }
