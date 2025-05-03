@@ -1,41 +1,44 @@
 {
-	"welcome": "Witaj",
-	"goodbye": "Do widzenia",
-	"thank_you": "Dziękuję",
-	"please": "Proszę",
-	"welcomePage": {
-		"cta": {
-			"h1": "Witaj w MechTimetable",
-			"text": "Wybierz oddział oraz odpowiednie grupy, aby zobaczyć plan zajęć"
-		},
-		"form": {
-			"department": "Oddział",
-			"laboratoryGroup": "Grupa laboratoryjna",
-			"computerLaboratoryGroup": "Grupa laboratoriów komputerowych",
-			"projectGroup": "Grupa projektowa",
-			"search": "Szukaj",
-			"validation": {
-				"required": "To pole jest wymagane",
-				"selectDepartment": "Proszę wybrać oddział",
-				"selectLaboratoryGroup": "Proszę wybrać grupę laboratoryjną",
-				"selectComputerLaboratoryGroup": "Proszę wybrać grupę laboratoriów komputerowych",
-				"selectProjectGroup": "Proszę wybrać grupę projektową"
-			}
-		}
-	},
-	"mainPage": {
-		"table": {
-			"tableHead": {
-				"hour": "Godzina",
-				"monday": "Poniedziałek",
-				"tuesday": "Wtorek",
-				"wednesday": "Środa",
-				"thursday": "Czwartek",
-				"friday": "Piątek"
-			}
-		}
-	},
-	"safeAction": {
-		"internalServerError": "Wystąpił błąd serwera. Spróbuj ponownie później."
-	}
+    "welcome": "Witaj",
+    "goodbye": "Do widzenia",
+    "thank_you": "Dziękuję",
+    "please": "Proszę",
+    "welcomePage": {
+        "cta": {
+            "h1": "Witaj w MechTimetable",
+            "text": "Wybierz oddział oraz odpowiednie grupy, aby zobaczyć plan zajęć"
+        },
+        "form": {
+            "department": "Oddział",
+            "laboratoryGroup": "Grupa laboratoryjna",
+            "computerLaboratoryGroup": "Grupa laboratoriów komputerowych",
+            "projectGroup": "Grupa projektowa",
+            "search": "Szukaj",
+            "validation": {
+                "required": "To pole jest wymagane",
+                "selectDepartment": "Proszę wybrać oddział",
+                "selectLaboratoryGroup": "Proszę wybrać grupę laboratoryjną",
+                "selectComputerLaboratoryGroup": "Proszę wybrać grupę laboratoriów komputerowych",
+                "selectProjectGroup": "Proszę wybrać grupę projektową"
+            }
+        }
+    },
+    "mainPage": {
+        "header": {
+            "changeGroup": "Zmień grupę"
+        },
+        "table": {
+            "tableHead": {
+                "hour": "Godzina",
+                "monday": "Poniedziałek",
+                "tuesday": "Wtorek",
+                "wednesday": "Środa",
+                "thursday": "Czwartek",
+                "friday": "Piątek"
+            }
+        }
+    },
+    "safeAction": {
+        "internalServerError": "Wystąpił błąd serwera. Spróbuj ponownie później."
+    }
 }
