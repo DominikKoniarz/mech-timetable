@@ -45,7 +45,7 @@ export default async function RootLayout({
     setRequestLocale(locale);
 
     return (
-        <html lang="en" suppressHydrationWarning>
+        <html lang={locale} suppressHydrationWarning>
             <body className={`${inter.className}`}>
                 <NextIntlClientProvider>
                     <ThemeProvider
