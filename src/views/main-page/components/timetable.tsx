@@ -8,7 +8,7 @@ type Props = {
 
 export default function Timetable({ rows }: Props) {
     return (
-        <table className="relative hidden w-full min-w-full table-fixed lg:table">
+        <table className="relative w-full min-w-full table-fixed">
             <TableHead />
             <TableBody rows={rows} />
         </table>
