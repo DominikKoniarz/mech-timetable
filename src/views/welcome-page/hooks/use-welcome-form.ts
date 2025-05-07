@@ -50,18 +50,13 @@ const useWelcomeForm = (
         resolver: zodResolver(getWelcomeFormSchema(t, departments)),
         defaultValues: {
             reCaptchaToken: "",
-            departmentName: userPreferences
-                ? userPreferences.departmentName
-                : departments[0].name,
-            laboratoryGroup: userPreferences
-                ? userPreferences.laboratoryGroup
-                : LAB_GROUPS.L01,
-            computerLaboratoryGroup: userPreferences
-                ? userPreferences.computerLaboratoryGroup
-                : COMPUTER_LAB_GROUPS.K01,
-            projectGroup: userPreferences
-                ? userPreferences.projectGroup
-                : PROJECT_GROUPS.P01,
+            departmentName:
+                userPreferences?.departmentName ?? departments[0].name,
+            laboratoryGroup: userPreferences?.laboratoryGroup ?? LAB_GROUPS.L01,
+            computerLaboratoryGroup:
+                userPreferences?.computerLaboratoryGroup ??
+                COMPUTER_LAB_GROUPS.K01,
+            projectGroup: userPreferences?.projectGroup ?? PROJECT_GROUPS.P01,
         },
         mode: "onBlur",
         reValidateMode: "onChange",

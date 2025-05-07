@@ -1,24 +1,25 @@
-import type { Department } from "@/types/departments";
-import type { PreferencesSchema } from "@/schema/preferences-schema";
-import WelcomeCTA from "./components/welcome-cta";
+import WelcomeFormSkeleton from "./components/welcome-form-skeleton";
 import WelcomeForm from "./components/welcome-form";
+import WelcomeCTA from "./components/welcome-cta";
+import { fetchDepartmentsList } from "@/lib/data/fetcher";
+import { getUserPreferences } from "@/lib/data/cookies";
+import { Suspense } from "react";
 
-type Props = {
-    departments: Department[];
-    userPreferences: PreferencesSchema | null;
-};
+export default function WelcomePageView() {
+    const [departmentsHtmlPromise, userPreferencesPromise] = [
+        fetchDepartmentsList(),
+        getUserPreferences(),
+    ];
 
-export default function WelcomePageView({
-    departments,
-    userPreferences,
-}: Props) {
     return (
         <main className="flex h-full w-full flex-col items-center justify-center">
             <WelcomeCTA />
-            <WelcomeForm
-                departments={departments}
-                userPreferences={userPreferences}
-            />
+            <Suspense fallback={<WelcomeFormSkeleton />}>
+                <WelcomeForm
+                    departmentsHtmlPromise={departmentsHtmlPromise}
+                    userPreferencesPromise={userPreferencesPromise}
+                />
+            </Suspense>
         </main>
     );
 }
