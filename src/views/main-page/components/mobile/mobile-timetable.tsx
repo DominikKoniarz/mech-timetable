@@ -16,7 +16,18 @@ type Props = {
 // TODO: polish, add translations, add components
 export default function MobileTimetable({ rows }: Props) {
     const t = useTranslations("mainPage.table.tableHead");
-    const [selectedDay, setSelectedDay] = useState<number>(0);
+
+    // TODO: pomyśl nad tym
+    const [selectedDay, setSelectedDay] = useState<number>(
+        (() => {
+            const currentWeekdayIndex =
+                new Date().getDay() === 0 ? 4 : new Date().getDay() - 1;
+
+            const defaultDay =
+                new Date().getDay() === 6 ? 4 : currentWeekdayIndex;
+            return defaultDay;
+        })(),
+    );
 
     const weekdays = [
         t("monday"),

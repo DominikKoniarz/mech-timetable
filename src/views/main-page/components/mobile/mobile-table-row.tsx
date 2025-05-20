@@ -1,6 +1,7 @@
 import type { TableRow } from "@/types/table-rows";
 import { checkCurrentWeekParity } from "@/lib/data/helpers";
 import { MdOutlinePlace, MdOutlineClass } from "react-icons/md";
+import { cn } from "@/lib/utils";
 
 type Props = {
     row: TableRow;
@@ -22,22 +23,22 @@ export default function MobileTableRow({ row, selectedDay }: Props) {
 
         switch (type) {
             case "LECTURE":
-                return `${baseClasses} bg-blue-500 text-white`;
+                return cn(baseClasses, "bg-blue-500 text-white");
             case "EXERCISES":
-                return `${baseClasses} bg-green-500 text-white`;
+                return cn(baseClasses, "bg-green-500 text-white");
             case "LABORATORY":
             case "COMPUTER_LABORATORY":
-                return `${baseClasses} bg-purple-500 text-white`;
+                return cn(baseClasses, "bg-purple-500 text-white");
             case "PROJECT":
-                return `${baseClasses} bg-yellow-500 text-black`;
+                return cn(baseClasses, "bg-yellow-500 text-black");
             case "SEMINAR":
-                return `${baseClasses} bg-red-500 text-white`;
+                return cn(baseClasses, "bg-red-500 text-white");
             default:
-                return `${baseClasses} bg-gray-500 text-white`;
+                return cn(baseClasses, "bg-gray-500 text-white");
         }
     };
 
-    // Helper function to get abbreviated class type
+    // TODO: add proper input type and inspect parser
     const getClassTypeLabel = (type: string) => {
         switch (type) {
             case "LECTURE":
@@ -59,11 +60,26 @@ export default function MobileTableRow({ row, selectedDay }: Props) {
 
     return (
         <tr className="border-b last:border-b-0">
-            <td className="text-foreground w-20 border-r px-3 py-3 text-sm">
-                {row.timeEntry.start} - {row.timeEntry.end}
+            <td
+                className={cn(
+                    "text-foreground w-20 border-r px-2 py-3 text-sm whitespace-nowrap",
+                )}
+            >
+                <div className={cn("flex flex-col items-center")}>
+                    <span>{row.timeEntry.start}</span>
+                    <span className={cn("text-muted-foreground text-xs")}>
+                        {/* TODO: add tranlations */}
+                        to
+                    </span>
+                    <span>{row.timeEntry.end}</span>
+                </div>
             </td>
-            <td className="px-3 py-3">
-                <div className="bg-card relative flex h-24 flex-col items-center justify-center gap-2 rounded-lg">
+            <td className={cn("px-2 py-3")}>
+                <div
+                    className={cn(
+                        "bg-card relative flex h-24 flex-col items-center justify-center gap-1.5 rounded-lg p-1",
+                    )}
+                >
                     {foundClassEntry && (
                         <>
                             <span
@@ -73,13 +89,23 @@ export default function MobileTableRow({ row, selectedDay }: Props) {
                             >
                                 {getClassTypeLabel(foundClassEntry.classType)}
                             </span>
-                            <div className="flex flex-row items-center gap-1 text-base">
-                                <MdOutlineClass className="text-lg" />{" "}
-                                {foundClassEntry.subject}
+                            <div
+                                className={cn(
+                                    "flex flex-row items-center gap-1 text-center text-sm sm:text-base",
+                                )}
+                            >
+                                <MdOutlineClass className="flex-shrink-0 text-lg" />
+                                <span className={cn("line-clamp-2")}>
+                                    {foundClassEntry.subject}
+                                </span>
                             </div>
-                            <div className="flex flex-row items-center gap-1 text-base">
-                                <MdOutlinePlace className="text-lg" />{" "}
-                                {foundClassEntry.room}
+                            <div
+                                className={cn(
+                                    "flex flex-row items-center gap-1 text-sm",
+                                )}
+                            >
+                                <MdOutlinePlace className="flex-shrink-0 text-lg" />
+                                <span>{foundClassEntry.room}</span>
                             </div>
                         </>
                     )}
