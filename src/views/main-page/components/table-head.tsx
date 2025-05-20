@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 export default function TableHead() {
     const t = useTranslations("mainPage.table.tableHead");
 
-    const dniTygodnia: string[] = [
+    const weekdays: string[] = [
         t("monday"),
         t("tuesday"),
         t("wednesday"),
@@ -21,7 +21,7 @@ export default function TableHead() {
                     {/* sticky top-0 z-10 */}
                     {t("hour")}
                 </th>
-                {dniTygodnia.map((day, index) => (
+                {weekdays.map((day, index) => (
                     <th
                         key={index}
                         scope="col"

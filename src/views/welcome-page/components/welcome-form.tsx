@@ -8,7 +8,7 @@ import SubmitButton from "./submit-button";
 import useWelcomeForm from "../hooks/use-welcome-form";
 import ReCAPTCHA from "react-google-recaptcha";
 import { env } from "@/env";
-import { use } from "react";
+import { use, useMemo } from "react";
 
 type Props = {
     departmentsHtmlPromise: Promise<string>;
@@ -22,7 +22,10 @@ export default function WelcomeForm({
     const departmentsHtml = use(departmentsHtmlPromise);
     const userPreferences = use(userPreferencesPromise);
 
-    const departments = parseDepartmentsList(departmentsHtml);
+    const departments = useMemo(
+        () => parseDepartmentsList(departmentsHtml),
+        [departmentsHtml],
+    );
 
     const { form, onSubmit, isPending, reCaptchaRef } = useWelcomeForm(
         departments,
