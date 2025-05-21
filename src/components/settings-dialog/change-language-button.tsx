@@ -17,9 +17,9 @@ export default function ChangeLanguageButton({ localeToSet, children }: Props) {
             locale={localeToSet}
             className={cn(
                 buttonVariants({
-                    variant: locale === localeToSet ? "default" : "outline",
+                    variant: locale === localeToSet ? "secondary" : "outline",
                 }),
-                "flex h-fit w-fit items-center justify-center [&>svg]:!size-5",
+                "flex h-10 w-fit items-center justify-center p-0 [&>svg]:!size-4.5",
             )}
         >
             {children}

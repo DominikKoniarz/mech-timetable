@@ -17,6 +17,24 @@ type Props = {
     className?: string;
 };
 
+export function LanguageChange() {
+    const t = useTranslations("settingsDialog");
+
+    return (
+        <div className="flex flex-col gap-1">
+            <h3 className="mt-3 text-left text-sm">{t("changeLanguage")}</h3>
+            <div className="mt-0.5 flex flex-row gap-2">
+                <ChangeLanguageButton localeToSet="pl">
+                    <FlagPL />
+                </ChangeLanguageButton>
+                <ChangeLanguageButton localeToSet="en">
+                    <FlagUSA />
+                </ChangeLanguageButton>
+            </div>
+        </div>
+    );
+}
+
 export default function SettingsDialog({ className }: Props) {
     const t = useTranslations("settingsDialog");
 
@@ -38,19 +56,7 @@ export default function SettingsDialog({ className }: Props) {
                     <DialogDescription className="sr-only">
                         {t("settings")}
                     </DialogDescription>
-                    <div className="flex flex-col gap-1">
-                        <h3 className="mt-2 text-left text-base">
-                            {t("changeLanguage")}
-                        </h3>
-                        <div className="mt-0 flex flex-row gap-2">
-                            <ChangeLanguageButton localeToSet="pl">
-                                <FlagPL />
-                            </ChangeLanguageButton>
-                            <ChangeLanguageButton localeToSet="en">
-                                <FlagUSA />
-                            </ChangeLanguageButton>
-                        </div>
-                    </div>
+                    <LanguageChange />
                 </DialogHeader>
             </DialogContent>
         </Dialog>
