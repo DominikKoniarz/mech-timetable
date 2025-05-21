@@ -33,7 +33,7 @@ export default function WelcomeForm({
     );
 
     return (
-        <form className="mt-10 w-fit space-y-4" onSubmit={onSubmit}>
+        <form className="mt-10 w-fit min-w-62 space-y-4" onSubmit={onSubmit}>
             <Form {...form}>
                 <ReCAPTCHA
                     className="hidden"
