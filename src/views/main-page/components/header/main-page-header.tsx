@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import { FaGithub } from "react-icons/fa6";
 import { Link } from "@/i18n/routing";
+import SettingsDialog from "./settings-dialog";
 
 export default function MainPageHeader() {
     const t = useTranslations("mainPage.header");
@@ -21,6 +22,7 @@ export default function MainPageHeader() {
             >
                 <FaGithub className="text-foreground" />
             </Link>
+            <SettingsDialog />
         </header>
     );
 }
