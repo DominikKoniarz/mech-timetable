@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
-import { getLocale, setRequestLocale } from "next-intl/server";
+import { getLocale, getMessages, setRequestLocale } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import "../globals.css";
 
@@ -40,6 +40,8 @@ export default async function RootLayout({
     if (!routing.locales.includes(locale)) {
         notFound();
     }
+    // Fetch messages for the current locale
+    const messages = await getMessages({ locale });
 
     // Enable static rendering
     setRequestLocale(locale);
@@ -47,7 +49,7 @@ export default async function RootLayout({
     return (
         <html lang={locale} suppressHydrationWarning>
             <body className={`${inter.className}`}>
-                <NextIntlClientProvider>
+                <NextIntlClientProvider messages={messages} locale={locale}>
                     <ThemeProvider
                         defaultTheme="system"
                         // attribute="class" // causes blinking

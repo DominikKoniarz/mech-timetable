@@ -7,6 +7,7 @@ export default function ClassTypeBadge({
 }: {
     classType: ClassEntry["classType"];
 }) {
+    // TODO: translate class types to their respective labels
     const classTypeBadgeClasses: string = useMemo(() => {
         const baseClasses = "text-xs px-2 py-1 rounded absolute top-2 right-2";
 
