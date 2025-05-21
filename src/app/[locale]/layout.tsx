@@ -5,6 +5,7 @@ import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import { getLocale, getMessages, setRequestLocale } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
+import { Analytics } from "@vercel/analytics/next";
 import "../globals.css";
 
 const inter = Inter({
@@ -57,6 +58,7 @@ export default async function RootLayout({
                         disableTransitionOnChange
                     >
                         {children}
+                        <Analytics />
                     </ThemeProvider>
                 </NextIntlClientProvider>
             </body>

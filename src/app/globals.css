@@ -176,9 +176,3 @@
 .animate-slideDown {
     animation: slideDown 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
-
-.mobile-dropdown-shadow {
-    box-shadow:
-        0px 8px 16px rgba(0, 0, 0, 0.1),
-        0px 4px 8px rgba(0, 0, 0, 0.05);
-}
