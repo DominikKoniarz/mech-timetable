@@ -1,0 +1,28 @@
+import { useLocale, type Locale } from "next-intl";
+import { Link } from "@/i18n/routing";
+import { buttonVariants } from "../ui/button";
+import { cn } from "@/lib/utils";
+
+type Props = {
+    localeToSet: Locale;
+    children: React.ReactNode;
+};
+
+export default function ChangeLanguageButton({ localeToSet, children }: Props) {
+    const locale = useLocale();
+
+    return (
+        <Link
+            href="/"
+            locale={localeToSet}
+            className={cn(
+                buttonVariants({
+                    variant: locale === localeToSet ? "default" : "outline",
+                }),
+                "flex h-fit w-fit items-center justify-center [&>svg]:!size-5",
+            )}
+        >
+            {children}
+        </Link>
+    );
+}

@@ -54,6 +54,10 @@
             }
         }
     },
+    "settingsDialog": {
+        "settings": "Settings",
+        "changeLanguage": "Change language"
+    },
     "safeAction": {
         "internalServerError": "Internal server error occurred! Please try again later."
     }

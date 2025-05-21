@@ -12,7 +12,8 @@ export default function WelcomePageView() {
     ];
 
     return (
-        <main className="flex h-full w-full flex-col items-center justify-center">
+        <main className="relative flex h-full w-full flex-col items-center justify-center">
+            {/* <SettingsDialog className="absolute top-[12px] right-3" /> */}
             <WelcomeCTA />
             <Suspense fallback={<WelcomeFormSkeleton />}>
                 <WelcomeForm
