@@ -2,6 +2,7 @@ import type { TableRow } from "@/types/table-rows";
 import { MdOutlinePlace, MdOutlineClass } from "react-icons/md";
 import { useTranslations } from "next-intl";
 import useMobileTableRow from "../../hooks/use-mobile-table-row";
+import ClassTypeBadge from "../class-type-badge";
 
 type Props = {
     row: TableRow;
@@ -11,8 +12,7 @@ type Props = {
 export default function MobileTableRow({ row, selectedDay }: Props) {
     const t = useTranslations("mainPage.table");
 
-    const { foundClassEntry, getClassTypeBadge, getClassTypeLabel } =
-        useMobileTableRow({ row, selectedDay });
+    const { foundClassEntry } = useMobileTableRow({ row, selectedDay });
 
     return (
         <tr className="border-b last:border-b-0">
@@ -29,13 +29,9 @@ export default function MobileTableRow({ row, selectedDay }: Props) {
                 <div className="bg-card relative flex h-24 flex-col items-center justify-center gap-1.5 rounded-lg p-1">
                     {foundClassEntry && (
                         <>
-                            <span
-                                className={getClassTypeBadge(
-                                    foundClassEntry.classType,
-                                )}
-                            >
-                                {getClassTypeLabel(foundClassEntry.classType)}
-                            </span>
+                            <ClassTypeBadge
+                                classType={foundClassEntry.classType}
+                            />
                             <div className="flex flex-row items-center gap-1 text-center text-sm sm:text-base">
                                 <MdOutlineClass className="flex-shrink-0 text-lg" />
                                 <span className="line-clamp-2">
