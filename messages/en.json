@@ -42,6 +42,15 @@
             },
             "hours": {
                 "to": "to"
+            },
+            "badge": {
+                "lecture": "Lec",
+                "exercises": "Ex",
+                "laboratory": "Lab",
+                "computerLaboratory": "C-Lab",
+                "project": "Proj",
+                "seminar": "Sem",
+                "other": "Other"
             }
         }
     },

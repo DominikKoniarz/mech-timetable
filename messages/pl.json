@@ -42,6 +42,15 @@
             },
             "hours": {
                 "to": "do"
+            },
+            "badge": {
+                "lecture": "W",
+                "exercises": "Ćw",
+                "laboratory": "Lab",
+                "computerLaboratory": "Lab-K",
+                "project": "Proj",
+                "seminar": "Sem",
+                "other": "Inne"
             }
         }
     },

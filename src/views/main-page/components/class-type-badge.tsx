@@ -1,13 +1,15 @@
 import type { ClassEntry } from "@/types/classes";
 import { cn } from "@/lib/utils";
 import { useMemo } from "react";
+import { useTranslations } from "next-intl";
 
 export default function ClassTypeBadge({
     classType,
 }: {
     classType: ClassEntry["classType"];
 }) {
-    // TODO: translate class types to their respective labels
+    const t = useTranslations("mainPage.table.badge");
+
     const classTypeBadgeClasses: string = useMemo(() => {
         const baseClasses = "text-xs px-2 py-1 rounded absolute top-2 right-2";
 
@@ -31,21 +33,25 @@ export default function ClassTypeBadge({
     const classTypeBadgeLabel: string = useMemo(() => {
         switch (classType) {
             case "LECTURE":
-                return "LEC";
+                return t("lecture");
             case "EXERCISES":
-                return "EX";
+                return t("exercises");
             case "LABORATORY":
-                return "LAB";
+                return t("laboratory");
             case "COMPUTER_LABORATORY":
-                return "C-LAB";
+                return t("computerLaboratory");
             case "PROJECT":
-                return "PROJ";
+                return t("project");
             case "SEMINAR":
-                return "SEM";
+                return t("seminar");
             default:
-                return "OTHER";
+                return t("other");
         }
-    }, [classType]);
+    }, [classType, t]);
 
-    return <span className={classTypeBadgeClasses}>{classTypeBadgeLabel}</span>;
+    return (
+        <span className={classTypeBadgeClasses}>
+            {classTypeBadgeLabel.toUpperCase()}
+        </span>
+    );
 }
