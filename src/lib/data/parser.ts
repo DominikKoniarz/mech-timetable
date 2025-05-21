@@ -136,6 +136,17 @@ export const parseRows = (
                     classType = "LECTURE";
                 }
 
+                if (subject.endsWith("S")) {
+                    classType = "SEMINAR";
+                }
+
+                if (subject.endsWith("Ć")) {
+                    classType = "EXERCISES";
+                }
+
+                // if class type is LABORATORY or COMPUTER_LABORATORY or PROJECT
+                // but user is assigned to a different group
+                // then skip this class
                 if (
                     classHasAssignedGroup &&
                     !(
