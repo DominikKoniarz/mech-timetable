@@ -35,6 +35,13 @@
                 "wednesday": "Środa",
                 "thursday": "Czwartek",
                 "friday": "Piątek"
+            },
+            "mobile": {
+                "prevDay": "Poprzedni dzień",
+                "nextDay": "Następny dzień"
+            },
+            "hours": {
+                "to": "do"
             }
         }
     },

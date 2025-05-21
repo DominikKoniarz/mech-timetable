@@ -1,116 +1,38 @@
 "use client";
 
-import { useState } from "react";
 import type { TableRow } from "@/types/table-rows";
 import MobileTableHead from "@/views/main-page/components/mobile/mobile-table-head";
 import MobileTableBody from "@/views/main-page/components/mobile/mobile-table-body";
-import { useTranslations } from "next-intl";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useSwipeable } from "react-swipeable";
-import { cn } from "@/lib/utils";
+import DaySelector from "./day-selector";
+import useMobileTimetable from "../../hooks/use-mobile-timetable";
 
 type Props = {
     rows: TableRow[];
 };
 
-// TODO: polish, add translations, add components
 export default function MobileTimetable({ rows }: Props) {
-    const t = useTranslations("mainPage.table.tableHead");
-
-    // TODO: pomyśl nad tym
-    const [selectedDay, setSelectedDay] = useState<number>(
-        (() => {
-            const currentWeekdayIndex =
-                new Date().getDay() === 0 ? 4 : new Date().getDay() - 1;
-
-            const defaultDay =
-                new Date().getDay() === 6 ? 4 : currentWeekdayIndex;
-            return defaultDay;
-        })(),
-    );
-
-    const weekdays = [
-        t("monday"),
-        t("tuesday"),
-        t("wednesday"),
-        t("thursday"),
-        t("friday"),
-    ];
-
-    const handlePreviousDay = () => {
-        const newIndex =
-            selectedDay > 0 ? selectedDay - 1 : weekdays.length - 1;
-        setSelectedDay(newIndex);
-    };
-
-    const handleNextDay = () => {
-        const newIndex =
-            selectedDay < weekdays.length - 1 ? selectedDay + 1 : 0;
-        setSelectedDay(newIndex);
-    };
-
-    // Setup swipe handlers for mobile navigation
-    const swipeHandlers = useSwipeable({
-        onSwipedLeft: () => {
-            handleNextDay();
-        },
-        onSwipedRight: () => {
-            handlePreviousDay();
-        },
-        preventScrollOnSwipe: true,
-        trackMouse: false,
-    });
+    const {
+        weekdays,
+        selectedDay,
+        handlePreviousDay,
+        handleNextDay,
+        swipeHandlers,
+    } = useMobileTimetable();
 
     return (
         <div
-            className={cn(
-                "relative flex w-full flex-col",
-                "min-[970px]:hidden",
-            )}
+            className="flex h-full w-full flex-col min-[970px]:hidden"
             {...swipeHandlers}
         >
-            {/* Day selector */}
-            <div className="bg-card sticky top-0 z-20 mb-3 flex h-14 w-full items-center justify-between overflow-hidden shadow-sm">
-                <button
-                    onClick={handlePreviousDay}
-                    className="hover:bg-muted flex items-center justify-center p-3 transition-colors"
-                    aria-label="Previous day"
-                >
-                    <ChevronLeft className="h-5 w-5" />
-                </button>
+            <DaySelector
+                selectedDay={selectedDay}
+                handleNextDay={handleNextDay}
+                handlePreviousDay={handlePreviousDay}
+                weekdays={weekdays}
+            />
 
-                <div className="relative flex flex-1 flex-col items-center justify-center py-3">
-                    <span className="text-sm font-medium">
-                        {weekdays[selectedDay]}
-                    </span>
-                    <div className="mt-1 flex gap-1">
-                        {weekdays.map((_, index) => (
-                            <div
-                                key={index}
-                                className={cn(
-                                    "h-1 w-1 rounded-full",
-                                    selectedDay === index
-                                        ? "bg-primary"
-                                        : "bg-muted",
-                                )}
-                                aria-hidden="true"
-                            />
-                        ))}
-                    </div>
-                </div>
-
-                <button
-                    onClick={handleNextDay}
-                    className="hover:bg-muted flex items-center justify-center p-3 transition-colors"
-                    aria-label="Next day"
-                >
-                    <ChevronRight className="h-5 w-5" />
-                </button>
-            </div>
-
-            {/* Timetable */}
-            <div className="relative mt-3 overflow-hidden rounded-lg shadow-sm">
-                <table className="w-full table-fixed border-collapse">
+            <div className="flex-1 overflow-y-auto rounded-lg shadow-sm">
+                <table className="mt-2 w-full table-fixed border-collapse">
                     <MobileTableHead day={weekdays[selectedDay]} />
                     <MobileTableBody rows={rows} selectedDay={selectedDay} />
                 </table>

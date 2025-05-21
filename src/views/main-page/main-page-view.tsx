@@ -11,7 +11,7 @@ export default function MainPageView({ rows }: Props) {
     return (
         <div className="flex h-full w-full flex-col">
             <MainPageHeader />
-            <main className="mt-2 h-full overflow-x-auto">
+            <main className="h-full overflow-hidden lg:mt-2">
                 {/* Desktop timetable */}
                 <Timetable rows={rows} />
 
