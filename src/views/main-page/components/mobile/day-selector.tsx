@@ -27,10 +27,10 @@ export default function DaySelector({
         <div className="bg-card sticky top-0 z-10 flex h-20 w-full items-center justify-between overflow-hidden shadow-sm">
             <Button
                 onClick={handlePreviousDay}
-                className="hover:bg-muted flex h-fit w-fit cursor-pointer items-center justify-center rounded-none bg-transparent !p-4 text-white transition-colors"
+                className="hover:bg-muted text-foreground flex h-fit w-fit cursor-pointer items-center justify-center rounded-none bg-transparent !p-4 shadow-none transition-colors"
                 aria-label={t("prevDay")}
             >
-                <ChevronLeft className="h-5 w-5" />
+                <ChevronLeft className="size-5" />
             </Button>
 
             <div className="relative flex flex-1 flex-col items-center justify-center py-3">
@@ -64,10 +64,10 @@ export default function DaySelector({
 
             <Button
                 onClick={handleNextDay}
-                className="hover:bg-muted h-fit w-fit cursor-pointer items-center justify-center rounded-none bg-transparent !p-4 text-white transition-colors"
+                className="hover:bg-muted text-foreground h-fit w-fit cursor-pointer items-center justify-center rounded-none bg-transparent !p-4 shadow-none transition-colors"
                 aria-label={t("nextDay")}
             >
-                <ChevronRight className="h-5 w-5" />
+                <ChevronRight className="size-5" />
             </Button>
         </div>
     );
