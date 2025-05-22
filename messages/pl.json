@@ -56,7 +56,8 @@
     },
     "settingsDialog": {
         "settings": "Ustawienia",
-        "changeLanguage": "Zmień język"
+        "changeLanguage": "Zmień język",
+        "changeTheme": "Zmień motyw"
     },
     "safeAction": {
         "internalServerError": "Wystąpił błąd serwera. Spróbuj ponownie później."

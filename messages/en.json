@@ -56,7 +56,8 @@
     },
     "settingsDialog": {
         "settings": "Settings",
-        "changeLanguage": "Change language"
+        "changeLanguage": "Change language",
+        "changeTheme": "Change theme"
     },
     "safeAction": {
         "internalServerError": "Internal server error occurred! Please try again later."

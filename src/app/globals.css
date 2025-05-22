@@ -145,34 +145,3 @@
         @apply bg-background text-foreground;
     }
 }
-
-@keyframes fadeOut {
-    0% {
-        opacity: 0.3;
-    }
-    90% {
-        opacity: 0.3;
-    }
-    100% {
-        opacity: 0;
-    }
-}
-
-.animate-fadeOut {
-    animation: fadeOut 5s forwards;
-}
-
-@keyframes slideDown {
-    0% {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.animate-slideDown {
-    animation: slideDown 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}

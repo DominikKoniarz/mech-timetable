@@ -52,7 +52,7 @@ export default async function RootLayout({
             <body className={`${inter.className}`}>
                 <NextIntlClientProvider messages={messages} locale={locale}>
                     <ThemeProvider
-                        defaultTheme="system"
+                        defaultTheme="dark"
                         // attribute="class" // causes blinking
                         enableSystem
                         disableTransitionOnChange

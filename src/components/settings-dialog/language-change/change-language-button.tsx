@@ -1,7 +1,7 @@
 import { useLocale, type Locale } from "next-intl";
 import { Link } from "@/i18n/routing";
-import { buttonVariants } from "../ui/button";
 import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 
 type Props = {
     localeToSet: Locale;
