@@ -57,6 +57,7 @@
     "settingsDialog": {
         "settings": "Ustawienia",
         "changeLanguage": "Zmień język",
+        "pageWillReload": "Strona zostanie odświeżona",
         "changeTheme": "Zmień motyw"
     },
     "safeAction": {
