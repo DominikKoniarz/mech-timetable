@@ -42,7 +42,7 @@ export default function SettingsDialog({ className }: Props) {
         <Dialog>
             <DialogTrigger
                 className={cn(
-                    "h-fit w-fit cursor-pointer bg-transparent text-white hover:bg-transparent",
+                    "text-foreground h-fit w-fit cursor-pointer bg-transparent hover:bg-transparent",
                     className,
                 )}
             >
