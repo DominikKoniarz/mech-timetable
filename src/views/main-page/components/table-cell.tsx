@@ -1,19 +1,16 @@
+"use client";
+
 import type { ClassEntry } from "@/types/classes";
-import { checkCurrentWeekParity } from "@/lib/data/helpers";
 import { MdOutlinePlace, MdOutlineClass } from "react-icons/md";
 import ClassTypeBadge from "./class-type-badge";
+import useClassEntry from "../hooks/use-class-entry";
 
 type Props = {
     classEntries: ClassEntry[];
 };
 
 export default function TableCell({ classEntries }: Props) {
-    const parity = checkCurrentWeekParity();
-
-    // Find the class entry that matches the current parity or has no parity
-    const foundClassEntry = classEntries.find(
-        (classItem) => classItem.parity === parity || classItem.parity === null,
-    );
+    const { foundClassEntry } = useClassEntry(classEntries);
 
     return (
         // lg:px-4

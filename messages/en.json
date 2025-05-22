@@ -38,7 +38,12 @@
             },
             "mobile": {
                 "prevDay": "Previous day",
-                "nextDay": "Next day"
+                "nextDay": "Next day",
+                "currentWeek": "Current week",
+                "nextWeek": "Next week",
+                "gestureTipTitle": "Quick Navigation Tips",
+                "gestureTipSwipeHorizontal": "Swipe left/right to change days",
+                "gestureTipTapToggle": "Tap the week indicator to switch weeks"
             },
             "hours": {
                 "to": "to"

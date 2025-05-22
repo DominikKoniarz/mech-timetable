@@ -1,8 +1,8 @@
 import type { TableRow } from "@/types/table-rows";
 import { MdOutlinePlace, MdOutlineClass } from "react-icons/md";
 import { useTranslations } from "next-intl";
-import useMobileTableRow from "../../hooks/use-mobile-table-row";
 import ClassTypeBadge from "../class-type-badge";
+import useClassEntry from "../../hooks/use-class-entry";
 
 type Props = {
     row: TableRow;
@@ -12,7 +12,9 @@ type Props = {
 export default function MobileTableRow({ row, selectedDay }: Props) {
     const t = useTranslations("mainPage.table");
 
-    const { foundClassEntry } = useMobileTableRow({ row, selectedDay });
+    const { foundClassEntry } = useClassEntry(
+        row.availableClasses[selectedDay],
+    );
 
     return (
         <tr className="border-b last:border-b-0">
