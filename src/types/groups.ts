@@ -1,3 +1,4 @@
+// TODO: remove if unused
 export enum LAB_GROUPS {
     L01 = "L01",
     L02 = "L02",
@@ -22,3 +23,7 @@ export enum PROJECT_GROUPS {
     P04 = "P04",
     P05 = "P05",
 }
+
+// group by first letter and full groups names
+// e.g { A: ["A01", "A02"], B: ["B01", "B02"] }
+export type GroupsByFirstLetter = Record<string, string[]>;

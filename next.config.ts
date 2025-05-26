@@ -2,11 +2,11 @@ import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
-    logging: {
-        fetches: {
-            fullUrl: true,
-        },
-    },
+    // logging: {
+    //     fetches: {
+    //         fullUrl: true,
+    //     },
+    // },
     poweredByHeader: false,
 };
 

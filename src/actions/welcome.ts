@@ -4,24 +4,20 @@ import { fetchDepartmentsList } from "@/lib/data/fetcher";
 import { parseDepartmentsList } from "@/lib/data/parser";
 import { actionClient } from "@/lib/safe-action";
 import { handleWelcomeSubmit } from "@/lib/welcome/handle-welcome-submit";
-import { getWelcomeFormSchema } from "@/schema/welcome-form-schema";
-import { getTranslations } from "next-intl/server";
+import { getServerWelcomeFormSchema } from "@/schema/welcome-form-schema";
 
 const submitWelcomeFormAction = actionClient
-	.schema(async () => {
-		const [t, departmentsHtml] = await Promise.all([
-			getTranslations("welcomePage.form.validation"),
-			fetchDepartmentsList(),
-		]);
+    .schema(async () => {
+        const [departmentsHtml] = await Promise.all([fetchDepartmentsList()]);
 
-		const departments = parseDepartmentsList(departmentsHtml);
+        const departments = parseDepartmentsList(departmentsHtml);
 
-		return getWelcomeFormSchema(t, departments);
-	})
-	.action(async ({ parsedInput }) => {
-		await handleWelcomeSubmit(parsedInput);
+        return getServerWelcomeFormSchema(departments);
+    })
+    .action(async ({ parsedInput }) => {
+        await handleWelcomeSubmit(parsedInput);
 
-		return { success: true };
-	});
+        return { success: true };
+    });
 
 export default submitWelcomeFormAction;

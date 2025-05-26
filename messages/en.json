@@ -10,16 +10,12 @@
         },
         "form": {
             "department": "Department",
-            "laboratoryGroup": "Laboratory group",
-            "computerLaboratoryGroup": "Computer laboratory group",
-            "projectGroup": "Project group",
+            "groupWithLetter": "{groupLetter} - group",
             "search": "Search",
             "validation": {
                 "required": "This field is required",
                 "selectDepartment": "Please select department",
-                "selectLaboratoryGroup": "Please select laboratory group",
-                "selectComputerLaboratoryGroup": "Please select computer laboratory group",
-                "selectProjectGroup": "Please select project group"
+                "selectGroup": "Please select valid group"
             }
         }
     },

@@ -1,39 +1,46 @@
 "use client";
 
 import type { PreferencesSchema } from "@/schema/preferences-schema";
-import { parseDepartmentsList } from "@/lib/data/parser";
+import type { Department } from "@/types/departments";
 import { Form } from "@/components/ui/form";
 import WelcomeSelects from "./welcome-selects";
 import SubmitButton from "./submit-button";
 import useWelcomeForm from "../hooks/use-welcome-form";
 import ReCAPTCHA from "react-google-recaptcha";
 import { env } from "@/env";
-import { use, useMemo } from "react";
+import { GroupsByFirstLetter } from "@/types/groups";
+import { cn } from "@/lib/utils";
 
 type Props = {
-    departmentsHtmlPromise: Promise<string>;
-    userPreferencesPromise: Promise<PreferencesSchema | null>;
+    departments: Department[];
+    userPreferences: PreferencesSchema | null;
+    groupsByFirstLetter: GroupsByFirstLetter | null;
+    departmentName: string | undefined;
 };
 
 export default function WelcomeForm({
-    departmentsHtmlPromise,
-    userPreferencesPromise,
+    departments,
+    userPreferences,
+    groupsByFirstLetter,
+    departmentName,
 }: Props) {
-    const departmentsHtml = use(departmentsHtmlPromise);
-    const userPreferences = use(userPreferencesPromise);
-
-    const departments = useMemo(
-        () => parseDepartmentsList(departmentsHtml),
-        [departmentsHtml],
-    );
-
     const { form, onSubmit, isPending, reCaptchaRef } = useWelcomeForm(
         departments,
         userPreferences,
+        groupsByFirstLetter,
+        departmentName,
     );
 
+    const selectedDepartmentName = form.watch("departmentName");
+
     return (
-        <form className="mt-10 w-fit min-w-62 space-y-4" onSubmit={onSubmit}>
+        <form
+            className={cn(
+                "mt-10 w-fit min-w-62 space-y-4 pb-10 sm:pb-16",
+                groupsByFirstLetter && "pb-2 sm:pb-4",
+            )}
+            onSubmit={onSubmit}
+        >
             <Form {...form}>
                 <ReCAPTCHA
                     className="hidden"
@@ -41,8 +48,13 @@ export default function WelcomeForm({
                     sitekey={env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
                     ref={reCaptchaRef}
                 />
-                <WelcomeSelects departments={departments} />
-                <SubmitButton isPending={isPending} />
+                <WelcomeSelects
+                    departments={departments}
+                    parsedGroups={groupsByFirstLetter}
+                />
+                {selectedDepartmentName.length > 0 && (
+                    <SubmitButton isPending={isPending} />
+                )}
             </Form>
         </form>
     );

@@ -1,10 +1,6 @@
 import type { Department } from "@/types/departments";
-import { type WelcomeFormSchema } from "@/schema/welcome-form-schema";
-import {
-    COMPUTER_LAB_GROUPS,
-    LAB_GROUPS,
-    PROJECT_GROUPS,
-} from "@/types/groups";
+import type { WelcomeFormSchema } from "@/schema/welcome-form-schema";
+import type { GroupsByFirstLetter } from "@/types/groups";
 import {
     FormControl,
     FormField,
@@ -22,16 +18,33 @@ import {
 import { useFormContext } from "react-hook-form";
 import { useTranslations } from "next-intl";
 import useFirstRender from "@/hooks/useFirstRender";
+import { useEffect } from "react";
+import { useRouter } from "@/i18n/routing";
 
 type Props = {
     departments: Department[];
+    parsedGroups: GroupsByFirstLetter | null;
 };
 
-export default function WelcomeSelects({ departments }: Props) {
+export default function WelcomeSelects({ departments, parsedGroups }: Props) {
     const form = useFormContext<WelcomeFormSchema>();
     const t = useTranslations("welcomePage.form");
 
     const { isFirstRender } = useFirstRender();
+
+    const router = useRouter();
+    const department = form.watch("departmentName");
+
+    // TODO: think about it
+    useEffect(() => {
+        if (department === undefined) return;
+        if (isFirstRender) return;
+
+        router.push({
+            pathname: "/welcome",
+            query: { departmentName: department },
+        });
+    }, [department, isFirstRender, router]);
 
     return (
         <>
@@ -53,7 +66,7 @@ export default function WelcomeSelects({ departments }: Props) {
                             <FormControl>
                                 <SelectTrigger className="w-full data-[placeholder]:text-white">
                                     <SelectValue
-                                        placeholder={departments[0].name}
+                                        placeholder={"Select department"}
                                     />
                                 </SelectTrigger>
                             </FormControl>
@@ -72,108 +85,55 @@ export default function WelcomeSelects({ departments }: Props) {
                     </FormItem>
                 )}
             />
-            <FormField
-                control={form.control}
-                name="laboratoryGroup"
-                render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>{t("laboratoryGroup")}</FormLabel>
-                        <Select
-                            onValueChange={
-                                isFirstRender ? undefined : field.onChange
-                            }
-                            defaultValue={
-                                isFirstRender ? undefined : field.value
-                            }
-                            value={isFirstRender ? undefined : field.value}
-                        >
-                            <FormControl>
-                                <SelectTrigger className="w-full data-[placeholder]:text-white">
-                                    <SelectValue placeholder={LAB_GROUPS.L01} />
-                                </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                                {Object.values(LAB_GROUPS).map((group) => (
-                                    <SelectItem key={group} value={group}>
-                                        {group}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                        <FormMessage />
-                    </FormItem>
-                )}
-            />
-            <FormField
-                control={form.control}
-                name="computerLaboratoryGroup"
-                render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>{t("computerLaboratoryGroup")}</FormLabel>
-                        <Select
-                            onValueChange={
-                                isFirstRender ? undefined : field.onChange
-                            }
-                            defaultValue={
-                                isFirstRender ? undefined : field.value
-                            }
-                            value={isFirstRender ? undefined : field.value}
-                        >
-                            <FormControl>
-                                <SelectTrigger className="w-full data-[placeholder]:text-white">
-                                    <SelectValue
-                                        placeholder={COMPUTER_LAB_GROUPS.K01}
-                                    />
-                                </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                                {Object.values(COMPUTER_LAB_GROUPS).map(
-                                    (group) => (
-                                        <SelectItem key={group} value={group}>
-                                            {group}
-                                        </SelectItem>
-                                    ),
-                                )}
-                            </SelectContent>
-                        </Select>
-                        <FormMessage />
-                    </FormItem>
-                )}
-            />
-            <FormField
-                control={form.control}
-                name="projectGroup"
-                render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>{t("projectGroup")}</FormLabel>
-                        <Select
-                            onValueChange={
-                                isFirstRender ? undefined : field.onChange
-                            }
-                            defaultValue={
-                                isFirstRender ? undefined : field.value
-                            }
-                            value={isFirstRender ? undefined : field.value}
-                        >
-                            <FormControl>
-                                <SelectTrigger className="w-full data-[placeholder]:text-white">
-                                    <SelectValue
-                                        placeholder={PROJECT_GROUPS.P01}
-                                    />
-                                </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                                {Object.values(PROJECT_GROUPS).map((group) => (
-                                    <SelectItem key={group} value={group}>
-                                        {group}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                        <FormMessage />
-                    </FormItem>
-                )}
-            />
+            {Object.entries(parsedGroups ?? {}).map(
+                ([groupLetter, groups], index) => (
+                    <FormField
+                        key={`group-${groupLetter}`}
+                        control={form.control}
+                        name={`groups.${index}`}
+                        render={({ field }) => {
+                            return (
+                                <FormItem>
+                                    <FormLabel>
+                                        {t("groupWithLetter", { groupLetter })}
+                                    </FormLabel>
+                                    <Select
+                                        onValueChange={(value) => {
+                                            field.onChange(value);
+                                        }}
+                                        // defaultValue={
+                                        //     isFirstRender ? undefined : field.value
+                                        // }
+                                        // value={isFirstRender ? undefined : field.value}
+                                        value={field.value ?? undefined}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger className="w-full data-[placeholder]:text-white">
+                                                <SelectValue
+                                                    placeholder={"Select group"}
+                                                />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {Array.from(groups.values()).map(
+                                                (group) => (
+                                                    <SelectItem
+                                                        key={group}
+                                                        value={group}
+                                                    >
+                                                        {group}
+                                                    </SelectItem>
+                                                ),
+                                            )}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            );
+                        }}
+                    />
+                ),
+            )}
         </>
     );
 }

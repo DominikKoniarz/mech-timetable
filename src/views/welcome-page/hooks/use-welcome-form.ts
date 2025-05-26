@@ -7,17 +7,15 @@ import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getWelcomeFormSchema } from "@/schema/welcome-form-schema";
-import {
-    COMPUTER_LAB_GROUPS,
-    LAB_GROUPS,
-    PROJECT_GROUPS,
-} from "@/types/groups";
-import { useRef, useState } from "react";
+import { GroupsByFirstLetter } from "@/types/groups";
+import { useEffect, useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const useWelcomeForm = (
     departments: Department[],
     userPreferences: PreferencesSchema | null,
+    parsedGroups: GroupsByFirstLetter | null,
+    departmentName: string | undefined,
 ) => {
     const [isGettingReCaptcha, setIsGettingReCaptcha] = useState(false);
     const reCaptchaRef = useRef<ReCAPTCHA>(null);
@@ -30,9 +28,7 @@ const useWelcomeForm = (
         form.reset({
             reCaptchaToken: "",
             departmentName: form.getValues("departmentName"),
-            laboratoryGroup: form.getValues("laboratoryGroup"),
-            computerLaboratoryGroup: form.getValues("computerLaboratoryGroup"),
-            projectGroup: form.getValues("projectGroup"),
+            groups: Array(Object.keys(parsedGroups ?? {}).length).fill(""),
         });
     };
 
@@ -47,20 +43,26 @@ const useWelcomeForm = (
     });
 
     const form = useForm({
-        resolver: zodResolver(getWelcomeFormSchema(t, departments)),
+        resolver: zodResolver(
+            getWelcomeFormSchema(t, departments, parsedGroups),
+        ),
         defaultValues: {
             reCaptchaToken: "",
             departmentName:
-                userPreferences?.departmentName ?? departments[0].name,
-            laboratoryGroup: userPreferences?.laboratoryGroup ?? LAB_GROUPS.L01,
-            computerLaboratoryGroup:
-                userPreferences?.computerLaboratoryGroup ??
-                COMPUTER_LAB_GROUPS.K01,
-            projectGroup: userPreferences?.projectGroup ?? PROJECT_GROUPS.P01,
+                departmentName ?? userPreferences?.departmentName ?? "",
+            groups: Array(Object.keys(parsedGroups ?? {}).length).fill(""),
         },
         mode: "onBlur",
         reValidateMode: "onChange",
     });
+
+    useEffect(() => {
+        form.reset({
+            reCaptchaToken: "",
+            departmentName: form.getValues("departmentName"),
+            groups: Array(Object.keys(parsedGroups ?? {}).length).fill(""),
+        });
+    }, [parsedGroups, form]);
 
     const onSubmit = form.handleSubmit(async (data) => {
         setIsGettingReCaptcha(true);

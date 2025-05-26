@@ -45,8 +45,6 @@ export const filterPreferencesInput = (
     // then you will leak it into the cookie
     return {
         departmentName: preferences.departmentName,
-        laboratoryGroup: preferences.laboratoryGroup,
-        computerLaboratoryGroup: preferences.computerLaboratoryGroup,
-        projectGroup: preferences.projectGroup,
+        groups: preferences.groups,
     };
 };

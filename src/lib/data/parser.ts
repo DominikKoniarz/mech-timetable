@@ -1,15 +1,11 @@
 import type { Department } from "@/types/departments";
+import type { GroupsByFirstLetter } from "@/types/groups";
 import type { TableRow } from "@/types/table-rows";
 import type { PreferencesSchema } from "@/schema/preferences-schema";
 import type { TimeEntry } from "@/types/hours";
 import type { ClassType } from "@/types/classes";
 import { initClassesTuple } from "./helpers";
 import { WeekType } from "@/types/week";
-import {
-    COMPUTER_LAB_GROUPS,
-    LAB_GROUPS,
-    PROJECT_GROUPS,
-} from "@/types/groups";
 import * as cheerio from "cheerio";
 
 export const parseDepartmentsList = (html: string): Department[] => {
@@ -108,53 +104,12 @@ export const parseRows = (
 
                 if (!room || !subject) return;
 
-                let classHasAssignedGroup: boolean = false;
-                let classType: ClassType = "OTHER";
+                const { classType, isGroupClass } = extractClassType(subject);
 
-                Object.values(LAB_GROUPS).forEach((group) => {
-                    if (subject.includes(group)) {
-                        classHasAssignedGroup = true;
-                        classType = "LABORATORY";
-                    }
-                });
-
-                Object.values(COMPUTER_LAB_GROUPS).forEach((group) => {
-                    if (subject.includes(group)) {
-                        classHasAssignedGroup = true;
-                        classType = "COMPUTER_LABORATORY";
-                    }
-                });
-
-                Object.values(PROJECT_GROUPS).forEach((group) => {
-                    if (subject.includes(group)) {
-                        classHasAssignedGroup = true;
-                        classType = "PROJECT";
-                    }
-                });
-
-                if (subject.endsWith("W")) {
-                    classType = "LECTURE";
-                }
-
-                if (subject.endsWith("S")) {
-                    classType = "SEMINAR";
-                }
-
-                if (subject.endsWith("Ć")) {
-                    classType = "EXERCISES";
-                }
-
-                // if class type is LABORATORY or COMPUTER_LABORATORY or PROJECT
-                // but user is assigned to a different group
-                // then skip this class
                 if (
-                    classHasAssignedGroup &&
-                    !(
-                        subject.includes(userPreferences.laboratoryGroup) ||
-                        subject.includes(
-                            userPreferences.computerLaboratoryGroup,
-                        ) ||
-                        subject.includes(userPreferences.projectGroup)
+                    isGroupClass &&
+                    !userPreferences.groups.some((group) =>
+                        subject.includes(group),
                     )
                 )
                     return;
@@ -175,4 +130,75 @@ export const parseRows = (
     });
 
     return parsedRows;
+};
+
+export const parseGroups = (departmentHtml: string): GroupsByFirstLetter => {
+    const $ = cheerio.load(departmentHtml);
+
+    const subjectsSpans = $("span.p");
+
+    const groupsByFirstLetter = new Map<string, Set<string>>();
+
+    subjectsSpans.each((_, element) => {
+        const subject = $(element).text();
+
+        const match = subject.match(/(?<!#)[A-Z]0[1-9]/);
+
+        if (match) {
+            const matchString = match[0];
+            const firstLetter = matchString[0];
+
+            const exists = groupsByFirstLetter.get(firstLetter);
+            if (exists) {
+                exists.add(matchString);
+            } else {
+                groupsByFirstLetter.set(firstLetter, new Set([matchString]));
+            }
+        }
+    });
+
+    groupsByFirstLetter.forEach((value, key) => {
+        const sortedValues = Array.from(value).sort();
+        groupsByFirstLetter.set(key, new Set(sortedValues));
+    });
+
+    // sort by first letter
+    const toReturn = Object.fromEntries(
+        Array.from(groupsByFirstLetter.entries())
+            .sort(([a], [b]) => a.localeCompare(b))
+            .map(([key, value]) => [
+                key,
+                Array.from(value).sort((a, b) => a.localeCompare(b)),
+            ]),
+    );
+
+    return toReturn;
+};
+
+/*
+ *   isGroupClass means that the class is a group class - not all student have classes at the same time
+ *   e.g. laboratory, computer laboratory, project
+ */
+export const extractClassType = (
+    subject: string,
+): { classType: ClassType; isGroupClass: boolean } => {
+    const laboratoryRegExp = /(?<!#)[L]0[1-9]/;
+    const computerLabRegExp = /(?<!#)[K]0[1-9]/;
+    const projectRegExp = /(?<!#)[P]0[1-9]/;
+
+    if (subject.endsWith("W")) {
+        return { classType: "LECTURE", isGroupClass: false };
+    } else if (subject.endsWith("S")) {
+        return { classType: "SEMINAR", isGroupClass: false };
+    } else if (subject.endsWith("Ć")) {
+        return { classType: "EXERCISES", isGroupClass: false };
+    } else if (laboratoryRegExp.test(subject)) {
+        return { classType: "LABORATORY", isGroupClass: true };
+    } else if (computerLabRegExp.test(subject)) {
+        return { classType: "COMPUTER_LABORATORY", isGroupClass: true };
+    } else if (projectRegExp.test(subject)) {
+        return { classType: "PROJECT", isGroupClass: true };
+    }
+
+    return { classType: "OTHER", isGroupClass: false };
 };

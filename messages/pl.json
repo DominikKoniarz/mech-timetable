@@ -10,16 +10,12 @@
         },
         "form": {
             "department": "Oddział",
-            "laboratoryGroup": "Grupa laboratoryjna",
-            "computerLaboratoryGroup": "Grupa laboratoriów komputerowych",
-            "projectGroup": "Grupa projektowa",
+            "groupWithLetter": "Grupa - {groupLetter}",
             "search": "Szukaj",
             "validation": {
                 "required": "To pole jest wymagane",
                 "selectDepartment": "Proszę wybrać oddział",
-                "selectLaboratoryGroup": "Proszę wybrać grupę laboratoryjną",
-                "selectComputerLaboratoryGroup": "Proszę wybrać grupę laboratoriów komputerowych",
-                "selectProjectGroup": "Proszę wybrać grupę projektową"
+                "selectGroup": "Proszę wybrać poprawną grupę"
             }
         }
     },
