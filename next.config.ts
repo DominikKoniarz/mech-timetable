@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
     //         fullUrl: true,
     //     },
     // },
+    // Use standalone output only when building for Docker
+    output: process.env.DOCKER_BUILD === "true" ? "standalone" : undefined,
     poweredByHeader: false,
 };
 
