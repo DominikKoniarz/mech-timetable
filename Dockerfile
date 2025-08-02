@@ -25,6 +25,9 @@ COPY . .
 # Set environment variable to enable standalone output for Docker builds
 ENV DOCKER_BUILD=true
 
+ARG NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+ARG RECAPTCHA_SECRET_KEY
+
 RUN corepack enable pnpm && pnpm run build
 
 # Production image, copy all the files and run next
