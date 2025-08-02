@@ -20,7 +20,7 @@ COPY --from=deps /app/node_modules ./node_modules
 
 COPY . .
 # Rename .env.docker to .env for Docker builds
-RUN mv .env.docker .env
+# RUN mv .env.docker .env
 
 # Set environment variable to enable standalone output for Docker builds
 ENV DOCKER_BUILD=true
@@ -37,7 +37,7 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 # Copy environment file for runtime
-COPY --from=builder /app/.env ./.env
+# COPY --from=builder /app/.env ./.env
 
 COPY --from=builder /app/public ./public
 
