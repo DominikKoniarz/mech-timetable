@@ -32,7 +32,9 @@
                 "tuesday": "Wtorek",
                 "wednesday": "Środa",
                 "thursday": "Czwartek",
-                "friday": "Piątek"
+                "friday": "Piątek",
+                "current": "Bieżący",
+                "next": "Następny"
             },
             "mobile": {
                 "prevDay": "Poprzedni dzień",
