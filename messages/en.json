@@ -12,6 +12,8 @@
             "department": "Department",
             "groupWithLetter": "{groupLetter} - group",
             "search": "Search",
+            "selectDepartment": "Select department",
+            "selectGroup": "Select group",
             "validation": {
                 "required": "This field is required",
                 "selectDepartment": "Please select department",

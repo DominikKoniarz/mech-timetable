@@ -15,7 +15,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslations } from "next-intl";
 import useFirstRender from "@/hooks/useFirstRender";
 import { useEffect } from "react";
@@ -33,11 +33,14 @@ export default function WelcomeSelects({ departments, parsedGroups }: Props) {
     const { isFirstRender } = useFirstRender();
 
     const router = useRouter();
-    const department = form.watch("departmentName");
 
-    // TODO: think about it
+    const department = useWatch({
+        control: form.control,
+        name: "departmentName",
+    });
+
     useEffect(() => {
-        if (department === undefined) return;
+        if (!department) return;
         if (isFirstRender) return;
 
         router.push({
@@ -66,7 +69,7 @@ export default function WelcomeSelects({ departments, parsedGroups }: Props) {
                             <FormControl>
                                 <SelectTrigger className="w-full data-[placeholder]:text-white">
                                     <SelectValue
-                                        placeholder={"Select department"}
+                                        placeholder={t("selectDepartment")}
                                     />
                                 </SelectTrigger>
                             </FormControl>
@@ -110,7 +113,9 @@ export default function WelcomeSelects({ departments, parsedGroups }: Props) {
                                         <FormControl>
                                             <SelectTrigger className="w-full data-[placeholder]:text-white">
                                                 <SelectValue
-                                                    placeholder={"Select group"}
+                                                    placeholder={t(
+                                                        "selectGroup",
+                                                    )}
                                                 />
                                             </SelectTrigger>
                                         </FormControl>

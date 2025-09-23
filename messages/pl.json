@@ -12,6 +12,8 @@
             "department": "Oddział",
             "groupWithLetter": "Grupa - {groupLetter}",
             "search": "Szukaj",
+            "selectDepartment": "Wybierz oddział",
+            "selectGroup": "Wybierz grupę",
             "validation": {
                 "required": "To pole jest wymagane",
                 "selectDepartment": "Proszę wybrać oddział",
