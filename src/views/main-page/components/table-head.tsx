@@ -3,13 +3,23 @@
 import { useTranslations } from "next-intl";
 import { useMainPageStore } from "../context/main-page-provider";
 import { Button } from "@/components/ui/button";
+import { checkCurrentWeekParity } from "@/lib/data/helpers";
+import { WeekType } from "@/types/week";
 
 export default function TableHead() {
     const t = useTranslations("mainPage.table.tableHead");
 
+    const currentWeekParity = checkCurrentWeekParity();
+
     const { displayNextWeek, toggleDisplayNextWeek } = useMainPageStore(
         (state) => state,
     );
+
+    const displayedWeekParity = displayNextWeek
+        ? currentWeekParity === WeekType.EVEN
+            ? WeekType.ODD
+            : WeekType.EVEN
+        : currentWeekParity;
 
     const weekdays: string[] = [
         t("monday"),
@@ -24,15 +34,22 @@ export default function TableHead() {
             <tr>
                 <th
                     scope="col"
-                    className="text-foreground w-32 px-4 py-2 text-xs font-medium tracking-wider uppercase"
+                    className="text-foreground w-32 py-2 text-xs font-medium tracking-wider uppercase"
                 >
                     <Button
                         type="button"
                         onClick={toggleDisplayNextWeek}
-                        className="w-full cursor-pointer"
+                        className="mx-auto flex h-fit w-fit cursor-pointer flex-col items-center justify-center gap-0 py-1.5"
                         variant="outline"
                     >
-                        {displayNextWeek ? t("next") : t("current")}
+                        <span className="text-xs">
+                            {displayNextWeek ? t("next") : t("current")}
+                        </span>
+                        <span className="text-primary text-[10px] font-bold">
+                            {displayedWeekParity === WeekType.EVEN
+                                ? t("even")
+                                : t("odd")}
+                        </span>
                     </Button>
                 </th>
                 {weekdays.map((day, index) => (

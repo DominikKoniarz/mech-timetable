@@ -34,7 +34,9 @@
                 "thursday": "Thursday",
                 "friday": "Friday",
                 "current": "Current",
-                "next": "Next"
+                "next": "Next",
+                "even": "Even",
+                "odd": "Odd"
             },
             "mobile": {
                 "prevDay": "Previous day",
