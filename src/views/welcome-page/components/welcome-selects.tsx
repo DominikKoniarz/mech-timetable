@@ -67,7 +67,7 @@ export default function WelcomeSelects({ departments, parsedGroups }: Props) {
                             value={isFirstRender ? undefined : field.value}
                         >
                             <FormControl>
-                                <SelectTrigger className="w-full data-[placeholder]:text-white">
+                                <SelectTrigger className="w-full">
                                     <SelectValue
                                         placeholder={t("selectDepartment")}
                                     />
@@ -111,7 +111,7 @@ export default function WelcomeSelects({ departments, parsedGroups }: Props) {
                                         value={field.value ?? undefined}
                                     >
                                         <FormControl>
-                                            <SelectTrigger className="w-full data-[placeholder]:text-white">
+                                            <SelectTrigger className="w-full">
                                                 <SelectValue
                                                     placeholder={t(
                                                         "selectGroup",
