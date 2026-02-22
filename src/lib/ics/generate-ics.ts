@@ -1,3 +1,4 @@
+import { createEvents, type EventAttributes } from "ics";
 import type { TableRow } from "@/types/table-rows";
 import { WeekType } from "@/types/week";
 
@@ -29,27 +30,18 @@ const getWeekParity = (date: Date): WeekType => {
     return isEven ? WeekType.EVEN : WeekType.ODD;
 };
 
-const parseTime = (timeStr: string): { hours: number; minutes: number } => {
-    const [hours, minutes] = timeStr.split(":").map(Number);
-    return { hours, minutes };
-};
-
-const formatICSDateTime = (date: Date, timeStr: string): string => {
-    const { hours, minutes } = parseTime(timeStr);
-    const d = new Date(date);
-    d.setHours(hours, minutes, 0, 0);
-
-    const pad = (n: number) => n.toString().padStart(2, "0");
-    return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}00`;
-};
-
-const generateUID = (
+const toDateArray = (
     date: Date,
-    dayIndex: number,
-    slotIndex: number,
-): string => {
-    const pad = (n: number) => n.toString().padStart(2, "0");
-    return `mech-timetable-${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}-day${dayIndex}-slot${slotIndex}@mech.pk.edu.pl`;
+    timeStr: string,
+): [number, number, number, number, number] => {
+    const [hours, minutes] = timeStr.split(":").map(Number);
+    return [
+        date.getFullYear(),
+        date.getMonth() + 1,
+        date.getDate(),
+        hours,
+        minutes,
+    ];
 };
 
 export const generateICS = (rows: TableRow[]): string => {
@@ -66,7 +58,7 @@ export const generateICS = (rows: TableRow[]): string => {
         1,
     );
 
-    const events: string[] = [];
+    const events: EventAttributes[] = [];
 
     let currentWeekMonday = getWeekMonday(academicYearStart);
 
@@ -132,24 +124,16 @@ export const generateICS = (rows: TableRow[]): string => {
                 });
             }
 
-            for (let slotIndex = 0; slotIndex < mergedSlots.length; slotIndex++) {
-                const slot = mergedSlots[slotIndex];
-                const dtStart = formatICSDateTime(dayDate, slot.start);
-                const dtEnd = formatICSDateTime(dayDate, slot.end);
-                const uid = generateUID(dayDate, dayIndex, slotIndex);
-
-                events.push(
-                    [
-                        "BEGIN:VEVENT",
-                        `DTSTART;TZID=Europe/Warsaw:${dtStart}`,
-                        `DTEND;TZID=Europe/Warsaw:${dtEnd}`,
-                        `SUMMARY:${slot.subject}`,
-                        `LOCATION:${slot.room}`,
-                        `DESCRIPTION:${slot.classType}`,
-                        `UID:${uid}`,
-                        "END:VEVENT",
-                    ].join("\r\n"),
-                );
+            for (const slot of mergedSlots) {
+                events.push({
+                    start: toDateArray(dayDate, slot.start),
+                    startInputType: "local",
+                    end: toDateArray(dayDate, slot.end),
+                    endInputType: "local",
+                    title: slot.subject,
+                    location: slot.room,
+                    description: slot.classType,
+                });
             }
         }
 
@@ -158,13 +142,17 @@ export const generateICS = (rows: TableRow[]): string => {
         currentWeekMonday = nextMonday;
     }
 
-    return [
-        "BEGIN:VCALENDAR",
-        "VERSION:2.0",
-        "PRODID:-//MechTimetable//EN",
-        "CALSCALE:GREGORIAN",
-        "METHOD:PUBLISH",
-        ...events,
-        "END:VCALENDAR",
-    ].join("\r\n");
+    const { error, value } = createEvents(events, {
+        productId: "-//MechTimetable//EN",
+        calName: "Mech Timetable",
+    });
+
+    if (error || !value) {
+        throw new Error(
+            `Failed to generate ICS: ${error?.message ?? "Unknown error - no value returned"}`,
+        );
+    }
+
+    return value;
 };
+
