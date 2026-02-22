@@ -61,6 +61,11 @@
             }
         }
     },
+    "exportIcsDialog": {
+        "title": "Eksportuj Plan Zajęć",
+        "description": "Pobierz plan zajęć jako plik .ics. Plik obejmuje cały rok akademicki (1 października – 1 lipca) i można go zaimportować do Google Kalendarza, Outlooka, Apple Calendar lub innej aplikacji kalendarzowej.",
+        "exportButton": "Eksportuj .ics"
+    },
     "settingsDialog": {
         "settings": "Ustawienia",
         "changeLanguage": "Zmień język",
