@@ -63,8 +63,16 @@
     },
     "exportIcsDialog": {
         "title": "Export Timetable",
-        "description": "Download the timetable as an .ics file. The file covers the full academic year (October 1 – July 1) and can be imported into Google Calendar, Outlook, Apple Calendar or any other calendar application.",
-        "exportButton": "Export .ics"
+        "description": "Download the timetable as an .ics file. The file covers the current semester and can be imported into Google Calendar, Outlook, Apple Calendar or any other calendar application.",
+        "exportButton": "Export",
+        "exportError": "Failed to export timetable",
+        "lecture": "Lecture",
+        "exercises": "Exercises",
+        "laboratory": "Laboratory",
+        "computerLaboratory": "Computer Laboratory",
+        "project": "Project",
+        "seminar": "Seminar",
+        "other": "Other"
     },
     "settingsDialog": {
         "settings": "Settings",

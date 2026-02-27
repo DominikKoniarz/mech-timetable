@@ -1,6 +1,10 @@
-import { createEvents, type EventAttributes } from "ics";
 import type { TableRow } from "@/types/table-rows";
-import { WeekType } from "@/types/week";
+import type { ClassType } from "@/types/classes";
+import { createEvents, type EventAttributes } from "ics";
+import {
+    getSemesterRangeForDate,
+    getWeekParityForDate,
+} from "@/lib/data/helpers";
 
 const getWeekMonday = (date: Date): Date => {
     const d = new Date(date);
@@ -8,26 +12,8 @@ const getWeekMonday = (date: Date): Date => {
     const diff = d.getDate() - day + (day === 0 ? -6 : 1);
     d.setDate(diff);
     d.setHours(0, 0, 0, 0);
+
     return d;
-};
-
-const getWeekParity = (date: Date): WeekType => {
-    const year = date.getFullYear();
-    const octFirst = new Date(year, 9, 1);
-    const referenceDate =
-        date < octFirst ? new Date(year - 1, 9, 1) : octFirst;
-
-    const referenceWeekMonday = getWeekMonday(referenceDate);
-    const currentWeekMonday = getWeekMonday(date);
-
-    const daysDiff = Math.floor(
-        (currentWeekMonday.getTime() - referenceWeekMonday.getTime()) /
-            (1000 * 60 * 60 * 24),
-    );
-    const weeksDiff = Math.floor(daysDiff / 7);
-
-    const isEven = weeksDiff % 2 !== 0;
-    return isEven ? WeekType.EVEN : WeekType.ODD;
 };
 
 const toDateArray = (
@@ -35,6 +21,7 @@ const toDateArray = (
     timeStr: string,
 ): [number, number, number, number, number] => {
     const [hours, minutes] = timeStr.split(":").map(Number);
+
     return [
         date.getFullYear(),
         date.getMonth() + 1,
@@ -44,32 +31,40 @@ const toDateArray = (
     ];
 };
 
-export const generateICS = (rows: TableRow[]): string => {
-    const now = new Date();
-    const year = now.getFullYear();
+type GenerateICSProps = {
+    rows: TableRow[];
+    translations: {
+        [key in ClassType]: string;
+    };
+};
 
-    const octFirst = new Date(year, 9, 1);
-    const academicYearStart =
-        now < octFirst ? new Date(year - 1, 9, 1) : octFirst;
-    // Jul 1 of next academic year (exclusive)
-    const academicYearEnd = new Date(
-        academicYearStart.getFullYear() + 1,
-        6,
-        1,
-    );
+export const generateICS = ({
+    rows,
+    translations,
+}: GenerateICSProps): string | null => {
+    const now = new Date();
+    const coverageStartDay = new Date(now);
+    coverageStartDay.setHours(0, 0, 0, 0);
+
+    const { semesterStart, semesterEndExclusive } =
+        getSemesterRangeForDate(now);
 
     const events: EventAttributes[] = [];
 
-    let currentWeekMonday = getWeekMonday(academicYearStart);
+    let currentWeekMonday = getWeekMonday(coverageStartDay);
 
-    while (currentWeekMonday < academicYearEnd) {
-        const weekParity = getWeekParity(currentWeekMonday);
+    while (currentWeekMonday < semesterEndExclusive) {
+        const weekParity = getWeekParityForDate(currentWeekMonday);
 
         for (let dayIndex = 0; dayIndex < 5; dayIndex++) {
             const dayDate = new Date(currentWeekMonday);
             dayDate.setDate(dayDate.getDate() + dayIndex);
 
-            if (dayDate < academicYearStart || dayDate >= academicYearEnd)
+            if (
+                dayDate < coverageStartDay ||
+                dayDate < semesterStart ||
+                dayDate >= semesterEndExclusive
+            )
                 continue;
 
             const daySlots: {
@@ -84,12 +79,13 @@ export const generateICS = (rows: TableRow[]): string => {
                 const matchingClass = classesForDay.find(
                     (c) => c.parity === weekParity || c.parity === null,
                 );
+
                 if (matchingClass) {
                     daySlots.push({
                         timeEntry: row.timeEntry,
                         subject: matchingClass.subject,
                         room: matchingClass.room,
-                        classType: matchingClass.classType,
+                        classType: translations[matchingClass.classType],
                     });
                 }
             }
@@ -106,6 +102,7 @@ export const generateICS = (rows: TableRow[]): string => {
             for (const slot of daySlots) {
                 if (mergedSlots.length > 0) {
                     const last = mergedSlots[mergedSlots.length - 1];
+
                     if (
                         last.subject === slot.subject &&
                         last.room === slot.room &&
@@ -115,6 +112,7 @@ export const generateICS = (rows: TableRow[]): string => {
                         continue;
                     }
                 }
+
                 mergedSlots.push({
                     start: slot.timeEntry.start,
                     end: slot.timeEntry.end,
@@ -143,16 +141,13 @@ export const generateICS = (rows: TableRow[]): string => {
     }
 
     const { error, value } = createEvents(events, {
-        productId: "-//MechTimetable//EN",
+        productId: "-//MechTimetable//ICS Export//",
         calName: "Mech Timetable",
     });
 
     if (error || !value) {
-        throw new Error(
-            `Failed to generate ICS: ${error?.message ?? "Unknown error - no value returned"}`,
-        );
+        return null;
     }
 
     return value;
 };
-

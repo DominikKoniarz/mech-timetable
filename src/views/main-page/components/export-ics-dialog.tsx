@@ -12,7 +12,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { generateICS } from "@/lib/ics/generate-ics";
+import useExportIcsDialog from "../hooks/use-export-ics-dialog";
 
 type Props = {
     rows: TableRow[];
@@ -21,18 +21,7 @@ type Props = {
 export default function ExportIcsDialog({ rows }: Props) {
     const t = useTranslations("exportIcsDialog");
 
-    const handleExport = () => {
-        const icsContent = generateICS(rows);
-        const blob = new Blob([icsContent], {
-            type: "text/calendar;charset=utf-8",
-        });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "timetable.ics";
-        link.click();
-        setTimeout(() => URL.revokeObjectURL(url), 100);
-    };
+    const { handleExport } = useExportIcsDialog(rows);
 
     return (
         <Dialog>
