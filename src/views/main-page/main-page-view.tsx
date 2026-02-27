@@ -3,6 +3,7 @@ import Timetable from "./components/timetable";
 import MobileTimetable from "./components/mobile/mobile-timetable";
 import MainPageHeader from "./components/header/main-page-header";
 import MainPageProvider from "./context/main-page-provider";
+import ExportIcsDialog from "./components/export-ics-dialog";
 
 type Props = {
     rows: TableRow[];
@@ -20,6 +21,7 @@ export default function MainPageView({ rows }: Props) {
                     {/* Mobile timetable */}
                     <MobileTimetable rows={rows} />
                 </main>
+                <ExportIcsDialog rows={rows} />
             </div>
         </MainPageProvider>
     );

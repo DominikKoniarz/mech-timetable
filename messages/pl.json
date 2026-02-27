@@ -61,6 +61,19 @@
             }
         }
     },
+    "exportIcsDialog": {
+        "title": "Eksportuj Plan Zajęć",
+        "description": "Pobierz plan zajęć jako plik .ics. Plik obejmuje bieżący semestr i można go zaimportować do Google Kalendarza, Outlooka, Apple Calendar lub innej aplikacji kalendarzowej.",
+        "exportButton": "Eksportuj",
+        "exportError": "Nie udało się wyeksportować planu zajęć",
+        "lecture": "Wykład",
+        "exercises": "Ćwiczenia",
+        "laboratory": "Laboratorium",
+        "computerLaboratory": "Laboratorium Komputerowe",
+        "project": "Projekt",
+        "seminar": "Seminarium",
+        "other": "Inne"
+    },
     "settingsDialog": {
         "settings": "Ustawienia",
         "changeLanguage": "Zmień język",
