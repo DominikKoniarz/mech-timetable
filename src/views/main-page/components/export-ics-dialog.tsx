@@ -3,6 +3,7 @@
 import type { TableRow } from "@/types/table-rows";
 import { CalendarArrowDown } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
@@ -26,12 +27,14 @@ export default function ExportIcsDialog({ rows }: Props) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <button
-                    className="bg-foreground text-background fixed right-4 bottom-4 z-40 flex size-12 cursor-pointer items-center justify-center rounded-full shadow-lg transition-opacity hover:opacity-90"
+                <Button
+                    type="button"
+                    size="icon"
+                    className="bg-foreground text-background fixed right-4 bottom-4 z-40 flex size-12 cursor-pointer items-center justify-center rounded-full shadow-lg transition-opacity hover:bg-foreground hover:opacity-90"
                     aria-label={t("title")}
                 >
                     <CalendarArrowDown className="size-5" />
-                </button>
+                </Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
@@ -39,12 +42,13 @@ export default function ExportIcsDialog({ rows }: Props) {
                     <DialogDescription>{t("description")}</DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
-                    <button
+                    <Button
+                        type="button"
                         onClick={handleExport}
-                        className="bg-foreground text-background cursor-pointer rounded-sm px-4 py-2 text-sm font-medium transition-opacity hover:opacity-90"
+                        className="bg-foreground text-background cursor-pointer rounded-sm px-4 py-2 text-sm font-medium transition-opacity hover:bg-foreground hover:opacity-90"
                     >
                         {t("exportButton")}
-                    </button>
+                    </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
