@@ -21,7 +21,6 @@ export default function ChangeLanguageButton({ localeToSet, children }: Props) {
                 }),
                 "flex h-10 w-fit items-center justify-center p-0 [&>svg]:!size-4.5",
             )}
-            prefetch
         >
             {children}
         </Link>
