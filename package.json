@@ -6,7 +6,8 @@
         "dev": "next dev --turbopack",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint"
+        "lint": "eslint --max-warnings 0",
+        "types:check": "tsc --noEmit --incremental false"
     },
     "dependencies": {
         "@hookform/resolvers": "^4.1.3",
