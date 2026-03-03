@@ -2,6 +2,7 @@ import "server-only";
 
 import type { WelcomeFormSchema } from "@/schema/welcome-form-schema";
 import {
+    legacyPreferencesSchema,
     type PreferencesSchema,
     preferencesSchema,
 } from "@/schema/preferences-schema";
@@ -31,10 +32,32 @@ export const getUserPreferences =
         const preferencesCookie = (await cookies()).get(PREFERENCES_COOKIE_KEY);
         if (!preferencesCookie) return null;
 
-        const parsedJson = JSON.parse(preferencesCookie.value);
-        if (!preferencesSchema.safeParse(parsedJson).success) return null;
+        let parsedJson: unknown;
 
-        return parsedJson;
+        try {
+            parsedJson = JSON.parse(preferencesCookie.value);
+        } catch {
+            return null;
+        }
+
+        const legacyParseResult = legacyPreferencesSchema.safeParse(parsedJson);
+
+        if (legacyParseResult.success) {
+            return {
+                profiles: [
+                    {
+                        name: "Profile 1", // TODO: translate this
+                        departmentName: legacyParseResult.data.departmentName,
+                        groups: legacyParseResult.data.groups,
+                    },
+                ],
+            };
+        }
+
+        const parseResult = preferencesSchema.safeParse(parsedJson);
+        if (!parseResult.success) return null;
+
+        return parseResult.data;
     };
 
 export const filterPreferencesInput = (

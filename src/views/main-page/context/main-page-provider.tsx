@@ -18,11 +18,13 @@ export default function MainPageProvider({
     // initState,
 }: MainPageProviderProps) {
     const storeRef = useRef<MainPageStoreApi | null>(null);
+    // eslint-disable-next-line react-hooks/refs
     if (!storeRef.current) {
         storeRef.current = createMainPageStore();
     }
 
     return (
+        // eslint-disable-next-line react-hooks/refs
         <MainPageContext.Provider value={storeRef.current}>
             {children}
         </MainPageContext.Provider>

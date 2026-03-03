@@ -10,7 +10,7 @@ const getDepartmentDataUrl = (departmentLinkPart: string) =>
 export const fetchDepartmentsList = async (): Promise<string> => {
     const response = await fetch(DEPARTMENTS_LIST_URL, {
         next: {
-            revalidate: 60 * 30, // 30 minutes
+            revalidate: 60 * 60, // 60 minutes
             // tags: ["departments"],
         },
     });
@@ -27,7 +27,7 @@ export const fetchDepartmentData = async (
 ): Promise<string> => {
     const response = await fetch(getDepartmentDataUrl(departmentLinkPart), {
         next: {
-            revalidate: 60 * 30, // 30 minutes
+            revalidate: 60 * 60, // 60 minutes
             // tags: ["department", departmentLinkPart],
         },
     });

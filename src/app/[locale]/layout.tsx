@@ -7,6 +7,7 @@ import { getLocale, getMessages, setRequestLocale } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { Analytics } from "@vercel/analytics/next";
 import "../globals.css";
+import QueryClientProvider from "@/components/providers/query-client-provider";
 
 const inter = Inter({
     subsets: ["latin", "latin-ext"],
@@ -57,8 +58,10 @@ export default async function RootLayout({
                         enableSystem
                         disableTransitionOnChange
                     >
-                        {children}
-                        <Analytics />
+                        <QueryClientProvider>
+                            {children}
+                            <Analytics />
+                        </QueryClientProvider>
                     </ThemeProvider>
                 </NextIntlClientProvider>
             </body>

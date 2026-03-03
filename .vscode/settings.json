@@ -1,7 +1,8 @@
 {
     // typescript
     "typescript.tsdk": "node_modules/typescript/lib",
-    // "typescript.preferences.importModuleSpecifier": "non-relative",
+    "typescript.preferences.importModuleSpecifier": "non-relative",
+    "typescript.preferences.preferTypeOnlyAutoImports": true,
 
     // eslint
     // "eslint.nodePath": "node_modules/eslint/lib/api.js",
