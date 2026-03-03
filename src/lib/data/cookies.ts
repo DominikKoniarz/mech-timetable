@@ -44,7 +44,12 @@ export const filterPreferencesInput = (
     // if you are not aware you could pass it with the preferences object even if type is Omit<WelcomeFormSchema, "reCaptchaToken">
     // then you will leak it into the cookie
     return {
-        departmentName: preferences.departmentName,
-        groups: preferences.groups,
+        profiles: [
+            {
+                name: "Profile 1", // TODO: translate this
+                departmentName: preferences.departmentName,
+                groups: preferences.groups,
+            },
+        ],
     };
 };

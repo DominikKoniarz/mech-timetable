@@ -16,7 +16,8 @@ export default async function Home() {
     const departments = parseDepartmentsList(departmentsHtml);
 
     const foundDepartment = departments.find(
-        (department) => department.name === preferences.departmentName,
+        (department) =>
+            department.name === preferences.profiles[0].departmentName,
     );
 
     if (!foundDepartment) {
@@ -25,7 +26,7 @@ export default async function Home() {
 
     const departmentData = await fetchDepartmentData(foundDepartment.url);
 
-    const rows = parseRows(departmentData, preferences);
+    const rows = parseRows(departmentData);
 
     return <MainPageView rows={rows} />;
 }

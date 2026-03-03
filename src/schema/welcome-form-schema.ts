@@ -24,15 +24,13 @@ export const getWelcomeFormSchema = (
     const welcomeFormSchema = z.object({
         reCaptchaToken: z.string(),
         departmentName: z.enum([departmentsNames[0], ...departmentsNames], {
-            required_error: t("selectDepartment"),
-            message: t("selectDepartment"),
+            error: t("selectDepartment"),
         }),
         groups: z
             .array(
                 z
                     .string({
-                        invalid_type_error: t("selectGroup"),
-                        required_error: t("selectGroup"),
+                        error: t("selectGroup"),
                     })
                     .min(1, t("selectGroup")),
             )
