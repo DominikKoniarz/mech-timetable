@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getWelcomeFormSchema } from "@/schema/welcome-form-schema";
 import { GroupsByFirstLetter } from "@/types/groups";
-import { useEffect, useRef, useState } from "react";
+import { startTransition, useEffect, useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const useWelcomeForm = (
@@ -49,7 +49,9 @@ const useWelcomeForm = (
         defaultValues: {
             reCaptchaToken: "",
             departmentName:
-                departmentName ?? userPreferences?.departmentName ?? "",
+                departmentName ??
+                userPreferences?.profiles[0].departmentName ??
+                "",
             groups: Array(Object.keys(parsedGroups ?? {}).length).fill(""),
         },
         mode: "onBlur",
@@ -64,8 +66,13 @@ const useWelcomeForm = (
         });
     }, [parsedGroups, form]);
 
+    // TODO: fix this
+    // eslint-disable-next-line react-hooks/refs
     const onSubmit = form.handleSubmit(async (data) => {
-        setIsGettingReCaptcha(true);
+        startTransition(() => {
+            setIsGettingReCaptcha(true);
+        });
+
         const token = await reCaptchaRef.current?.executeAsync();
 
         execute({
@@ -74,7 +81,9 @@ const useWelcomeForm = (
         });
 
         // call after execute to be sure that action isPending is set to true
-        setIsGettingReCaptcha(false);
+        startTransition(() => {
+            setIsGettingReCaptcha(false);
+        });
     });
 
     return {

@@ -20,7 +20,8 @@ export default async function Welcome({ searchParams }: Props) {
 
     const foundDepartment = departments.find(
         (department) =>
-            department.name === (departmentName || preferences?.departmentName),
+            department.name ===
+            (departmentName || preferences?.profiles[0].departmentName),
     );
 
     let groupsByFirstLetter: GroupsByFirstLetter | null = null;
