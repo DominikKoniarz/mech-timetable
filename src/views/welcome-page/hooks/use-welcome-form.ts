@@ -8,7 +8,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getWelcomeFormSchema } from "@/schema/welcome-form-schema";
 import { GroupsByFirstLetter } from "@/types/groups";
-import { startTransition, useEffect, useRef, useState } from "react";
+import {
+    startTransition,
+    useEffect,
+    useEffectEvent,
+    useRef,
+    useState,
+} from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const useWelcomeForm = (
@@ -58,13 +64,22 @@ const useWelcomeForm = (
         reValidateMode: "onChange",
     });
 
+    const resetForm = useEffectEvent(
+        (parsedGroups: GroupsByFirstLetter | null) => {
+            form.setValue("reCaptchaToken", "");
+
+            form.setValue("departmentName", form.getValues("departmentName"));
+
+            form.setValue(
+                "groups",
+                Array(Object.keys(parsedGroups ?? {}).length).fill(""),
+            );
+        },
+    );
+
     useEffect(() => {
-        form.reset({
-            reCaptchaToken: "",
-            departmentName: form.getValues("departmentName"),
-            groups: Array(Object.keys(parsedGroups ?? {}).length).fill(""),
-        });
-    }, [parsedGroups, form]);
+        resetForm(parsedGroups);
+    }, [parsedGroups]);
 
     // TODO: fix this
     // eslint-disable-next-line react-hooks/refs

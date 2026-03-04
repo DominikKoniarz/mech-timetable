@@ -9,7 +9,6 @@ type Props = {
     }>;
 };
 
-// TODO: FOR WHOLE PAGE - clean up the code
 export default async function Welcome({ searchParams }: Props) {
     const { departmentName } = await searchParams;
 

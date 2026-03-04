@@ -10,6 +10,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { env } from "@/env";
 import { GroupsByFirstLetter } from "@/types/groups";
 import { cn } from "@/lib/utils";
+import { useWatch } from "react-hook-form";
 
 type Props = {
     departments: Department[];
@@ -31,7 +32,10 @@ export default function WelcomeForm({
         departmentName,
     );
 
-    const selectedDepartmentName = form.watch("departmentName");
+    const selectedDepartmentName = useWatch({
+        control: form.control,
+        name: "departmentName",
+    });
 
     return (
         <form
