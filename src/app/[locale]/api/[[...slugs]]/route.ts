@@ -1,6 +1,10 @@
 import { getUserPreferences } from "@/lib/data/cookies";
 import { fetchDepartmentData, fetchDepartmentsList } from "@/lib/data/fetcher";
-import { parseDepartmentsList, parseGroups, parseRows } from "@/lib/data/parser";
+import {
+    parseDepartmentsList,
+    parseGroups,
+    parseRows,
+} from "@/lib/data/parser";
 import { Elysia, t } from "elysia";
 
 const app = new Elysia({ prefix: "/api" })
@@ -26,7 +30,9 @@ const app = new Elysia({ prefix: "/api" })
                 return new Response("Department not found", { status: 404 });
             }
 
-            const departmentHtml = await fetchDepartmentData(foundDepartment.url);
+            const departmentHtml = await fetchDepartmentData(
+                foundDepartment.url,
+            );
 
             if (!departmentHtml) {
                 return new Response("Department not found", { status: 404 });
@@ -73,7 +79,9 @@ const app = new Elysia({ prefix: "/api" })
                 return new Response("Department not found", { status: 404 });
             }
 
-            const departmentHtml = await fetchDepartmentData(foundDepartment.url);
+            const departmentHtml = await fetchDepartmentData(
+                foundDepartment.url,
+            );
 
             if (!departmentHtml) {
                 return new Response("Department not found", { status: 404 });

@@ -17,8 +17,6 @@ import {
 } from "@/components/ui/select";
 import { useFormContext } from "react-hook-form";
 import { useTranslations } from "next-intl";
-import { useQueryState } from "nuqs";
-import { welcomeDepartmentNameParser } from "../search-params";
 
 type Props = {
     departments: Department[];
@@ -27,11 +25,8 @@ type Props = {
 
 export default function WelcomeSelects({ departments, parsedGroups }: Props) {
     const form = useFormContext<WelcomeFormSchema>();
+
     const t = useTranslations("welcomePage.form");
-    const [, setDepartmentNameSearchParam] = useQueryState(
-        "departmentName",
-        welcomeDepartmentNameParser,
-    );
 
     return (
         <>
@@ -44,7 +39,6 @@ export default function WelcomeSelects({ departments, parsedGroups }: Props) {
                         <Select
                             onValueChange={(value) => {
                                 field.onChange(value);
-                                void setDepartmentNameSearchParam(value);
                             }}
                             value={field.value || undefined}
                         >

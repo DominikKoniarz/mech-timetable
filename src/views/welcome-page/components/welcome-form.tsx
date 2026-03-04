@@ -3,39 +3,82 @@
 import type { PreferencesSchema } from "@/schema/preferences-schema";
 import type { Department } from "@/types/departments";
 import { Form } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
 import WelcomeSelects from "./welcome-selects";
 import SubmitButton from "./submit-button";
 import useWelcomeForm from "../hooks/use-welcome-form";
+import useFetchDepartments from "../hooks/use-fetch-departments";
+import useFetchDepartmentGroups from "../hooks/use-fetch-department-groups";
+import { WelcomeFormInputSkeleton } from "./welcome-form-skeleton";
 import ReCAPTCHA from "react-google-recaptcha";
 import { env } from "@/env";
-import { GroupsByFirstLetter } from "@/types/groups";
 import { cn } from "@/lib/utils";
-import { useWatch } from "react-hook-form";
+import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 type Props = {
-    departments: Department[];
     userPreferences: PreferencesSchema | null;
-    groupsByFirstLetter: GroupsByFirstLetter | null;
-    departmentName: string | undefined;
 };
 
-export default function WelcomeForm({
+type LoadedWelcomeFormProps = {
+    departments: Department[];
+    userPreferences: PreferencesSchema | null;
+};
+
+type GroupsFetchErrorProps = {
+    message: string;
+    retryLabel: string;
+    onRetry: () => void;
+};
+
+function GroupsFetchError({
+    message,
+    retryLabel,
+    onRetry,
+}: GroupsFetchErrorProps) {
+    return (
+        <div className="flex flex-col items-center gap-3 py-2">
+            <p className="text-muted-foreground text-sm">{message}</p>
+            <Button type="button" variant="outline" onClick={onRetry}>
+                {retryLabel}
+            </Button>
+        </div>
+    );
+}
+
+function LoadedWelcomeForm({
     departments,
     userPreferences,
-    groupsByFirstLetter,
-    departmentName,
-}: Props) {
-    const { form, onSubmit, isPending, reCaptchaRef } = useWelcomeForm(
-        departments,
-        userPreferences,
-        groupsByFirstLetter,
-        departmentName,
-    );
+}: LoadedWelcomeFormProps) {
+    const t = useTranslations("welcomePage.form");
 
-    const selectedDepartmentName = useWatch({
-        control: form.control,
-        name: "departmentName",
-    });
+    const {
+        form,
+        onSubmit,
+        isPending,
+        reCaptchaRef,
+        resetForm,
+        selectedDepartmentName,
+    } = useWelcomeForm(departments, userPreferences);
+
+    const {
+        groupsByFirstLetter,
+        isLoading: isGroupsLoading,
+        isError: isGroupsError,
+        refetch: refetchGroups,
+    } = useFetchDepartmentGroups(selectedDepartmentName || null);
+
+    const hasSelectedDepartment = Boolean(
+        selectedDepartmentName && selectedDepartmentName.length > 0,
+    );
+    const canSubmit =
+        hasSelectedDepartment && !isGroupsLoading && !isGroupsError;
+
+    useEffect(() => {
+        if (groupsByFirstLetter) {
+            resetForm(groupsByFirstLetter);
+        }
+    }, [groupsByFirstLetter, resetForm]);
 
     return (
         <form
@@ -56,10 +99,33 @@ export default function WelcomeForm({
                     departments={departments}
                     parsedGroups={groupsByFirstLetter}
                 />
-                {selectedDepartmentName.length > 0 && (
-                    <SubmitButton isPending={isPending} />
+                {hasSelectedDepartment && isGroupsLoading && (
+                    <>
+                        <WelcomeFormInputSkeleton />
+                        <WelcomeFormInputSkeleton />
+                        <WelcomeFormInputSkeleton />
+                    </>
                 )}
+                {hasSelectedDepartment && isGroupsError && (
+                    <GroupsFetchError
+                        message={t("fetchGroupsError")}
+                        retryLabel={t("retry")}
+                        onRetry={refetchGroups}
+                    />
+                )}
+                {canSubmit && <SubmitButton isPending={isPending} />}
             </Form>
         </form>
+    );
+}
+
+export default function WelcomeForm({ userPreferences }: Props) {
+    const { departments } = useFetchDepartments();
+
+    return (
+        <LoadedWelcomeForm
+            departments={departments}
+            userPreferences={userPreferences}
+        />
     );
 }

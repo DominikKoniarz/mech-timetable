@@ -14,6 +14,8 @@
             "search": "Szukaj",
             "selectDepartment": "Wybierz oddział",
             "selectGroup": "Wybierz grupę",
+            "fetchGroupsError": "Nie udało się pobrać grup",
+            "retry": "Spróbuj ponownie",
             "validation": {
                 "required": "To pole jest wymagane",
                 "selectDepartment": "Proszę wybrać oddział",

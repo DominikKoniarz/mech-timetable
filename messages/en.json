@@ -14,6 +14,8 @@
             "search": "Search",
             "selectDepartment": "Select department",
             "selectGroup": "Select group",
+            "fetchGroupsError": "Failed to fetch groups",
+            "retry": "Retry",
             "validation": {
                 "required": "This field is required",
                 "selectDepartment": "Please select department",

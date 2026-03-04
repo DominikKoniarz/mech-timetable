@@ -1,5 +1,4 @@
 import type { Department } from "@/types/departments";
-import type { GroupsByFirstLetter } from "@/types/groups";
 import type { TFunction } from "@/types/i18n";
 import { z } from "zod/mini";
 
@@ -17,7 +16,6 @@ export const getServerWelcomeFormSchema = (departments: Department[]) => {
 export const getWelcomeFormSchema = (
     t: TFunction<"welcomePage.form.validation">,
     departments: Department[],
-    parsedGroups: GroupsByFirstLetter | null,
 ) => {
     const departmentsNames = departments.map((department) => department.name);
 
@@ -38,7 +36,7 @@ export const getWelcomeFormSchema = (
                         }),
                     ),
             )
-            .check(z.minLength(Object.keys(parsedGroups ?? {}).length)),
+            .check(z.minLength(1)),
     });
 
     return welcomeFormSchema;
