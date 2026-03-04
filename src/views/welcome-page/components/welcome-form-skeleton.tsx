@@ -7,15 +7,15 @@ export function WelcomeFormInputSkeleton() {
     );
 }
 
-function WelcomeFormBlankSubmitSkeleton() {
+export function WelcomeFormBlankSubmitSkeleton() {
     return (
-        <div className="invisible mx-auto mt-6 h-9 w-[68.6px] rounded-sm"></div>
+        <div className="mx-auto mt-6 h-9 w-[68.6px] rounded-sm bg-transparent"></div>
     );
 }
 
 export default function WelcomeFormSkeleton() {
     return (
-        <div className="mt-10 flex h-fit w-full max-w-60 flex-col gap-0">
+        <div className="mt-10 w-fit min-w-62 space-y-4 pb-4 sm:pb-6">
             <div className="flex flex-col gap-4">
                 <WelcomeFormInputSkeleton />
                 <WelcomeFormInputSkeleton />

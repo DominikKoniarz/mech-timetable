@@ -9,10 +9,12 @@ import SubmitButton from "./submit-button";
 import useWelcomeForm from "../hooks/use-welcome-form";
 import useFetchDepartments from "../hooks/use-fetch-departments";
 import useFetchDepartmentGroups from "../hooks/use-fetch-department-groups";
-import { WelcomeFormInputSkeleton } from "./welcome-form-skeleton";
+import {
+    WelcomeFormBlankSubmitSkeleton,
+    WelcomeFormInputSkeleton,
+} from "./welcome-form-skeleton";
 import ReCAPTCHA from "react-google-recaptcha";
 import { env } from "@/env";
-import { cn } from "@/lib/utils";
 import { useEffect } from "react";
 import { useTranslations } from "next-intl";
 
@@ -82,10 +84,7 @@ function LoadedWelcomeForm({
 
     return (
         <form
-            className={cn(
-                "mt-10 w-fit min-w-62 space-y-4 pb-10 sm:pb-16",
-                groupsByFirstLetter && "pb-2 sm:pb-4",
-            )}
+            className="mt-10 w-fit min-w-62 space-y-4 pb-4 sm:pb-6"
             onSubmit={onSubmit}
         >
             <Form {...form}>
@@ -101,9 +100,12 @@ function LoadedWelcomeForm({
                 />
                 {hasSelectedDepartment && isGroupsLoading && (
                     <>
-                        <WelcomeFormInputSkeleton />
-                        <WelcomeFormInputSkeleton />
-                        <WelcomeFormInputSkeleton />
+                        <div className="flex flex-col gap-4">
+                            <WelcomeFormInputSkeleton />
+                            <WelcomeFormInputSkeleton />
+                            <WelcomeFormInputSkeleton />
+                        </div>
+                        <WelcomeFormBlankSubmitSkeleton />
                     </>
                 )}
                 {hasSelectedDepartment && isGroupsError && (
