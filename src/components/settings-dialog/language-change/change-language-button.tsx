@@ -1,5 +1,5 @@
 import { useLocale, type Locale } from "next-intl";
-import { Link } from "@/i18n/routing";
+import { Link, usePathname } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
@@ -10,10 +10,11 @@ type Props = {
 
 export default function ChangeLanguageButton({ localeToSet, children }: Props) {
     const locale = useLocale();
+    const pathname = usePathname();
 
     return (
         <Link
-            href="/"
+            href={pathname}
             locale={localeToSet}
             className={cn(
                 buttonVariants({
