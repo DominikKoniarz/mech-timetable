@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { ThemeProvider } from "next-themes";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
-import { getLocale, getMessages, setRequestLocale } from "next-intl/server";
-import { NextIntlClientProvider } from "next-intl";
+import { getLocale, setRequestLocale } from "next-intl/server";
 import { Analytics } from "@vercel/analytics/next";
+import Providers from "@/components/providers/providers";
 import "../globals.css";
-import QueryClientProvider from "@/components/providers/query-client-provider";
 
 const inter = Inter({
     subsets: ["latin", "latin-ext"],
@@ -42,8 +40,6 @@ export default async function RootLayout({
     if (!routing.locales.includes(locale)) {
         notFound();
     }
-    // Fetch messages for the current locale
-    const messages = await getMessages({ locale });
 
     // Enable static rendering
     setRequestLocale(locale);
@@ -51,19 +47,10 @@ export default async function RootLayout({
     return (
         <html lang={locale} suppressHydrationWarning>
             <body className={`${inter.className}`}>
-                <NextIntlClientProvider messages={messages} locale={locale}>
-                    <ThemeProvider
-                        defaultTheme="dark"
-                        // attribute="class" // causes blinking
-                        enableSystem
-                        disableTransitionOnChange
-                    >
-                        <QueryClientProvider>
-                            {children}
-                            <Analytics />
-                        </QueryClientProvider>
-                    </ThemeProvider>
-                </NextIntlClientProvider>
+                <Providers>
+                    {children}
+                    <Analytics />
+                </Providers>
             </body>
         </html>
     );
