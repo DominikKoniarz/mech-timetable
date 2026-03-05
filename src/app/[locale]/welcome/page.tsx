@@ -11,5 +11,10 @@ export default async function Welcome() {
 
     const departments = parseDepartmentsList(departmentsHtml);
 
-    return <WelcomePageView userPreferences={preferences} departments={[]} />;
+    return (
+        <WelcomePageView
+            userPreferences={preferences}
+            departments={departments}
+        />
+    );
 }

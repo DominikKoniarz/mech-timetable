@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 
 const useFirstRender = () => {
-	const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
+    const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
 
-	useEffect(() => {
-		setIsFirstRender(false);
-	}, [isFirstRender]);
+    useEffect(() => {
+        startTransition(() => {
+            setIsFirstRender(false);
+        });
+    }, [isFirstRender]);
 
-	return {
-		isFirstRender,
-	};
+    return {
+        isFirstRender,
+    };
 };
 
 export default useFirstRender;
