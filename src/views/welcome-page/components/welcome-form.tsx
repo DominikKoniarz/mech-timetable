@@ -15,8 +15,8 @@ import {
 } from "./welcome-form-skeleton";
 import ReCAPTCHA from "react-google-recaptcha";
 import { env } from "@/env";
-import { useEffect } from "react";
 import { useTranslations } from "next-intl";
+import useFormReset from "@/views/welcome-page/hooks/use-form-reset";
 
 type Props = {
     userPreferences: PreferencesSchema | null;
@@ -54,14 +54,8 @@ function LoadedWelcomeForm({
 }: LoadedWelcomeFormProps) {
     const t = useTranslations("welcomePage.form");
 
-    const {
-        form,
-        onSubmit,
-        isPending,
-        reCaptchaRef,
-        resetForm,
-        selectedDepartmentName,
-    } = useWelcomeForm(departments, userPreferences);
+    const { form, onSubmit, isPending, reCaptchaRef, selectedDepartmentName } =
+        useWelcomeForm(departments, userPreferences);
 
     const {
         groupsByFirstLetter,
@@ -76,11 +70,7 @@ function LoadedWelcomeForm({
     const canSubmit =
         hasSelectedDepartment && !isGroupsLoading && !isGroupsError;
 
-    useEffect(() => {
-        if (groupsByFirstLetter) {
-            resetForm(groupsByFirstLetter);
-        }
-    }, [groupsByFirstLetter, resetForm]);
+    useFormReset(form, groupsByFirstLetter, departments, userPreferences);
 
     return (
         <form

@@ -24,6 +24,10 @@ const useFetchDepartmentGroups = (departmentName: string | null) => {
                     .groups.get();
 
                 if (status !== 200) {
+                    if (status === 404) {
+                        return null;
+                    }
+
                     throw new Error("Failed to fetch department groups");
                 }
 

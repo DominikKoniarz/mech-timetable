@@ -7,7 +7,7 @@ import { handleWelcomeSubmit } from "@/lib/welcome/handle-welcome-submit";
 import { getServerWelcomeFormSchema } from "@/schema/welcome-form-schema";
 
 const submitWelcomeFormAction = actionClient
-    .schema(async () => {
+    .inputSchema(async () => {
         const [departmentsHtml] = await Promise.all([fetchDepartmentsList()]);
 
         const departments = parseDepartmentsList(departmentsHtml);

@@ -10,14 +10,7 @@ import { useTranslations } from "next-intl";
 import { useAction } from "next-safe-action/hooks";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { GroupsByFirstLetter } from "@/types/groups";
-import {
-    startTransition,
-    useCallback,
-    useEffect,
-    useRef,
-    useState,
-} from "react";
+import { startTransition, useEffect, useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import useDepartmentName from "@/views/welcome-page/hooks/use-department-name";
 
@@ -72,20 +65,6 @@ const useWelcomeForm = (
         name: "departmentName",
     });
 
-    const resetForm = useCallback(
-        (parsedGroups: GroupsByFirstLetter | null) => {
-            form.setValue("reCaptchaToken", "");
-
-            form.setValue("departmentName", form.getValues("departmentName"));
-
-            form.setValue(
-                "groups",
-                Array(Object.keys(parsedGroups ?? {}).length).fill(""),
-            );
-        },
-        [form],
-    );
-
     // TODO: fix this
     // eslint-disable-next-line react-hooks/refs
     const onSubmit = form.handleSubmit(async (data) => {
@@ -117,7 +96,6 @@ const useWelcomeForm = (
         onSubmit,
         isPending: isPending || isGettingReCaptcha,
         reCaptchaRef,
-        resetForm,
         selectedDepartmentName,
     };
 };
