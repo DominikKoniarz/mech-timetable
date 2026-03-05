@@ -21,6 +21,9 @@
                 "selectDepartment": "Please select department",
                 "selectGroup": "Please select valid group"
             }
+        },
+        "noDataSection": {
+            "text": "Oops! It seems that we couldn't find any data. Stay tuned, we're working on it."
         }
     },
     "mainPage": {

@@ -21,6 +21,9 @@
                 "selectDepartment": "Proszę wybrać oddział",
                 "selectGroup": "Proszę wybrać poprawną grupę"
             }
+        },
+        "noDataSection": {
+            "text": "Ups! Wygląda na to, że nie udało się znaleźć żadnych danych. Pracujemy nad tym."
         }
     },
     "mainPage": {
