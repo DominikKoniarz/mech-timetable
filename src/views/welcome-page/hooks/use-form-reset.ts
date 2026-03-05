@@ -5,12 +5,19 @@ import type { Department } from "@/types/departments";
 import type { PreferencesSchema } from "@/schema/preferences-schema";
 import { useEffect, useEffectEvent } from "react";
 
-const useFormReset = (
-    form: UseFormReturn<WelcomeFormSchema>,
-    groupsByFirstLetter: GroupsByFirstLetter | null,
-    departments: Department[],
-    userPreferences: PreferencesSchema | null,
-) => {
+const useFormReset = ({
+    form,
+    groupsByFirstLetter,
+    departments,
+    userPreferences,
+    isLoadingGroups,
+}: {
+    form: UseFormReturn<WelcomeFormSchema>;
+    groupsByFirstLetter: GroupsByFirstLetter | null;
+    departments: Department[];
+    userPreferences: PreferencesSchema | null;
+    isLoadingGroups: boolean;
+}) => {
     const resetForm = useEffectEvent(
         (parsedGroups: GroupsByFirstLetter | null) => {
             form.setValue("reCaptchaToken", "");
@@ -36,12 +43,14 @@ const useFormReset = (
     });
 
     useEffect(() => {
+        if (isLoadingGroups) return;
+
         if (groupsByFirstLetter) {
             resetForm(groupsByFirstLetter);
         } else {
             resetFormDepartmentName();
         }
-    }, [groupsByFirstLetter]);
+    }, [groupsByFirstLetter, isLoadingGroups]);
 };
 
 export default useFormReset;

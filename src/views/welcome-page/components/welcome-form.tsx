@@ -51,7 +51,7 @@ export default function WelcomeForm({ userPreferences, departments }: Props) {
 
     const {
         groupsByFirstLetter,
-        isLoading: isGroupsLoading,
+        isLoading: isLoadingGroups,
         isError: isGroupsError,
         refetch: refetchGroups,
     } = useFetchDepartmentGroups(selectedDepartmentName || null);
@@ -60,9 +60,15 @@ export default function WelcomeForm({ userPreferences, departments }: Props) {
         selectedDepartmentName && selectedDepartmentName.length > 0,
     );
     const canSubmit =
-        hasSelectedDepartment && !isGroupsLoading && !isGroupsError;
+        hasSelectedDepartment && !isLoadingGroups && !isGroupsError;
 
-    useFormReset(form, groupsByFirstLetter, departments, userPreferences);
+    useFormReset({
+        form,
+        groupsByFirstLetter,
+        departments,
+        userPreferences,
+        isLoadingGroups,
+    });
 
     return (
         <form
@@ -80,7 +86,7 @@ export default function WelcomeForm({ userPreferences, departments }: Props) {
                     departments={departments}
                     parsedGroups={groupsByFirstLetter}
                 />
-                {hasSelectedDepartment && isGroupsLoading && (
+                {hasSelectedDepartment && isLoadingGroups && (
                     <>
                         <div className="flex flex-col gap-4">
                             <WelcomeFormInputSkeleton />
