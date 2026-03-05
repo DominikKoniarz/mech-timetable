@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import WelcomeSelects from "./welcome-selects";
 import SubmitButton from "./submit-button";
 import useWelcomeForm from "../hooks/use-welcome-form";
-import useFetchDepartments from "../hooks/use-fetch-departments";
 import useFetchDepartmentGroups from "../hooks/use-fetch-department-groups";
 import {
     WelcomeFormBlankSubmitSkeleton,
@@ -20,11 +19,7 @@ import useFormReset from "@/views/welcome-page/hooks/use-form-reset";
 
 type Props = {
     userPreferences: PreferencesSchema | null;
-};
-
-type LoadedWelcomeFormProps = {
     departments: Department[];
-    userPreferences: PreferencesSchema | null;
 };
 
 type GroupsFetchErrorProps = {
@@ -48,10 +43,7 @@ function GroupsFetchError({
     );
 }
 
-function LoadedWelcomeForm({
-    departments,
-    userPreferences,
-}: LoadedWelcomeFormProps) {
+export default function WelcomeForm({ userPreferences, departments }: Props) {
     const t = useTranslations("welcomePage.form");
 
     const { form, onSubmit, isPending, reCaptchaRef, selectedDepartmentName } =
@@ -108,16 +100,5 @@ function LoadedWelcomeForm({
                 {canSubmit && <SubmitButton isPending={isPending} />}
             </Form>
         </form>
-    );
-}
-
-export default function WelcomeForm({ userPreferences }: Props) {
-    const { departments } = useFetchDepartments();
-
-    return (
-        <LoadedWelcomeForm
-            departments={departments}
-            userPreferences={userPreferences}
-        />
     );
 }

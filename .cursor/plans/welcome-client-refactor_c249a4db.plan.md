@@ -2,21 +2,21 @@
 name: welcome-client-refactor
 overview: Move welcome dept/group fetching to client via React Query + Elysia handlers, add nuqs for search param state, keep temp server cookie fallback for first profile.
 todos:
-    - id: api-routes
-      content: "Add Elysia endpoints: departments + groups-by-department"
-      status: pending
-    - id: nuqs-setup
-      content: Install nuqs and wire NuqsAdapter + welcome parser
-      status: pending
-    - id: welcome-client-queries
-      content: Move welcome dept/groups fetch to client useQuery (15m stale)
-      status: pending
-    - id: welcome-loading-error
-      content: Add close-form skeleton + explicit query error handling
-      status: pending
-    - id: validate-and-verify
-      content: Check schema/fallback logic, run lint/types, smoke test
-      status: pending
+  - id: api-routes
+    content: "Add Elysia endpoints: departments + groups-by-department"
+    status: pending
+  - id: nuqs-setup
+    content: Install nuqs and wire NuqsAdapter + welcome parser
+    status: pending
+  - id: welcome-client-queries
+    content: Move welcome dept/groups fetch to client useQuery (15m stale)
+    status: pending
+  - id: welcome-loading-error
+    content: Add close-form skeleton + explicit query error handling
+    status: pending
+  - id: validate-and-verify
+    content: Check schema/fallback logic, run lint/types, smoke test
+    status: pending
 isProject: false
 ---
 
@@ -40,8 +40,8 @@ isProject: false
 
 - Stop server fetching departments/groups in `[src/app/[locale]/welcome/page.tsx](src/app/[locale]/welcome/page.tsx)`; keep temp cookie read for initial first-profile fallback only.
 - Add hooks for welcome queries (new files under `src/views/welcome-page/hooks/`):
-    - departments query (`useQuery`, staleTime `15m`)
-    - groups query by selected department (`enabled` guard, staleTime `15m`)
+  - departments query (`useQuery`, staleTime `15m`)
+  - groups query by selected department (`enabled` guard, staleTime `15m`)
 - Refactor `[src/views/welcome-page/welcome-page-view.tsx](src/views/welcome-page/welcome-page-view.tsx)`, `[src/views/welcome-page/components/welcome-form.tsx](src/views/welcome-page/components/welcome-form.tsx)`, `[src/views/welcome-page/hooks/use-welcome-form.ts](src/views/welcome-page/hooks/use-welcome-form.ts)` to consume async query data and reset groups safely on dept change.
 
 ## Phase 4 — Error/loading UX
