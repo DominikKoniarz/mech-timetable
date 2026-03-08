@@ -19,7 +19,6 @@ export const env = createEnv({
         NEXT_PUBLIC_IS_DEV: z.boolean(),
         NEXT_PUBLIC_IS_PROD: z.boolean(),
         NEXT_PUBLIC_RECAPTCHA_SITE_KEY: z.string().min(1),
-        NEXT_PUBLIC_VERCEL_URL: z.string().optional(),
     },
     /*
      * Due to how Next.js bundles environment variables on Edge and Client,
@@ -34,6 +33,5 @@ export const env = createEnv({
         RECAPTCHA_SECRET_KEY: process.env.RECAPTCHA_SECRET_KEY,
         NEXT_PUBLIC_RECAPTCHA_SITE_KEY:
             process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
-        NEXT_PUBLIC_VERCEL_URL: process.env.VERCEL_URL,
     },
 });
