@@ -1,5 +1,6 @@
 import { redirect } from "@/i18n/routing";
 import { client } from "@/lib/eden-client";
+import { useMainPageStore } from "@/views/main-page/context/main-page-provider";
 import { useQuery } from "@tanstack/react-query";
 import { useLocale } from "next-intl";
 import { useEffect } from "react";
@@ -7,7 +8,7 @@ import { useEffect } from "react";
 const useFetchTimetable = () => {
     const locale = useLocale();
 
-    const profileIndex = 0;
+    const profileIndex = useMainPageStore((state) => state.profileIndex);
 
     const {
         data: rows,

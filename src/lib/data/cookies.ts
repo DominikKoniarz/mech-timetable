@@ -8,8 +8,10 @@ import {
 } from "@/schema/preferences-schema";
 import { cookies } from "next/headers";
 import { env } from "@/env";
-
-export const PREFERENCES_COOKIE_KEY = "USER_PREFERENCES" as const;
+import {
+    PREFERENCES_COOKIE_KEY,
+    PREFERENCES_COOKIE_MAX_AGE_SECONDS,
+} from "@/constants/cookies";
 
 export const setUserPreferences = async (
     preferences: Omit<WelcomeFormSchema, "reCaptchaToken">,
@@ -20,7 +22,7 @@ export const setUserPreferences = async (
 
     (await cookies()).set(PREFERENCES_COOKIE_KEY, preferencesString, {
         path: "/",
-        maxAge: 60 * 60 * 24 * 365, // 1 year
+        maxAge: PREFERENCES_COOKIE_MAX_AGE_SECONDS,
         httpOnly: true,
         sameSite: "lax",
         secure: env.NEXT_PUBLIC_IS_PROD,

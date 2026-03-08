@@ -69,7 +69,7 @@
     "exportIcsDialog": {
         "title": "Export Timetable",
         "description": "Download the timetable as an .ics file. The file covers the current semester and can be imported into Google Calendar, Outlook, Apple Calendar or any other calendar application.",
-        "exportButton": "Export",
+        "export": "Export",
         "exportError": "Failed to export timetable",
         "lecture": "Lecture",
         "exercises": "Exercises",

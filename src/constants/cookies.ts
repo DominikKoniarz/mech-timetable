@@ -1,0 +1,2 @@
+export const PREFERENCES_COOKIE_KEY = "USER_PREFERENCES" as const;
+export const PREFERENCES_COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 365; // 1 year
