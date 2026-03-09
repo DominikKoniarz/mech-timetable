@@ -1,3 +1,4 @@
+import type { PreferencesSchema } from "@/schema/preferences-schema";
 import type { ClassesTuple } from "@/types/classes";
 import { WeekType } from "@/types/week";
 
@@ -76,4 +77,29 @@ export const checkCurrentWeekParity = (): WeekType => {
 
 export const initClassesTuple = (): ClassesTuple => {
     return [[], [], [], [], []];
+};
+
+export const getProfileFromParams = (
+    profileIndexFromParams: number,
+    preferences: PreferencesSchema,
+) => {
+    const requestedProfile = preferences.profiles.at(profileIndexFromParams);
+
+    if (requestedProfile) {
+        return {
+            profile: requestedProfile,
+            profileIndex: profileIndexFromParams,
+        };
+    }
+
+    const firstProfile = preferences.profiles.at(0);
+
+    if (firstProfile) {
+        return {
+            profile: firstProfile,
+            profileIndex: 0,
+        };
+    }
+
+    return null;
 };

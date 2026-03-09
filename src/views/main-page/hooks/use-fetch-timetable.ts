@@ -3,18 +3,15 @@ import { client } from "@/lib/eden-client";
 import { useMainPageStore } from "@/views/main-page/context/main-page-provider";
 import { useQuery } from "@tanstack/react-query";
 import { useLocale } from "next-intl";
-import { useEffect } from "react";
+import { startTransition, useEffect } from "react";
 
 const useFetchTimetable = () => {
     const locale = useLocale();
 
     const profileIndex = useMainPageStore((state) => state.profileIndex);
+    const setProfileIndex = useMainPageStore((state) => state.setProfileIndex);
 
-    const {
-        data: rows,
-        isLoading,
-        isFetched,
-    } = useQuery({
+    const { data, isLoading, isFetched } = useQuery({
         queryKey: ["rows", profileIndex],
         queryFn: async () => {
             const { data, status } = await client.api
@@ -31,11 +28,14 @@ const useFetchTimetable = () => {
                 throw new Error("Failed to fetch rows");
             }
 
-            return data.rows;
+            return data;
         },
         staleTime: 1000 * 60 * 15, // 15 minutes
         retry: 1,
     });
+
+    const rows = data?.rows;
+    const usedProfileIndex = data?.profileIndex;
 
     useEffect(() => {
         if (isFetched && rows === undefined) {
@@ -45,6 +45,17 @@ const useFetchTimetable = () => {
             });
         }
     }, [rows, locale, isFetched]);
+
+    useEffect(() => {
+        if (
+            usedProfileIndex !== undefined &&
+            usedProfileIndex !== profileIndex
+        ) {
+            startTransition(() => {
+                setProfileIndex(usedProfileIndex);
+            });
+        }
+    }, [usedProfileIndex, setProfileIndex, profileIndex]);
 
     return { rows, isLoading };
 };

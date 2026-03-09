@@ -40,9 +40,9 @@ export default function ActionsMenu({ rows, preferences, isLoading }: Props) {
                 <PopoverTrigger asChild>
                     <Button
                         variant="outline"
-                        className="group bg-foreground text-background hover:bg-foreground hover:text-background absolute right-4 bottom-4 z-40 flex h-fit cursor-pointer flex-row gap-0 border-none p-0 text-sm transition-all hover:opacity-90"
+                        className="group bg-foreground text-background hover:bg-foreground hover:text-background absolute right-4 bottom-4 z-40 flex h-fit max-w-40 cursor-pointer flex-row gap-0 border-none p-0 text-sm transition-all hover:opacity-90"
                     >
-                        <div className="py-1.5 pr-2 pl-3">
+                        <div className="truncate py-1.5 pr-2 pl-3">
                             {selectedProfile.name}
                         </div>
                         <div className="grid place-items-center self-stretch border-l pr-3 pl-2">
@@ -65,7 +65,9 @@ export default function ActionsMenu({ rows, preferences, isLoading }: Props) {
                     <MenuSeparator />
                     <MenuSection>
                         <MenuSectionLabel>Actions</MenuSectionLabel>
-                        <ActionMenuButton>
+                        <ActionMenuButton
+                            disabled={preferences.profiles.length >= 3}
+                        >
                             Add profile
                             <Plus />
                         </ActionMenuButton>

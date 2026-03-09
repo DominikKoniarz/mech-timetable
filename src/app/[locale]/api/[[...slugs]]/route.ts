@@ -1,5 +1,6 @@
 import { getUserPreferences } from "@/lib/data/cookies";
 import { fetchDepartmentData, fetchDepartmentsList } from "@/lib/data/fetcher";
+import { getProfileFromParams } from "@/lib/data/helpers";
 import {
     parseDepartmentsList,
     parseGroups,
@@ -53,7 +54,7 @@ const app = new Elysia({ prefix: "/api" })
     .get(
         "/timetable/:profileIndex",
         async ({ params }) => {
-            const profileIndex = params.profileIndex;
+            const profileIndexFromParams = params.profileIndex;
 
             const preferences = await getUserPreferences();
 
@@ -61,11 +62,16 @@ const app = new Elysia({ prefix: "/api" })
                 return new Response("Bad request", { status: 400 });
             }
 
-            const profile = preferences.profiles.at(profileIndex);
+            const result = getProfileFromParams(
+                profileIndexFromParams,
+                preferences,
+            );
 
-            if (!profile) {
+            if (!result) {
                 return new Response("Profile not found", { status: 404 });
             }
+
+            const { profile, profileIndex } = result;
 
             const departmentsHtml = await fetchDepartmentsList();
 
@@ -90,6 +96,7 @@ const app = new Elysia({ prefix: "/api" })
             const rows = parseRows(departmentHtml, profile.groups);
 
             return {
+                profileIndex,
                 rows,
             };
         },
