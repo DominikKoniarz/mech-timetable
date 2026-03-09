@@ -85,6 +85,25 @@
         "pageWillReload": "The page will be reloaded",
         "changeTheme": "Change theme"
     },
+    "addProfileDialog": {
+        "title": "Add Profile",
+        "description": "Create a new timetable profile with a custom department and group selection.",
+        "profileName": "Profile name",
+        "profileNamePlaceholder": "e.g. My profile",
+        "department": "Department",
+        "selectDepartment": "Select department",
+        "groupWithLetter": "{groupLetter} - group",
+        "selectGroup": "Select group",
+        "submit": "Add",
+        "fetchGroupsError": "Failed to fetch groups",
+        "retry": "Retry",
+        "validation": {
+            "profileNameRequired": "Profile name is required",
+            "profileNameMaxLength": "Profile name must be at most 32 characters",
+            "selectDepartment": "Please select department",
+            "selectGroup": "Please select valid group"
+        }
+    },
     "safeAction": {
         "internalServerError": "Internal server error occurred! Please try again later."
     }
