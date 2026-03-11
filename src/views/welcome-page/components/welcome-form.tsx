@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import WelcomeSelects from "./welcome-selects";
 import SubmitButton from "./submit-button";
 import useWelcomeForm from "../hooks/use-welcome-form";
-import useFetchDepartmentGroups from "../hooks/use-fetch-department-groups";
+import useFetchDepartmentGroups from "@/hooks/use-fetch-department-groups";
 import {
     WelcomeFormBlankSubmitSkeleton,
     WelcomeFormInputSkeleton,

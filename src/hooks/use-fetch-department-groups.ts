@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 type DepartmentGroupsData = GroupsByFirstLetter | null;
 
 const getQueryKey = (departmentName: string | null) => {
-    return ["welcome", "department-groups", departmentName];
+    return ["department-groups", departmentName];
 };
 
 const useFetchDepartmentGroups = (departmentName: string | null) => {
