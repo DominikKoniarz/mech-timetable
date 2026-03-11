@@ -53,13 +53,10 @@ New file: `src/views/main-page/hooks/use-add-profile-form.ts`
 - Mock `onSubmit`: `form.handleSubmit((data) => { console.log("Add profile submit:", data); onOpenChange(false); })`
 - Returns `{ form, onSubmit, selectedDepartmentName }`
 
-### 4. Create the group fetch hook (dedicated copy)
+### 4. Make already existing hook reusable
 
-New file: `src/views/main-page/hooks/use-fetch-add-profile-groups.ts`
-
-- Copy logic from [use-fetch-department-groups.ts](src/views/welcome-page/hooks/use-fetch-department-groups.ts)
-- Change query key to `["add-profile", "department-groups", departmentName]` to avoid cache collisions with the welcome page
-- Same Eden client call, same return shape `{ groupsByFirstLetter, isLoading, isError, refetch }`
+- Move this hook [use-fetch-department-groups.ts](src/views/welcome-page/hooks/use-fetch-department-groups.ts) to global hooks directory (e.g. `src/hooks/use-fetch-department-groups.ts`) since it will be shared between welcome page and main page
+- Change query key to `["department-groups", departmentName]`
 
 ### 5. Create the form reset hook (dedicated copy)
 
