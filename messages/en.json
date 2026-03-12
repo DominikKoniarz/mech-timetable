@@ -33,7 +33,8 @@
         "actionMenu": {
             "profiles": "Profiles",
             "actions": "Actions",
-            "defaultProfileName": "Profile 1"
+            "defaultProfileName": "Profile 1",
+            "switchProfileAriaLabel": "Switch to {profileName} profile"
         },
         "table": {
             "tableHead": {

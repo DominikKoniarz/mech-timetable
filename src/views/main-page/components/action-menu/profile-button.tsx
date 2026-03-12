@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import ActionMenuButton from "@/views/main-page/components/action-menu/action-menu-button";
 import { useMainPageStore } from "@/views/main-page/context/main-page-provider";
 import { Check } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 type Props = {
     profileName: string;
@@ -11,6 +12,7 @@ type Props = {
 
 export default function ProfileButton({ profileName, index, selected }: Props) {
     const setProfileIndex = useMainPageStore((state) => state.setProfileIndex);
+    const t = useTranslations("mainPage.actionMenu");
 
     const handleClick = () => {
         setProfileIndex(index);
@@ -20,8 +22,7 @@ export default function ProfileButton({ profileName, index, selected }: Props) {
         <ActionMenuButton
             onClick={handleClick}
             className={cn(!selected && "pr-8")} // pr-8 mimicks the check icon size
-            // TODO: Add translation
-            ariaLabel={`Switch to ${profileName} profile`}
+            ariaLabel={t("switchProfileAriaLabel", { profileName })}
         >
             <span className="truncate">{profileName}</span>
             {selected && <Check />}
