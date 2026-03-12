@@ -1,4 +1,4 @@
-import { getUserPreferences } from "@/lib/data/cookies";
+import { getUserPreferences } from "@/lib/data/cookies/server-cookies";
 import { fetchDepartmentData, fetchDepartmentsList } from "@/lib/data/fetcher";
 import { getProfileFromParams } from "@/lib/data/helpers";
 import {

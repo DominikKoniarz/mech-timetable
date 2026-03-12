@@ -30,6 +30,11 @@
         "header": {
             "changeGroup": "Zmień grupę"
         },
+        "actionMenu": {
+            "profiles": "Profile",
+            "actions": "Akcje",
+            "defaultProfileName": "Profil 1"
+        },
         "table": {
             "tableHead": {
                 "hour": "Godzina",

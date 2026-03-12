@@ -1,5 +1,5 @@
 import WelcomePageView from "@/views/welcome-page/welcome-page-view";
-import { getUserPreferences } from "@/lib/data/cookies";
+import { getUserPreferences } from "@/lib/data/cookies/server-cookies";
 import { fetchDepartmentsList } from "@/lib/data/fetcher";
 import { parseDepartmentsList } from "@/lib/data/parser";
 

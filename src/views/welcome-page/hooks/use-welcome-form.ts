@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { startTransition, useEffect, useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import useDepartmentName from "@/views/welcome-page/hooks/use-department-name";
+import useUserPreferences from "@/hooks/use-user-preferences";
 
 const useWelcomeForm = (
     departments: Department[],
@@ -25,6 +26,8 @@ const useWelcomeForm = (
 
     const { departmentName: departmentNameSearchParam, setDepartmentName } =
         useDepartmentName();
+
+    const { revalidatePreferencesCookie } = useUserPreferences();
 
     const resetFormAndCaptcha = () => {
         reCaptchaRef.current?.reset();
@@ -43,6 +46,9 @@ const useWelcomeForm = (
         },
         onSuccess: () => {
             resetFormAndCaptcha();
+        },
+        onSettled: () => {
+            revalidatePreferencesCookie();
         },
     });
 

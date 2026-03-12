@@ -1,26 +1,16 @@
 "use client";
 
-import type { PreferencesSchema } from "@/schema/preferences-schema";
 import MobileTimetable from "@/views/main-page/components/mobile/mobile-timetable";
 import Timetable from "@/views/main-page/components/timetable";
 import TimetableLoadingSkeleton from "@/views/main-page/components/timetable-loading-skeleton";
 import useFetchTimetable from "@/views/main-page/hooks/use-fetch-timetable";
 import ActionsMenu from "@/views/main-page/components/action-menu/actions-menu";
+import useUserPreferences from "@/hooks/use-user-preferences";
 
-type Props = {
-    preferences: PreferencesSchema;
-};
-
-export default function TimetableContainer({ preferences }: Props) {
+export default function TimetableContainer() {
     const { rows, isLoading } = useFetchTimetable();
 
-    // if (isLoading || !rows) {
-    //     return (
-    //         <main className="h-full overflow-hidden">
-    //             <TimetableLoadingSkeleton />
-    //         </main>
-    //     );
-    // }
+    const { preferences } = useUserPreferences();
 
     return (
         <>
@@ -38,11 +28,13 @@ export default function TimetableContainer({ preferences }: Props) {
                 </main>
             )}
 
-            <ActionsMenu
-                rows={rows}
-                isLoading={isLoading}
-                preferences={preferences}
-            />
+            {preferences && (
+                <ActionsMenu
+                    rows={rows}
+                    isLoading={isLoading}
+                    preferences={preferences}
+                />
+            )}
         </>
     );
 }

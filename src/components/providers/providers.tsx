@@ -1,4 +1,5 @@
 import QueryClientProvider from "@/components/providers/query-client-provider";
+import { CookiesNextProvider } from "cookies-next";
 import { NextIntlClientProvider } from "next-intl";
 import { ThemeProvider } from "next-themes";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
@@ -17,7 +18,9 @@ export default function Providers({ children }: Props) {
                 disableTransitionOnChange
             >
                 <NuqsAdapter>
-                    <QueryClientProvider>{children}</QueryClientProvider>
+                    <CookiesNextProvider pollingOptions={{ enabled: false }}>
+                        <QueryClientProvider>{children}</QueryClientProvider>
+                    </CookiesNextProvider>
                 </NuqsAdapter>
             </ThemeProvider>
         </NextIntlClientProvider>

@@ -6,12 +6,18 @@ import {
 import { useTranslations } from "next-intl";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import useUserPreferences from "@/hooks/use-user-preferences";
+import { useMainPageStore } from "@/views/main-page/context/main-page-provider";
 
 const useAddProfileForm = (
     departments: Department[],
     onOpenChange: (open: boolean) => void,
 ) => {
     const t = useTranslations("addProfileDialog.validation");
+
+    const { addProfile } = useUserPreferences();
+
+    const setProfileIndex = useMainPageStore((store) => store.setProfileIndex);
 
     const form = useForm<AddProfileFormSchema>({
         resolver: zodResolver(getAddProfileFormSchema(t, departments)),
@@ -30,8 +36,21 @@ const useAddProfileForm = (
     });
 
     const onSubmit = form.handleSubmit((data) => {
-        console.log("Add profile submit:", data);
+        const newProfileIndex = addProfile({
+            name: data.profileName,
+            departmentName: data.departmentName,
+            groups: data.groups,
+        });
+
+        if (newProfileIndex === null) {
+            return;
+        }
+
         onOpenChange(false);
+
+        setTimeout(() => {
+            setProfileIndex(newProfileIndex);
+        }, 0);
     });
 
     return {

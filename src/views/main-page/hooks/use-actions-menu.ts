@@ -9,6 +9,7 @@ type Props = {
 const useActionsMenu = ({ preferences }: Props) => {
     const [popoverOpen, setPopoverOpen] = useState(false);
     const [exportIcsDialogOpen, setExportIcsDialogOpen] = useState(false);
+    const [addProfileDialogOpen, setAddProfileDialogOpen] = useState(false);
 
     const profileIndex = useMainPageStore((state) => state.profileIndex);
     const selectedProfile = preferences.profiles.at(profileIndex);
@@ -22,14 +23,22 @@ const useActionsMenu = ({ preferences }: Props) => {
         setExportIcsDialogOpen(true);
     };
 
+    const openAddProfileDialog = () => {
+        closeMenu();
+        setAddProfileDialogOpen(true);
+    };
+
     return {
         popoverOpen,
         profileIndex,
         setPopoverOpen,
         exportIcsDialogOpen,
         setExportIcsDialogOpen,
+        addProfileDialogOpen,
+        setAddProfileDialogOpen,
         selectedProfile,
         openExportIcsDialog,
+        openAddProfileDialog,
     };
 };
 

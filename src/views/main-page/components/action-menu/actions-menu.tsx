@@ -6,12 +6,14 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
-import { ChevronDown, Plus } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import ExportIcsDialog from "@/views/main-page/components/action-menu/export-ics-dialog";
+import AddProfileDialog from "@/views/main-page/components/action-menu/add-profile-dialog";
+import AddProfileDialogButton from "@/views/main-page/components/action-menu/add-profile-dialog-button";
 import ProfileButton from "@/views/main-page/components/action-menu/profile-button";
 import useActionsMenu from "@/views/main-page/hooks/use-actions-menu";
 import ExportIcsDialogButton from "@/views/main-page/components/action-menu/export-ics-dialog-button";
-import ActionMenuButton from "@/views/main-page/components/action-menu/action-menu-button";
+import { useTranslations } from "next-intl";
 
 type Props = {
     rows: TableRow[] | undefined;
@@ -20,14 +22,19 @@ type Props = {
 };
 
 export default function ActionsMenu({ rows, preferences, isLoading }: Props) {
+    const t = useTranslations("mainPage.actionMenu");
+
     const {
         popoverOpen,
         setPopoverOpen,
         exportIcsDialogOpen,
         setExportIcsDialogOpen,
+        addProfileDialogOpen,
+        setAddProfileDialogOpen,
         selectedProfile,
         profileIndex,
         openExportIcsDialog,
+        openAddProfileDialog,
     } = useActionsMenu({ preferences });
 
     if (!selectedProfile) {
@@ -52,7 +59,7 @@ export default function ActionsMenu({ rows, preferences, isLoading }: Props) {
                 </PopoverTrigger>
                 <PopoverContent align="end" className="w-44 p-0">
                     <MenuSection>
-                        <MenuSectionLabel>Profiles</MenuSectionLabel>
+                        <MenuSectionLabel>{t("profiles")}</MenuSectionLabel>
                         {preferences.profiles.map((profile, index) => (
                             <ProfileButton
                                 key={`${index}-${profile.name}`}
@@ -64,13 +71,11 @@ export default function ActionsMenu({ rows, preferences, isLoading }: Props) {
                     </MenuSection>
                     <MenuSeparator />
                     <MenuSection>
-                        <MenuSectionLabel>Actions</MenuSectionLabel>
-                        <ActionMenuButton
+                        <MenuSectionLabel>{t("actions")}</MenuSectionLabel>
+                        <AddProfileDialogButton
+                            onClick={openAddProfileDialog}
                             disabled={preferences.profiles.length >= 3}
-                        >
-                            Add profile
-                            <Plus />
-                        </ActionMenuButton>
+                        />
                         <ExportIcsDialogButton
                             onClick={openExportIcsDialog}
                             disabled={isLoading || !rows}
@@ -85,6 +90,10 @@ export default function ActionsMenu({ rows, preferences, isLoading }: Props) {
                     onOpenChange={setExportIcsDialogOpen}
                 />
             )}
+            <AddProfileDialog
+                open={addProfileDialogOpen}
+                onOpenChange={setAddProfileDialogOpen}
+            />
         </>
     );
 }
