@@ -14,6 +14,7 @@ import { startTransition, useEffect, useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import useDepartmentName from "@/views/welcome-page/hooks/use-department-name";
 import useUserPreferences from "@/hooks/use-user-preferences";
+import { env } from "@/env";
 
 const useWelcomeForm = (
     departments: Department[],
@@ -74,21 +75,28 @@ const useWelcomeForm = (
     // TODO: fix this
     // eslint-disable-next-line react-hooks/refs
     const onSubmit = form.handleSubmit(async (data) => {
-        startTransition(() => {
-            setIsGettingReCaptcha(true);
-        });
+        if (!env.NEXT_PUBLIC_ENABLE_RECAPTCHA) {
+            execute({
+                ...data,
+                reCaptchaToken: "",
+            });
+        } else {
+            startTransition(() => {
+                setIsGettingReCaptcha(true);
+            });
 
-        const token = await reCaptchaRef.current?.executeAsync();
+            const token = await reCaptchaRef.current?.executeAsync();
 
-        execute({
-            ...data,
-            reCaptchaToken: token ?? "",
-        });
+            execute({
+                ...data,
+                reCaptchaToken: token ?? "",
+            });
 
-        // call after execute to be sure that action isPending is set to true
-        startTransition(() => {
-            setIsGettingReCaptcha(false);
-        });
+            // call after execute to be sure that action isPending is set to true
+            startTransition(() => {
+                setIsGettingReCaptcha(false);
+            });
+        }
     });
 
     useEffect(() => {

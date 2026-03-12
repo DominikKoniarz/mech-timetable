@@ -76,12 +76,14 @@ export default function WelcomeForm({ userPreferences, departments }: Props) {
             onSubmit={onSubmit}
         >
             <Form {...form}>
-                <ReCAPTCHA
-                    className="hidden"
-                    size="invisible"
-                    sitekey={env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-                    ref={reCaptchaRef}
-                />
+                {env.NEXT_PUBLIC_ENABLE_RECAPTCHA && (
+                    <ReCAPTCHA
+                        className="hidden"
+                        size="invisible"
+                        sitekey={env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                        ref={reCaptchaRef}
+                    />
+                )}
                 <WelcomeSelects
                     departments={departments}
                     parsedGroups={groupsByFirstLetter}
