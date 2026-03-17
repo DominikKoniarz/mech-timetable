@@ -8,12 +8,13 @@ import {
 } from "@/components/ui/popover";
 import { ChevronDown } from "lucide-react";
 import ExportIcsDialog from "@/views/main-page/components/action-menu/export-ics-dialog";
-import AddProfileDialog from "@/views/main-page/components/action-menu/add-profile-dialog";
-import AddProfileDialogButton from "@/views/main-page/components/action-menu/add-profile-dialog-button";
-import ProfileButton from "@/views/main-page/components/action-menu/profile-button";
 import useActionsMenu from "@/views/main-page/hooks/use-actions-menu";
 import ExportIcsDialogButton from "@/views/main-page/components/action-menu/export-ics-dialog-button";
 import { useTranslations } from "next-intl";
+import AddProfileDialogButton from "@/views/main-page/components/action-menu/profiles/add-profile-dialog-button";
+import AddProfileDialog from "@/views/main-page/components/action-menu/profiles/add-profile-dialog";
+import ProfilesListItem from "@/views/main-page/components/action-menu/profiles/profiles-list-item";
+import { useActionsMenuStore } from "@/views/main-page/stores/actions-menu-store";
 
 type Props = {
     rows: TableRow[] | undefined;
@@ -24,18 +25,14 @@ type Props = {
 export default function ActionsMenu({ rows, preferences, isLoading }: Props) {
     const t = useTranslations("mainPage.actionMenu");
 
-    const {
-        popoverOpen,
-        setPopoverOpen,
-        exportIcsDialogOpen,
-        setExportIcsDialogOpen,
-        addProfileDialogOpen,
-        setAddProfileDialogOpen,
-        selectedProfile,
-        profileIndex,
-        openExportIcsDialog,
-        openAddProfileDialog,
-    } = useActionsMenu({ preferences });
+    const actionsMenuOpen = useActionsMenuStore(
+        (state) => state.actionsMenuOpen,
+    );
+    const updateActionsMenuOpen = useActionsMenuStore(
+        (state) => state.updateActionsMenuOpen,
+    );
+
+    const { selectedProfile, profileIndex } = useActionsMenu({ preferences });
 
     if (!selectedProfile) {
         return null;
@@ -43,7 +40,10 @@ export default function ActionsMenu({ rows, preferences, isLoading }: Props) {
 
     return (
         <>
-            <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
+            <Popover
+                open={actionsMenuOpen}
+                onOpenChange={updateActionsMenuOpen}
+            >
                 <PopoverTrigger asChild>
                     <Button
                         variant="outline"
@@ -57,11 +57,11 @@ export default function ActionsMenu({ rows, preferences, isLoading }: Props) {
                         </div>
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent align="end" className="w-44 p-0">
+                <PopoverContent align="end" className="w-50 p-0">
                     <MenuSection>
                         <MenuSectionLabel>{t("profiles")}</MenuSectionLabel>
                         {preferences.profiles.map((profile, index) => (
-                            <ProfileButton
+                            <ProfilesListItem
                                 key={`${index}-${profile.name}`}
                                 profileName={profile.name}
                                 index={index}
@@ -73,27 +73,14 @@ export default function ActionsMenu({ rows, preferences, isLoading }: Props) {
                     <MenuSection>
                         <MenuSectionLabel>{t("actions")}</MenuSectionLabel>
                         <AddProfileDialogButton
-                            onClick={openAddProfileDialog}
                             disabled={preferences.profiles.length >= 3}
                         />
-                        <ExportIcsDialogButton
-                            onClick={openExportIcsDialog}
-                            disabled={isLoading || !rows}
-                        />
+                        <ExportIcsDialogButton disabled={isLoading || !rows} />
                     </MenuSection>
                 </PopoverContent>
             </Popover>
-            {rows && (
-                <ExportIcsDialog
-                    rows={rows}
-                    open={exportIcsDialogOpen}
-                    onOpenChange={setExportIcsDialogOpen}
-                />
-            )}
-            <AddProfileDialog
-                open={addProfileDialogOpen}
-                onOpenChange={setAddProfileDialogOpen}
-            />
+            {rows && <ExportIcsDialog rows={rows} />}
+            <AddProfileDialog />
         </>
     );
 }

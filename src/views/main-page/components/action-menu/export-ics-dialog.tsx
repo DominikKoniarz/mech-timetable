@@ -10,20 +10,29 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import useExportIcsDialog from "@/views/main-page/hooks/use-export-ics-dialog";
+import { useActionsMenuStore } from "@/views/main-page/stores/actions-menu-store";
 
 type Props = {
     rows: TableRow[];
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
 };
 
-export default function ExportIcsDialog({ rows, open, onOpenChange }: Props) {
+export default function ExportIcsDialog({ rows }: Props) {
     const t = useTranslations("exportIcsDialog");
+
+    const exportIcsDialogOpen = useActionsMenuStore(
+        (state) => state.exportIcsDialogOpen,
+    );
+    const updateExportIcsDialogOpen = useActionsMenuStore(
+        (state) => state.updateExportIcsDialogOpen,
+    );
 
     const { handleExport } = useExportIcsDialog(rows);
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
+        <Dialog
+            open={exportIcsDialogOpen}
+            onOpenChange={updateExportIcsDialogOpen}
+        >
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>{t("title")}</DialogTitle>

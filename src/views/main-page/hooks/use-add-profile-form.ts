@@ -26,7 +26,7 @@ const useAddProfileForm = (
             departmentName: "",
             groups: [],
         },
-        mode: "onBlur",
+        mode: "onSubmit",
         reValidateMode: "onChange",
     });
 

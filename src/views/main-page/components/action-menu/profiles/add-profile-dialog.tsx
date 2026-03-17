@@ -24,21 +24,24 @@ import useFetchDepartments from "@/views/main-page/hooks/use-fetch-departments";
 import useFetchDepartmentGroups from "@/hooks/use-fetch-department-groups";
 import useAddProfileFormReset from "@/views/main-page/hooks/use-add-profile-form-reset";
 import { useTranslations } from "next-intl";
+import { useActionsMenuStore } from "@/views/main-page/stores/actions-menu-store";
 
-type Props = {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-};
-
-export default function AddProfileDialog({ open, onOpenChange }: Props) {
+export default function AddProfileDialog() {
     const t = useTranslations("addProfileDialog");
 
+    const addProfileDialogOpen = useActionsMenuStore(
+        (state) => state.addProfileDialogOpen,
+    );
+    const updateAddProfileDialogOpen = useActionsMenuStore(
+        (state) => state.updateAddProfileDialogOpen,
+    );
+
     const { departments, isLoading: isDepartmentsLoading } =
-        useFetchDepartments(open);
+        useFetchDepartments(addProfileDialogOpen);
 
     const { form, onSubmit, selectedDepartmentName } = useAddProfileForm(
         departments,
-        onOpenChange,
+        updateAddProfileDialogOpen,
     );
 
     const {
@@ -61,7 +64,10 @@ export default function AddProfileDialog({ open, onOpenChange }: Props) {
         hasSelectedDepartment && !isLoadingGroups && !isGroupsError;
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
+        <Dialog
+            open={addProfileDialogOpen}
+            onOpenChange={updateAddProfileDialogOpen}
+        >
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>{t("title")}</DialogTitle>

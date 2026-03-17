@@ -2,7 +2,6 @@
 
 @plugin "tailwindcss-animate";
 
-/* nie wiem co to robi wut */
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -144,4 +143,9 @@
         @apply h-full;
         @apply bg-background text-foreground;
     }
+}
+
+::view-transition-group(.profile-button),
+::view-transition-group(.options-menu) {
+    animation-duration: 130ms;
 }
