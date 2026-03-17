@@ -34,7 +34,12 @@
             "profiles": "Profiles",
             "actions": "Actions",
             "defaultProfileName": "Profile 1",
-            "switchProfileAriaLabel": "Switch to {profileName} profile"
+            "switchProfileAriaLabel": "Switch to {profileName} profile",
+            "edit": "Edit",
+            "delete": "Delete",
+            "editProfileAriaLabel": "Edit {profileName} profile",
+            "deleteProfileAriaLabel": "Delete {profileName} profile",
+            "cannotDeleteLastProfile": "You cannot delete the last profile"
         },
         "table": {
             "tableHead": {
@@ -109,6 +114,12 @@
             "selectDepartment": "Please select department",
             "selectGroup": "Please select valid group"
         }
+    },
+    "deleteProfileDialog": {
+        "title": "Delete Profile",
+        "description": "Are you sure you want to delete profile \"{profileName}\"? This action cannot be undone.",
+        "remove": "Remove",
+        "cancel": "Cancel"
     },
     "safeAction": {
         "internalServerError": "Internal server error occurred! Please try again later."

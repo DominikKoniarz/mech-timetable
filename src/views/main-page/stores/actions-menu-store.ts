@@ -6,6 +6,8 @@ export type ActionsMenuStoreState = {
     actionsMenuOpen: boolean;
     exportIcsDialogOpen: boolean;
     addProfileDialogOpen: boolean;
+    deleteProfileDialogOpen: boolean;
+    profilePendingDeletionIndex: number | null;
     openedProfileOptionsIndex: number | null;
 };
 
@@ -13,8 +15,11 @@ export type ActionsMenuStoreActions = {
     updateActionsMenuOpen: (open: boolean) => void;
     updateExportIcsDialogOpen: (open: boolean) => void;
     updateAddProfileDialogOpen: (open: boolean) => void;
+    updateDeleteProfileDialogOpen: (open: boolean) => void;
     openExportIcsDialog: () => void;
     openAddProfileDialog: () => void;
+    openDeleteProfileDialog: (index: number) => void;
+    clearDeleteProfileDialog: () => void;
     handleOpenProfileOptionsMenu: (index: number | null) => { opened: boolean };
 };
 
@@ -25,6 +30,8 @@ const createActionsMenuStore = createStore<ActionsMenuStore>()((set, get) => ({
     actionsMenuOpen: false,
     exportIcsDialogOpen: false,
     addProfileDialogOpen: false,
+    deleteProfileDialogOpen: false,
+    profilePendingDeletionIndex: null,
     openedProfileOptionsIndex: null,
     updateActionsMenuOpen: (open: boolean) => {
         set({ actionsMenuOpen: open });
@@ -48,11 +55,40 @@ const createActionsMenuStore = createStore<ActionsMenuStore>()((set, get) => ({
         set({ exportIcsDialogOpen: open }),
     updateAddProfileDialogOpen: (open: boolean) =>
         set({ addProfileDialogOpen: open }),
+    updateDeleteProfileDialogOpen: (open: boolean) =>
+        set({ deleteProfileDialogOpen: open }),
     openExportIcsDialog: () => {
-        set({ exportIcsDialogOpen: true, actionsMenuOpen: false });
+        {
+            set({ exportIcsDialogOpen: true });
+
+            // will trigger menu close timer
+            get().updateActionsMenuOpen(false);
+        }
     },
     openAddProfileDialog: () => {
-        set({ addProfileDialogOpen: true, actionsMenuOpen: false });
+        {
+            set({ addProfileDialogOpen: true });
+
+            // will trigger menu close timer
+            get().updateActionsMenuOpen(false);
+        }
+    },
+    openDeleteProfileDialog: (index: number) => {
+        {
+            set({
+                deleteProfileDialogOpen: true,
+                profilePendingDeletionIndex: index,
+            });
+
+            // will trigger menu close timer
+            get().updateActionsMenuOpen(false);
+        }
+    },
+    clearDeleteProfileDialog: () => {
+        set({
+            deleteProfileDialogOpen: false,
+            profilePendingDeletionIndex: null,
+        });
     },
     handleOpenProfileOptionsMenu: (index: number | null) => {
         if (index === null) {

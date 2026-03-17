@@ -34,7 +34,12 @@
             "profiles": "Profile",
             "actions": "Akcje",
             "defaultProfileName": "Profil 1",
-            "switchProfileAriaLabel": "Przełącz na profil {profileName}"
+            "switchProfileAriaLabel": "Przełącz na profil {profileName}",
+            "edit": "Edytuj",
+            "delete": "Usuń",
+            "editProfileAriaLabel": "Edytuj profil {profileName}",
+            "deleteProfileAriaLabel": "Usuń profil {profileName}",
+            "cannotDeleteLastProfile": "Nie można usunąć ostatniego profilu"
         },
         "table": {
             "tableHead": {
@@ -109,6 +114,12 @@
             "selectDepartment": "Proszę wybrać oddział",
             "selectGroup": "Proszę wybrać poprawną grupę"
         }
+    },
+    "deleteProfileDialog": {
+        "title": "Usuń Profil",
+        "description": "Czy na pewno chcesz usunąć profil \"{profileName}\"? Tej operacji nie można cofnąć.",
+        "remove": "Usuń",
+        "cancel": "Anuluj"
     },
     "safeAction": {
         "internalServerError": "Wystąpił błąd serwera. Spróbuj ponownie później."

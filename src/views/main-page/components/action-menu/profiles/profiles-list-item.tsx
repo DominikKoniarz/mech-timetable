@@ -3,17 +3,25 @@ import ProfileButton from "@/views/main-page/components/action-menu/profiles/pro
 import ProfileOptionsMenu from "@/views/main-page/components/action-menu/profiles/profile-options-menu";
 import { useMainPageStore } from "@/views/main-page/context/main-page-provider";
 import { useActionsMenuStore } from "@/views/main-page/stores/actions-menu-store";
-import { EllipsisVertical } from "lucide-react";
-import { startTransition, useEffect, useEffectEvent, useState } from "react";
+import { EllipsisVertical, X } from "lucide-react";
+import {
+    startTransition,
+    useEffect,
+    useEffectEvent,
+    useState,
+    ViewTransition,
+} from "react";
 
 export default function ProfilesListItem({
     profileName,
     index,
     selected,
+    profilesCount,
 }: {
     profileName: string;
     index: number;
     selected: boolean;
+    profilesCount: number;
 }) {
     // keep local state bc zustand does not work with view transitions
     // there is a fix for that case https://github.com/pmndrs/zustand/discussions/3125
@@ -84,13 +92,25 @@ export default function ProfilesListItem({
                     handleClick={handleClick}
                 />
             ) : (
-                <ProfileOptionsMenu />
+                <ProfileOptionsMenu
+                    profileIndex={index}
+                    profileName={profileName}
+                    profilesCount={profilesCount}
+                />
             )}
             <ActionMenuButton
                 className="h-8 w-fit shrink-1 self-stretch rounded-l-none border-l border-l-black has-[>svg]:pl-1.5"
                 onClick={handleOptionsMenuClick}
             >
-                <EllipsisVertical className="size-4.5 text-black" />
+                {selectedView === "profile-button" ? (
+                    <ViewTransition default="open-options-menu">
+                        <EllipsisVertical className="size-4.5 text-black" />
+                    </ViewTransition>
+                ) : (
+                    <ViewTransition default="close-options-menu">
+                        <X className="size-4.5 text-black" />
+                    </ViewTransition>
+                )}
             </ActionMenuButton>
         </div>
     );

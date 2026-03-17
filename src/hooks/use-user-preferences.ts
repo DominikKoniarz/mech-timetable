@@ -18,6 +18,14 @@ const useUserPreferences = () => {
 
     const preferences = parseUserPreferencesCookie(rawPreferences ?? null);
 
+    const updatePreferencesCookie = (preferences: PreferencesSchema) => {
+        setCookie(
+            PREFERENCES_COOKIE_KEY,
+            JSON.stringify(preferences),
+            PREFERENCES_COOKIE_OPTIONS,
+        );
+    };
+
     const addProfile = (profile: ProfilePreferencesSchema) => {
         if (!preferences) {
             return null;
@@ -31,22 +39,54 @@ const useUserPreferences = () => {
             profiles: [...preferences.profiles, profile],
         };
 
-        setCookie(
-            PREFERENCES_COOKIE_KEY,
-            JSON.stringify(newPreferences),
-            PREFERENCES_COOKIE_OPTIONS,
-        );
+        updatePreferencesCookie(newPreferences);
 
         const newProfileIndex = newPreferences.profiles.length - 1;
 
         return newProfileIndex;
     };
 
+    const removeProfile = (profileIndex: number) => {
+        if (!preferences) {
+            return null;
+        }
+
+        if (preferences.profiles.length <= 1) {
+            return null;
+        }
+
+        const profileExists =
+            profileIndex >= 0 && profileIndex < preferences.profiles.length;
+
+        if (!profileExists) {
+            return null;
+        }
+
+        const newProfiles = preferences.profiles.filter(
+            (_, index) => index !== profileIndex,
+        );
+
+        const newPreferences: PreferencesSchema = {
+            profiles: newProfiles,
+        };
+
+        updatePreferencesCookie(newPreferences);
+
+        return {
+            updatedProfilesCount: newPreferences.profiles.length,
+        };
+    };
+
     const revalidatePreferencesCookie = () => {
         revalidateCookiesState();
     };
 
-    return { preferences, addProfile, revalidatePreferencesCookie };
+    return {
+        preferences,
+        addProfile,
+        removeProfile,
+        revalidatePreferencesCookie,
+    };
 };
 
 export default useUserPreferences;

@@ -146,6 +146,8 @@
 }
 
 ::view-transition-group(.profile-button),
-::view-transition-group(.options-menu) {
+::view-transition-group(.options-menu),
+::view-transition-group(.open-options-menu),
+::view-transition-group(.close-options-menu) {
     animation-duration: 130ms;
 }

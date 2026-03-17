@@ -13,6 +13,7 @@ import ExportIcsDialogButton from "@/views/main-page/components/action-menu/expo
 import { useTranslations } from "next-intl";
 import AddProfileDialogButton from "@/views/main-page/components/action-menu/profiles/add-profile-dialog-button";
 import AddProfileDialog from "@/views/main-page/components/action-menu/profiles/add-profile-dialog";
+import DeleteProfileDialog from "@/views/main-page/components/action-menu/profiles/delete-profile-dialog";
 import ProfilesListItem from "@/views/main-page/components/action-menu/profiles/profiles-list-item";
 import { useActionsMenuStore } from "@/views/main-page/stores/actions-menu-store";
 
@@ -57,7 +58,7 @@ export default function ActionsMenu({ rows, preferences, isLoading }: Props) {
                         </div>
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent align="end" className="w-50 p-0">
+                <PopoverContent align="end" className="w-52 p-0">
                     <MenuSection>
                         <MenuSectionLabel>{t("profiles")}</MenuSectionLabel>
                         {preferences.profiles.map((profile, index) => (
@@ -66,6 +67,7 @@ export default function ActionsMenu({ rows, preferences, isLoading }: Props) {
                                 profileName={profile.name}
                                 index={index}
                                 selected={index === profileIndex}
+                                profilesCount={preferences.profiles.length}
                             />
                         ))}
                     </MenuSection>
@@ -81,6 +83,7 @@ export default function ActionsMenu({ rows, preferences, isLoading }: Props) {
             </Popover>
             {rows && <ExportIcsDialog rows={rows} />}
             <AddProfileDialog />
+            <DeleteProfileDialog />
         </>
     );
 }
