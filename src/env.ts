@@ -1,6 +1,8 @@
 import { createEnv } from "@t3-oss/env-nextjs";
 import { z } from "zod";
 
+// TODO: refactor to zod/mini
+
 export const env = createEnv({
     /*
      * Serverside Environment variables, not available on the client.

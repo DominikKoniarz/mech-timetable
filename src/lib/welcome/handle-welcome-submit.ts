@@ -4,8 +4,6 @@ import type { WelcomeFormSchema } from "@/schema/welcome-form-schema";
 import { BadRequestError, ForbiddenError } from "@/types/errors";
 import { verifyReCaptcha } from "@/lib/re-captcha";
 import { setUserPreferences } from "@/lib/data/cookies/server-cookies";
-import { redirect } from "@/i18n/routing";
-import { getLocale } from "next-intl/server";
 import { env } from "@/env";
 
 export const handleWelcomeSubmit = async (data: WelcomeFormSchema) => {
@@ -19,6 +17,4 @@ export const handleWelcomeSubmit = async (data: WelcomeFormSchema) => {
     }
 
     await setUserPreferences(data);
-
-    redirect({ href: "/", locale: await getLocale() });
 };

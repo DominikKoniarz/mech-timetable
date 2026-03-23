@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
+// TODO: bump next to 16.2.0
+
 const nextConfig: NextConfig = {
     // logging: {
     //     fetches: {

@@ -15,6 +15,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import useDepartmentName from "@/views/welcome-page/hooks/use-department-name";
 import useUserPreferences from "@/hooks/use-user-preferences";
 import { env } from "@/env";
+import { useRouter } from "@/i18n/navigation";
 
 const useWelcomeForm = (
     departments: Department[],
@@ -23,6 +24,7 @@ const useWelcomeForm = (
     const [isGettingReCaptcha, setIsGettingReCaptcha] = useState(false);
     const reCaptchaRef = useRef<ReCAPTCHA>(null);
 
+    const router = useRouter();
     const t = useTranslations("welcomePage.form.validation");
 
     const { departmentName: departmentNameSearchParam, setDepartmentName } =
@@ -47,6 +49,8 @@ const useWelcomeForm = (
         },
         onSuccess: () => {
             resetFormAndCaptcha();
+
+            router.push("/");
         },
         onSettled: () => {
             revalidatePreferencesCookie();
