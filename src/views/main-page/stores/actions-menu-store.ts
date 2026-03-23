@@ -9,6 +9,7 @@ export type ActionsMenuStoreState = {
     deleteProfileDialogOpen: boolean;
     profilePendingDeletionIndex: number | null;
     openedProfileOptionsIndex: number | null;
+    profilePendingEditIndex: number | null;
 };
 
 export type ActionsMenuStoreActions = {
@@ -21,6 +22,7 @@ export type ActionsMenuStoreActions = {
     openDeleteProfileDialog: (index: number) => void;
     clearDeleteProfileDialog: () => void;
     handleOpenProfileOptionsMenu: (index: number | null) => { opened: boolean };
+    updateProfilePendingEditIndex: (index: number | null) => void;
 };
 
 export type ActionsMenuStore = ActionsMenuStoreState & ActionsMenuStoreActions;
@@ -33,6 +35,7 @@ const createActionsMenuStore = createStore<ActionsMenuStore>()((set, get) => ({
     deleteProfileDialogOpen: false,
     profilePendingDeletionIndex: null,
     openedProfileOptionsIndex: null,
+    profilePendingEditIndex: null,
     updateActionsMenuOpen: (open: boolean) => {
         set({ actionsMenuOpen: open });
 
@@ -101,6 +104,9 @@ const createActionsMenuStore = createStore<ActionsMenuStore>()((set, get) => ({
             set({ openedProfileOptionsIndex: index });
             return { opened: true };
         }
+    },
+    updateProfilePendingEditIndex: (index: number | null) => {
+        set({ profilePendingEditIndex: index });
     },
 }));
 

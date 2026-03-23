@@ -1,9 +1,11 @@
 import { redirect } from "@/i18n/routing";
 import { client } from "@/lib/eden-client";
 import { useMainPageStore } from "@/views/main-page/context/main-page-provider";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useLocale } from "next-intl";
 import { startTransition, useEffect } from "react";
+
+const getQueryKey = (profileIndex: number) => ["rows", profileIndex];
 
 const useFetchTimetable = () => {
     const locale = useLocale();
@@ -12,7 +14,7 @@ const useFetchTimetable = () => {
     const setProfileIndex = useMainPageStore((state) => state.setProfileIndex);
 
     const { data, isLoading, isFetched } = useQuery({
-        queryKey: ["rows", profileIndex],
+        queryKey: getQueryKey(profileIndex),
         queryFn: async () => {
             const { data, status } = await client.api
                 .timetable({
@@ -61,3 +63,13 @@ const useFetchTimetable = () => {
 };
 
 export default useFetchTimetable;
+
+export const useInvalidateTimetableCacheByIndex = () => {
+    const queryClient = useQueryClient();
+
+    const invalidate = (index: number) => {
+        queryClient.invalidateQueries({ queryKey: getQueryKey(index) });
+    };
+
+    return { invalidate };
+};

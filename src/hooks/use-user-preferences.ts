@@ -77,6 +77,40 @@ const useUserPreferences = () => {
         };
     };
 
+    const updateProfile = (
+        profileIndex: number,
+        updatedProfile: ProfilePreferencesSchema,
+    ) => {
+        if (!preferences) {
+            return null;
+        }
+
+        const profileExists =
+            profileIndex >= 0 && profileIndex < preferences.profiles.length;
+
+        if (!profileExists) {
+            return null;
+        }
+
+        const newProfiles = preferences.profiles.map((profile, index) => {
+            if (index !== profileIndex) {
+                return profile;
+            }
+
+            return updatedProfile;
+        });
+
+        const newPreferences: PreferencesSchema = {
+            profiles: newProfiles,
+        };
+
+        updatePreferencesCookie(newPreferences);
+
+        return {
+            updatedProfileIndex: profileIndex,
+        };
+    };
+
     const revalidatePreferencesCookie = () => {
         revalidateCookiesState();
     };
@@ -85,6 +119,7 @@ const useUserPreferences = () => {
         preferences,
         addProfile,
         removeProfile,
+        updateProfile,
         revalidatePreferencesCookie,
     };
 };

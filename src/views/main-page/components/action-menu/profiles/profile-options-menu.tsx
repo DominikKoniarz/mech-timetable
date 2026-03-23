@@ -8,12 +8,14 @@ type Props = {
     profileIndex: number;
     profileName: string;
     profilesCount: number;
+    onEditClick: () => void;
 };
 
 export default function ProfileOptionsMenu({
     profileIndex,
     profileName,
     profilesCount,
+    onEditClick,
 }: Props) {
     const t = useTranslations("mainPage.actionMenu");
 
@@ -37,6 +39,7 @@ export default function ProfileOptionsMenu({
                 <Button
                     type="button"
                     variant="ghost"
+                    onClick={onEditClick}
                     className="h-full w-full cursor-pointer justify-center gap-1 rounded-none border-r border-r-black px-2 py-1.5 text-center text-sm font-normal text-black shadow-none transition-colors hover:bg-black/5 hover:text-black has-[>svg]:px-2"
                     aria-label={t("editProfileAriaLabel", { profileName })}
                 >

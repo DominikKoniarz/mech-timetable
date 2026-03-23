@@ -42,3 +42,5 @@ next-env.d.ts
 
 # custom
 messages/*.d.json.ts
+
+notes.md

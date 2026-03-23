@@ -7,7 +7,7 @@ const useFetchDepartments = (externalEnabled: boolean) => {
 
     const { data, isLoading, isError } = useQuery({
         enabled,
-        queryKey: ["add-profile", "departments"],
+        queryKey: ["main-page", "departments"],
         queryFn: async () => {
             const { data, status } = await client.api.departments.get();
 

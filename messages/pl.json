@@ -115,6 +115,25 @@
             "selectGroup": "Proszę wybrać poprawną grupę"
         }
     },
+    "editProfileDialog": {
+        "title": "Edytuj Profil",
+        "description": "Zaktualizuj dane profilu planu zajęć, w tym nazwę, oddział i grupy.",
+        "profileName": "Nazwa profilu",
+        "profileNamePlaceholder": "np. Mój profil",
+        "department": "Oddział",
+        "selectDepartment": "Wybierz oddział",
+        "groupWithLetter": "Grupa - {groupLetter}",
+        "selectGroup": "Wybierz grupę",
+        "submit": "Zapisz",
+        "fetchGroupsError": "Nie udało się pobrać grup",
+        "retry": "Spróbuj ponownie",
+        "validation": {
+            "profileNameRequired": "Nazwa profilu jest wymagana",
+            "profileNameMaxLength": "Nazwa profilu może mieć maksymalnie 32 znaki",
+            "selectDepartment": "Proszę wybrać oddział",
+            "selectGroup": "Proszę wybrać poprawną grupę"
+        }
+    },
     "deleteProfileDialog": {
         "title": "Usuń Profil",
         "description": "Czy na pewno chcesz usunąć profil \"{profileName}\"? Tej operacji nie można cofnąć.",

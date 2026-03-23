@@ -115,6 +115,25 @@
             "selectGroup": "Please select valid group"
         }
     },
+    "editProfileDialog": {
+        "title": "Edit Profile",
+        "description": "Update timetable profile details, including name, department and groups.",
+        "profileName": "Profile name",
+        "profileNamePlaceholder": "e.g. My profile",
+        "department": "Department",
+        "selectDepartment": "Select department",
+        "groupWithLetter": "{groupLetter} - group",
+        "selectGroup": "Select group",
+        "submit": "Save",
+        "fetchGroupsError": "Failed to fetch groups",
+        "retry": "Retry",
+        "validation": {
+            "profileNameRequired": "Profile name is required",
+            "profileNameMaxLength": "Profile name must be at most 32 characters",
+            "selectDepartment": "Please select department",
+            "selectGroup": "Please select valid group"
+        }
+    },
     "deleteProfileDialog": {
         "title": "Delete Profile",
         "description": "Are you sure you want to delete profile \"{profileName}\"? This action cannot be undone.",

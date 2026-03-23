@@ -1,5 +1,4 @@
 import type { Department } from "@/types/departments";
-import type { AddProfileFormSchema } from "@/schema/add-profile-form-schema";
 import type { GroupsByFirstLetter } from "@/types/groups";
 import {
     FormControl,
@@ -21,15 +20,22 @@ import { useTranslations } from "next-intl";
 type Props = {
     departments: Department[];
     parsedGroups: GroupsByFirstLetter | null;
+    dialogNamespace?: "addProfileDialog" | "editProfileDialog";
+};
+
+type ProfileFormValues = {
+    departmentName: string;
+    groups: string[];
 };
 
 export default function AddProfileSelects({
     departments,
     parsedGroups,
+    dialogNamespace = "addProfileDialog",
 }: Props) {
-    const form = useFormContext<AddProfileFormSchema>();
+    const form = useFormContext<ProfileFormValues>();
 
-    const t = useTranslations("addProfileDialog");
+    const t = useTranslations(dialogNamespace);
 
     return (
         <>
@@ -74,6 +80,7 @@ export default function AddProfileSelects({
                         control={form.control}
                         name={`groups.${index}`}
                         render={({ field }) => {
+                            // console.log(field.name, field.value);
                             return (
                                 <FormItem>
                                     <FormLabel>

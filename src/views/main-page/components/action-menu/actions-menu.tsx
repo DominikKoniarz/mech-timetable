@@ -16,6 +16,7 @@ import AddProfileDialog from "@/views/main-page/components/action-menu/profiles/
 import DeleteProfileDialog from "@/views/main-page/components/action-menu/profiles/delete-profile-dialog";
 import ProfilesListItem from "@/views/main-page/components/action-menu/profiles/profiles-list-item";
 import { useActionsMenuStore } from "@/views/main-page/stores/actions-menu-store";
+import EditProfileDialog from "@/views/main-page/components/action-menu/profiles/edit-profile-dialog";
 
 type Props = {
     rows: TableRow[] | undefined;
@@ -64,7 +65,7 @@ export default function ActionsMenu({ rows, preferences, isLoading }: Props) {
                         {preferences.profiles.map((profile, index) => (
                             <ProfilesListItem
                                 key={`${index}-${profile.name}`}
-                                profileName={profile.name}
+                                profile={profile}
                                 index={index}
                                 selected={index === profileIndex}
                                 profilesCount={preferences.profiles.length}
@@ -84,6 +85,7 @@ export default function ActionsMenu({ rows, preferences, isLoading }: Props) {
             {rows && <ExportIcsDialog rows={rows} />}
             <AddProfileDialog />
             <DeleteProfileDialog />
+            <EditProfileDialog />
         </>
     );
 }
