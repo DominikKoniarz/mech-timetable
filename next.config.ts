@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
-// TODO: bump next to 16.2.0
+// TODO: bump next to 16.2.0!
 
 const nextConfig: NextConfig = {
     // logging: {
@@ -12,9 +12,6 @@ const nextConfig: NextConfig = {
     // Use standalone output only when building for Docker
     output: process.env.DOCKER_BUILD === "true" ? "standalone" : undefined,
     poweredByHeader: false,
-    env: {
-        NEXT_PUBLIC_VERCEL_URL: process.env.VERCEL_URL,
-    },
 };
 
 const withNextIntl = createNextIntlPlugin({

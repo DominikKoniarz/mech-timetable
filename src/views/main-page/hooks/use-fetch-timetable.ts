@@ -3,12 +3,20 @@ import { client } from "@/lib/eden-client";
 import { useMainPageStore } from "@/views/main-page/context/main-page-provider";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useLocale } from "next-intl";
-import { startTransition, useEffect } from "react";
+import {
+    startTransition,
+    useEffect,
+    useEffectEvent,
+    useLayoutEffect,
+} from "react";
 
 const getQueryKey = (profileIndex: number) => ["rows", profileIndex];
+const getGenericQueryKey = () => ["rows"];
 
 const useFetchTimetable = () => {
     const locale = useLocale();
+
+    const queryClient = useQueryClient();
 
     const profileIndex = useMainPageStore((state) => state.profileIndex);
     const setProfileIndex = useMainPageStore((state) => state.setProfileIndex);
@@ -58,6 +66,21 @@ const useFetchTimetable = () => {
             });
         }
     }, [usedProfileIndex, setProfileIndex, profileIndex]);
+
+    // clean up all queries related to all profiles
+    // to avoid stale data which was causing bugs after adding profiles feature
+    const cleanUp = useEffectEvent(() => {
+        queryClient.removeQueries({
+            queryKey: getGenericQueryKey(),
+            type: "all",
+        });
+    });
+
+    useLayoutEffect(() => {
+        return () => {
+            cleanUp();
+        };
+    }, []);
 
     return { rows, isLoading };
 };

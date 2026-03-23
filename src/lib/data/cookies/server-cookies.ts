@@ -16,12 +16,12 @@ export const setUserPreferences = async (
 ) => {
     const t = await getTranslations();
 
-    const preferencesString = JSON.stringify(
-        filterPreferencesInput(
-            preferences,
-            t("mainPage.actionMenu.defaultProfileName"),
-        ),
+    const newPreferences = filterPreferencesInput(
+        preferences,
+        t("mainPage.actionMenu.defaultProfileName"),
     );
+
+    const preferencesString = JSON.stringify(newPreferences);
 
     (await cookies()).set(
         PREFERENCES_COOKIE_KEY,

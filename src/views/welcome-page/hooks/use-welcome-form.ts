@@ -46,14 +46,15 @@ const useWelcomeForm = (
         onError: (error) => {
             actionError(error).default();
             resetFormAndCaptcha();
+            revalidatePreferencesCookie();
         },
         onSuccess: () => {
             resetFormAndCaptcha();
-
-            router.push("/");
-        },
-        onSettled: () => {
             revalidatePreferencesCookie();
+
+            setTimeout(() => {
+                router.push("/");
+            }, 0);
         },
     });
 
