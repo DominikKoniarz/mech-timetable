@@ -15,11 +15,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { useFormContext, useWatch } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { useTranslations } from "next-intl";
-import useFirstRender from "@/hooks/useFirstRender";
-import { useEffect } from "react";
-import { useRouter } from "@/i18n/routing";
 
 type Props = {
     departments: Department[];
@@ -28,26 +25,8 @@ type Props = {
 
 export default function WelcomeSelects({ departments, parsedGroups }: Props) {
     const form = useFormContext<WelcomeFormSchema>();
+
     const t = useTranslations("welcomePage.form");
-
-    const { isFirstRender } = useFirstRender();
-
-    const router = useRouter();
-
-    const department = useWatch({
-        control: form.control,
-        name: "departmentName",
-    });
-
-    useEffect(() => {
-        if (!department) return;
-        if (isFirstRender) return;
-
-        router.push({
-            pathname: "/welcome",
-            query: { departmentName: department },
-        });
-    }, [department, isFirstRender, router]);
 
     return (
         <>
@@ -58,13 +37,10 @@ export default function WelcomeSelects({ departments, parsedGroups }: Props) {
                     <FormItem>
                         <FormLabel>{t("department")}</FormLabel>
                         <Select
-                            onValueChange={
-                                isFirstRender ? undefined : field.onChange
-                            }
-                            defaultValue={
-                                isFirstRender ? undefined : field.value
-                            }
-                            value={isFirstRender ? undefined : field.value}
+                            onValueChange={(value) => {
+                                field.onChange(value);
+                            }}
+                            value={field.value || undefined}
                         >
                             <FormControl>
                                 <SelectTrigger className="w-full">

@@ -3,19 +3,22 @@ import "server-only";
 import type { WelcomeFormSchema } from "@/schema/welcome-form-schema";
 import { BadRequestError, ForbiddenError } from "@/types/errors";
 import { verifyReCaptcha } from "@/lib/re-captcha";
-import { setUserPreferences } from "../data/cookies";
+import { setUserPreferences } from "@/lib/data/cookies/server-cookies";
 import { redirect } from "@/i18n/routing";
 import { getLocale } from "next-intl/server";
+import { env } from "@/env";
 
 export const handleWelcomeSubmit = async (data: WelcomeFormSchema) => {
-	if (!data.reCaptchaToken)
-		throw new BadRequestError("Valid reCaptcha token is required");
+    if (env.NEXT_PUBLIC_ENABLE_RECAPTCHA) {
+        if (!data.reCaptchaToken)
+            throw new BadRequestError("Valid reCaptcha token is required");
 
-	const { success } = await verifyReCaptcha(data.reCaptchaToken);
+        const { success } = await verifyReCaptcha(data.reCaptchaToken);
 
-	if (!success) throw new ForbiddenError("reCaptcha verification failed");
+        if (!success) throw new ForbiddenError("reCaptcha verification failed");
+    }
 
-	await setUserPreferences(data);
+    await setUserPreferences(data);
 
-	redirect({ href: "/", locale: await getLocale() });
+    redirect({ href: "/", locale: await getLocale() });
 };

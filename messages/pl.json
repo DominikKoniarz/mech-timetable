@@ -14,16 +14,32 @@
             "search": "Szukaj",
             "selectDepartment": "Wybierz oddział",
             "selectGroup": "Wybierz grupę",
+            "fetchGroupsError": "Nie udało się pobrać grup",
+            "retry": "Spróbuj ponownie",
             "validation": {
                 "required": "To pole jest wymagane",
                 "selectDepartment": "Proszę wybrać oddział",
                 "selectGroup": "Proszę wybrać poprawną grupę"
             }
+        },
+        "noDataSection": {
+            "text": "Ups! Wygląda na to, że nie udało się znaleźć żadnych danych. Pracujemy nad tym."
         }
     },
     "mainPage": {
         "header": {
-            "changeGroup": "Zmień grupę"
+            "startAgain": "Zacznij od nowa"
+        },
+        "actionMenu": {
+            "profiles": "Profile",
+            "actions": "Akcje",
+            "defaultProfileName": "Profil 1",
+            "switchProfileAriaLabel": "Przełącz na profil {profileName}",
+            "edit": "Edytuj",
+            "delete": "Usuń",
+            "editProfileAriaLabel": "Edytuj profil {profileName}",
+            "deleteProfileAriaLabel": "Usuń profil {profileName}",
+            "cannotDeleteLastProfile": "Nie można usunąć ostatniego profilu"
         },
         "table": {
             "tableHead": {
@@ -64,7 +80,7 @@
     "exportIcsDialog": {
         "title": "Eksportuj Plan Zajęć",
         "description": "Pobierz plan zajęć jako plik .ics. Plik obejmuje bieżący semestr i można go zaimportować do Google Kalendarza, Outlooka, Apple Calendar lub innej aplikacji kalendarzowej.",
-        "exportButton": "Eksportuj",
+        "export": "Eksportuj",
         "exportError": "Nie udało się wyeksportować planu zajęć",
         "lecture": "Wykład",
         "exercises": "Ćwiczenia",
@@ -79,6 +95,50 @@
         "changeLanguage": "Zmień język",
         "pageWillReload": "Strona zostanie odświeżona",
         "changeTheme": "Zmień motyw"
+    },
+    "addProfileDialog": {
+        "title": "Dodaj Profil",
+        "description": "Utwórz nowy profil planu zajęć z wybranym oddziałem i grupami.",
+        "profileName": "Nazwa profilu",
+        "profileNamePlaceholder": "np. Mój profil",
+        "department": "Oddział",
+        "selectDepartment": "Wybierz oddział",
+        "groupWithLetter": "Grupa - {groupLetter}",
+        "selectGroup": "Wybierz grupę",
+        "submit": "Dodaj",
+        "fetchGroupsError": "Nie udało się pobrać grup",
+        "retry": "Spróbuj ponownie",
+        "validation": {
+            "profileNameRequired": "Nazwa profilu jest wymagana",
+            "profileNameMaxLength": "Nazwa profilu może mieć maksymalnie 32 znaki",
+            "selectDepartment": "Proszę wybrać oddział",
+            "selectGroup": "Proszę wybrać poprawną grupę"
+        }
+    },
+    "editProfileDialog": {
+        "title": "Edytuj Profil",
+        "description": "Zaktualizuj dane profilu planu zajęć, w tym nazwę, oddział i grupy.",
+        "profileName": "Nazwa profilu",
+        "profileNamePlaceholder": "np. Mój profil",
+        "department": "Oddział",
+        "selectDepartment": "Wybierz oddział",
+        "groupWithLetter": "Grupa - {groupLetter}",
+        "selectGroup": "Wybierz grupę",
+        "submit": "Zapisz",
+        "fetchGroupsError": "Nie udało się pobrać grup",
+        "retry": "Spróbuj ponownie",
+        "validation": {
+            "profileNameRequired": "Nazwa profilu jest wymagana",
+            "profileNameMaxLength": "Nazwa profilu może mieć maksymalnie 32 znaki",
+            "selectDepartment": "Proszę wybrać oddział",
+            "selectGroup": "Proszę wybrać poprawną grupę"
+        }
+    },
+    "deleteProfileDialog": {
+        "title": "Usuń Profil",
+        "description": "Czy na pewno chcesz usunąć profil \"{profileName}\"? Tej operacji nie można cofnąć.",
+        "remove": "Usuń",
+        "cancel": "Anuluj"
     },
     "safeAction": {
         "internalServerError": "Wystąpił błąd serwera. Spróbuj ponownie później."

@@ -1,26 +1,34 @@
 import type { PreferencesSchema } from "@/schema/preferences-schema";
 import type { Department } from "@/types/departments";
+import {
+    getWelcomeFormSchema,
+    type WelcomeFormSchema,
+} from "@/schema/welcome-form-schema";
 import submitWelcomeFormAction from "@/actions/welcome";
 import { actionError } from "@/lib/action-error";
 import { useTranslations } from "next-intl";
 import { useAction } from "next-safe-action/hooks";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getWelcomeFormSchema } from "@/schema/welcome-form-schema";
-import { GroupsByFirstLetter } from "@/types/groups";
-import { useEffect, useRef, useState } from "react";
+import { startTransition, useEffect, useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
+import useDepartmentName from "@/views/welcome-page/hooks/use-department-name";
+import useUserPreferences from "@/hooks/use-user-preferences";
+import { env } from "@/env";
 
 const useWelcomeForm = (
     departments: Department[],
     userPreferences: PreferencesSchema | null,
-    parsedGroups: GroupsByFirstLetter | null,
-    departmentName: string | undefined,
 ) => {
     const [isGettingReCaptcha, setIsGettingReCaptcha] = useState(false);
     const reCaptchaRef = useRef<ReCAPTCHA>(null);
 
     const t = useTranslations("welcomePage.form.validation");
+
+    const { departmentName: departmentNameSearchParam, setDepartmentName } =
+        useDepartmentName();
+
+    const { revalidatePreferencesCookie } = useUserPreferences();
 
     const resetFormAndCaptcha = () => {
         reCaptchaRef.current?.reset();
@@ -28,7 +36,7 @@ const useWelcomeForm = (
         form.reset({
             reCaptchaToken: "",
             departmentName: form.getValues("departmentName"),
-            groups: Array(Object.keys(parsedGroups ?? {}).length).fill(""),
+            groups: [],
         });
     };
 
@@ -40,48 +48,69 @@ const useWelcomeForm = (
         onSuccess: () => {
             resetFormAndCaptcha();
         },
+        onSettled: () => {
+            revalidatePreferencesCookie();
+        },
     });
 
-    const form = useForm({
-        resolver: zodResolver(
-            getWelcomeFormSchema(t, departments, parsedGroups),
-        ),
+    const form = useForm<WelcomeFormSchema>({
+        resolver: zodResolver(getWelcomeFormSchema(t, departments)),
         defaultValues: {
             reCaptchaToken: "",
             departmentName:
-                departmentName ?? userPreferences?.departmentName ?? "",
-            groups: Array(Object.keys(parsedGroups ?? {}).length).fill(""),
+                departmentNameSearchParam ??
+                userPreferences?.profiles[0]?.departmentName ??
+                "",
+            groups: [],
         },
         mode: "onBlur",
         reValidateMode: "onChange",
     });
 
-    useEffect(() => {
-        form.reset({
-            reCaptchaToken: "",
-            departmentName: form.getValues("departmentName"),
-            groups: Array(Object.keys(parsedGroups ?? {}).length).fill(""),
-        });
-    }, [parsedGroups, form]);
-
-    const onSubmit = form.handleSubmit(async (data) => {
-        setIsGettingReCaptcha(true);
-        const token = await reCaptchaRef.current?.executeAsync();
-
-        execute({
-            ...data,
-            reCaptchaToken: token ?? "",
-        });
-
-        // call after execute to be sure that action isPending is set to true
-        setIsGettingReCaptcha(false);
+    const selectedDepartmentName = useWatch({
+        control: form.control,
+        name: "departmentName",
     });
+
+    // TODO: fix this
+    // eslint-disable-next-line react-hooks/refs
+    const onSubmit = form.handleSubmit(async (data) => {
+        if (!env.NEXT_PUBLIC_ENABLE_RECAPTCHA) {
+            execute({
+                ...data,
+                reCaptchaToken: "",
+            });
+        } else {
+            startTransition(() => {
+                setIsGettingReCaptcha(true);
+            });
+
+            const token = await reCaptchaRef.current?.executeAsync();
+
+            execute({
+                ...data,
+                reCaptchaToken: token ?? "",
+            });
+
+            // call after execute to be sure that action isPending is set to true
+            startTransition(() => {
+                setIsGettingReCaptcha(false);
+            });
+        }
+    });
+
+    useEffect(() => {
+        if (selectedDepartmentName) {
+            setDepartmentName(selectedDepartmentName);
+        }
+    }, [selectedDepartmentName, setDepartmentName]);
 
     return {
         form,
         onSubmit,
         isPending: isPending || isGettingReCaptcha,
         reCaptchaRef,
+        selectedDepartmentName,
     };
 };
 

@@ -1,27 +1,13 @@
-import type { TableRow } from "@/types/table-rows";
-import Timetable from "./components/timetable";
-import MobileTimetable from "./components/mobile/mobile-timetable";
 import MainPageHeader from "./components/header/main-page-header";
 import MainPageProvider from "./context/main-page-provider";
-import ExportIcsDialog from "./components/export-ics-dialog";
+import TimetableContainer from "@/views/main-page/components/timetable-container";
 
-type Props = {
-    rows: TableRow[];
-};
-
-export default function MainPageView({ rows }: Props) {
+export default function MainPageView() {
     return (
         <MainPageProvider>
             <div className="flex h-full w-full flex-col">
                 <MainPageHeader />
-                <main className="h-full overflow-auto">
-                    {/* Desktop timetable */}
-                    <Timetable rows={rows} />
-
-                    {/* Mobile timetable */}
-                    <MobileTimetable rows={rows} />
-                </main>
-                <ExportIcsDialog rows={rows} />
+                <TimetableContainer />
             </div>
         </MainPageProvider>
     );

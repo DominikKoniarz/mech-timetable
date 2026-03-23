@@ -1,7 +1,7 @@
+import type { PreferencesSchema } from "@/schema/preferences-schema";
 import type { Department } from "@/types/departments";
 import type { GroupsByFirstLetter } from "@/types/groups";
 import type { TableRow } from "@/types/table-rows";
-import type { PreferencesSchema } from "@/schema/preferences-schema";
 import type { TimeEntry } from "@/types/hours";
 import type { ClassType } from "@/types/classes";
 import { initClassesTuple } from "./helpers";
@@ -36,7 +36,7 @@ export const parseDepartmentsList = (html: string): Department[] => {
 
 export const parseRows = (
     departmentHtml: string,
-    userPreferences: PreferencesSchema,
+    groups: PreferencesSchema["profiles"][number]["groups"],
 ): TableRow[] => {
     const $ = cheerio.load(departmentHtml);
     const table = $("table.tabela");
@@ -108,11 +108,10 @@ export const parseRows = (
 
                 if (
                     isGroupClass &&
-                    !userPreferences.groups.some((group) =>
-                        subject.includes(group),
-                    )
-                )
+                    !groups.some((group) => subject.includes(group))
+                ) {
                     return;
+                }
 
                 classes[cellIndex].push({
                     subject,

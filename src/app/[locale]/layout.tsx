@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { ThemeProvider } from "next-themes";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
-import { getLocale, getMessages, setRequestLocale } from "next-intl/server";
-import { NextIntlClientProvider } from "next-intl";
+import { getLocale, setRequestLocale } from "next-intl/server";
 import { Analytics } from "@vercel/analytics/next";
+import Providers from "@/components/providers/providers";
 import "../globals.css";
 
 const inter = Inter({
@@ -15,19 +14,69 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-    title: "Mech Timetable",
-    // description:
-    // "Timetable for Faculty of Mechanical Engineering of CUT - a tool for students | by Dominik Koniarz",
+    metadataBase: new URL("https://mt.dominikkoniarz.pl"),
+    title: {
+        default: "Mech Timetable | Faculty of Mechanical Engineering PK",
+        template: "%s | Mech Timetable",
+    },
+    description:
+        "Unofficial timetable tool for students of the Faculty of Mechanical Engineering at Cracow University of Technology. Quickly browse classes, groups and schedules.",
     keywords: [
+        "Mech Timetable",
+        "Cracow University of Technology",
+        "Politechnika Krakowska",
+        "Faculty of Mechanical Engineering",
+        "Wydzial Mechaniczny PK",
+        "PK timetable",
         "timetable",
         "schedule",
         "mechanical engineering",
+        "class schedule",
+        "student planner",
         "student tools",
+        "pk plan zajęć",
+        "pk plan",
+        "mech pk plan",
     ],
-    authors: {
-        name: "Dominik Koniarz",
-        url: "https://github.com/DominikKoniarz",
+    authors: [
+        {
+            name: "Dominik Koniarz",
+            url: "https://github.com/DominikKoniarz",
+        },
+    ],
+    creator: "Dominik Koniarz",
+    publisher: "Dominik Koniarz",
+    // alternates: {
+    //     canonical: "/",
+    // },
+    robots: {
+        index: true,
+        follow: true,
+        nocache: false,
+        // googleBot: {
+        //     index: true,
+        //     follow: true,
+        //     "max-image-preview": "large",
+        //     "max-snippet": -1,
+        //     "max-video-preview": -1,
+        // },
     },
+    // TODO: cover this
+    // openGraph: {
+    //     type: "website",
+    //     locale: "en_US",
+    //     siteName: "Mech Timetable",
+    //     title: "Mech Timetable | Faculty of Mechanical Engineering PK",
+    //     description:
+    //         "Timetable and schedule browser for students of the Faculty of Mechanical Engineering at Cracow University of Technology.",
+    //     url: "/",
+    // },
+    // twitter: {
+    //     card: "summary_large_image",
+    //     title: "Mech Timetable | Faculty of Mechanical Engineering PK",
+    //     description:
+    //         "Timetable and schedule browser for students of the Faculty of Mechanical Engineering at Cracow University of Technology.",
+    // },
 };
 
 export default async function RootLayout({
@@ -41,8 +90,6 @@ export default async function RootLayout({
     if (!routing.locales.includes(locale)) {
         notFound();
     }
-    // Fetch messages for the current locale
-    const messages = await getMessages({ locale });
 
     // Enable static rendering
     setRequestLocale(locale);
@@ -50,17 +97,10 @@ export default async function RootLayout({
     return (
         <html lang={locale} suppressHydrationWarning>
             <body className={`${inter.className}`}>
-                <NextIntlClientProvider messages={messages} locale={locale}>
-                    <ThemeProvider
-                        defaultTheme="dark"
-                        // attribute="class" // causes blinking
-                        enableSystem
-                        disableTransitionOnChange
-                    >
-                        {children}
-                        <Analytics />
-                    </ThemeProvider>
-                </NextIntlClientProvider>
+                <Providers>
+                    {children}
+                    <Analytics />
+                </Providers>
             </body>
         </html>
     );

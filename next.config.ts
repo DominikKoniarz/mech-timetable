@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
     // Use standalone output only when building for Docker
     output: process.env.DOCKER_BUILD === "true" ? "standalone" : undefined,
     poweredByHeader: false,
+    env: {
+        NEXT_PUBLIC_VERCEL_URL: process.env.VERCEL_URL,
+    },
 };
 
 const withNextIntl = createNextIntlPlugin({
