@@ -12,7 +12,7 @@ export default function MainPageHeader() {
                 href="/welcome"
                 className="bg-foreground text-background absolute left-3 m-0 block cursor-pointer rounded-sm p-1 px-2 py-1 text-sm font-medium"
             >
-                {t("changeGroup")}
+                {t("startAgain")}
             </Link>
             <Link
                 // @ts-expect-error github link

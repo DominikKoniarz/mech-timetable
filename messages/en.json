@@ -28,7 +28,7 @@
     },
     "mainPage": {
         "header": {
-            "changeGroup": "Change group"
+            "startAgain": "Start again"
         },
         "actionMenu": {
             "profiles": "Profiles",

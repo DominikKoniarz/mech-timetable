@@ -22,7 +22,13 @@ export const env = createEnv({
         NEXT_PUBLIC_ENABLE_RECAPTCHA: z
             .string()
             .transform((val) => val === "true"),
-        NEXT_PUBLIC_VERCEL_URL: z.url().optional(),
+        NEXT_PUBLIC_VERCEL_URL: z
+            .string()
+            .optional()
+            .transform((val) => {
+                console.log(val);
+                return val;
+            }),
     },
     /*
      * Due to how Next.js bundles environment variables on Edge and Client,
