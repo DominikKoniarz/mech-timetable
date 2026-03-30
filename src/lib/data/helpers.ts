@@ -1,56 +1,102 @@
 import type { PreferencesSchema } from "@/schema/preferences-schema";
 import type { ClassesTuple } from "@/types/classes";
 import { WeekType } from "@/types/week";
+import { Temporal } from "temporal-polyfill";
 
-const getWeekStart = (date: Date): Date => {
-    const d = new Date(date);
-    const day = d.getDay();
-    const diff = d.getDate() - day + (day === 0 ? -6 : 1);
-    d.setDate(diff);
-    d.setHours(0, 0, 0, 0);
-
-    return d;
+const toPlainDate = (date: Date): Temporal.PlainDate => {
+    return Temporal.PlainDate.from({
+        year: date.getFullYear(),
+        month: date.getMonth() + 1,
+        day: date.getDate(),
+    });
 };
 
+const toDate = (date: Temporal.PlainDate): Date => {
+    return new Date(date.year, date.month - 1, date.day);
+};
+
+const getWeekStart = (date: Date): Date => {
+    const plainDate = toPlainDate(date);
+    const weekStart = plainDate.subtract({ days: plainDate.dayOfWeek - 1 });
+
+    return toDate(weekStart);
+};
+
+/**
+ * This one has to be updated each year
+ */
 export const getSemesterRangeForDate = (
     date: Date,
 ): { semesterStart: Date; semesterEndExclusive: Date } => {
-    const normalizedDate = new Date(date);
-    normalizedDate.setHours(0, 0, 0, 0);
-    const year = normalizedDate.getFullYear();
+    const normalizedDate = toPlainDate(date);
+    const year = normalizedDate.year;
 
-    const firstSemesterStartCurrentYear = new Date(year, 10, 1); // 01.11.
-    const firstSemesterEndExclusive = new Date(year + 1, 1, 23); // 23.01.
-    const secondSemesterStart = new Date(year, 1, 23); // 23.01.
-    const secondSemesterEndExclusive = new Date(year, 6, 1); // 01.07.
+    const firstSemesterStartCurrentYear = Temporal.PlainDate.from({
+        year,
+        month: 10,
+        day: 1,
+    }); // 01.10.XXXX
+    const firstSemesterEndExclusive = Temporal.PlainDate.from({
+        year: year + 1,
+        month: 2,
+        day: 23,
+    }); // 23.01.XXXX
+    const secondSemesterStart = Temporal.PlainDate.from({
+        year,
+        month: 2,
+        day: 23,
+    }); // 23.01.XXXX
+    const secondSemesterEndExclusive = Temporal.PlainDate.from({
+        year,
+        month: 7,
+        day: 1,
+    }); // 01.07.XXXX
 
-    if (normalizedDate >= firstSemesterStartCurrentYear) {
+    if (
+        Temporal.PlainDate.compare(
+            normalizedDate,
+            firstSemesterStartCurrentYear,
+        ) >= 0
+    ) {
         return {
-            semesterStart: firstSemesterStartCurrentYear,
-            semesterEndExclusive: firstSemesterEndExclusive,
+            semesterStart: toDate(firstSemesterStartCurrentYear),
+            semesterEndExclusive: toDate(firstSemesterEndExclusive),
         };
     }
 
     if (
-        normalizedDate >= secondSemesterStart &&
-        normalizedDate < secondSemesterEndExclusive
+        Temporal.PlainDate.compare(normalizedDate, secondSemesterStart) >= 0 &&
+        Temporal.PlainDate.compare(normalizedDate, secondSemesterEndExclusive) <
+            0
     ) {
         return {
-            semesterStart: secondSemesterStart,
-            semesterEndExclusive: secondSemesterEndExclusive,
+            semesterStart: toDate(secondSemesterStart),
+            semesterEndExclusive: toDate(secondSemesterEndExclusive),
         };
     }
 
-    if (normalizedDate < secondSemesterStart) {
+    if (Temporal.PlainDate.compare(normalizedDate, secondSemesterStart) < 0) {
         return {
-            semesterStart: new Date(year - 1, 10, 1),
-            semesterEndExclusive: new Date(year, 1, 23),
+            semesterStart: toDate(
+                Temporal.PlainDate.from({
+                    year: year - 1,
+                    month: 10,
+                    day: 1,
+                }),
+            ),
+            semesterEndExclusive: toDate(
+                Temporal.PlainDate.from({
+                    year,
+                    month: 2,
+                    day: 23,
+                }),
+            ),
         };
     }
 
     return {
-        semesterStart: firstSemesterStartCurrentYear,
-        semesterEndExclusive: firstSemesterEndExclusive,
+        semesterStart: toDate(firstSemesterStartCurrentYear),
+        semesterEndExclusive: toDate(firstSemesterEndExclusive),
     };
 };
 
@@ -59,13 +105,15 @@ export const getWeekParityForDate = (date: Date): WeekType => {
     const referenceWeekStart = getWeekStart(semesterStart);
     const currentWeekStart = getWeekStart(date);
 
-    const daysDiff = Math.floor(
-        (currentWeekStart.getTime() - referenceWeekStart.getTime()) /
-            (1000 * 60 * 60 * 24),
-    );
+    const daysDiff = toPlainDate(referenceWeekStart).until(
+        toPlainDate(currentWeekStart),
+        { largestUnit: "day" },
+    ).days;
+
     const weeksDiff = Math.floor(daysDiff / 7);
 
     const isEven = weeksDiff % 2 !== 0;
+
     const weekParity = isEven ? WeekType.EVEN : WeekType.ODD;
 
     return weekParity;
