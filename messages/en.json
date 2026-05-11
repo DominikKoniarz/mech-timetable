@@ -5,7 +5,7 @@
     "please": "Proszę",
     "welcomePage": {
         "metadata": {
-            "title": "Choose your WM group",
+            "title": "Choose your student groups",
             "description": "Convenient timetable browsing for all students of the Faculty of Mechanical Engineering at Cracow University of Technology.",
             "keywords": "Mech Timetable, Cracow University of Technology, Politechnika Krakowska, Faculty of Mechanical Engineering, WM CUT, WM timetable, unofficial timetable, student timetable, study groups, department selection, PK students, CUT students"
         },
@@ -33,7 +33,7 @@
     },
     "mainPage": {
         "metadata": {
-            "title": "WM timetable for Cracow University of Technology students",
+            "title": "Timetable for CUT's Faculty of Mechanical Engineering students",
             "description": "Unofficial timetable viewer for students of the Faculty of Mechanical Engineering at Cracow University of Technology. Browse your weekly schedule by group — not an official university service.",
             "keywords": "Mech Timetable, Cracow University of Technology, Politechnika Krakowska, Faculty of Mechanical Engineering, WM CUT, WM timetable, unofficial timetable, student timetable, class schedule, weekly schedule, PK timetable, mechanical engineering schedule"
         },
