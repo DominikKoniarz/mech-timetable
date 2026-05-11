@@ -7,11 +7,11 @@
         "metadata": {
             "title": "Wybór oddziału i grupy",
             "description": "Wygodne przeglądanie planu dla wszystkich studentów Wydziału Mechnicznego Politechniki Krakowskiej",
-            "keywords": "Mech Timetable, Politechnika Krakowska, studenci PK, Wydział Mechaniczny, WM PK, wybór oddziału, wybór grupy, nieoficjalny plan zajęć, start planu PK, grupy studenckie"
+            "keywords": "Mech Timetable, Politechnika Krakowska, studenci PK, Wydział Mechaniczny, WM PK, wybór oddziału, wybór grupy, nieoficjalny plan zajęć, start planu PK, grupy studenckie, studia dzienne, studia stacjonarne"
         },
         "cta": {
             "h1": "Witaj w MechTimetable",
-            "text": "Wybierz oddział oraz odpowiednie grupy, aby zobaczyć plan zajęć"
+            "text": "Wybierz oddział oraz odpowiednie grupy, aby zobaczyć plan zajęć studiów stacjonarnych"
         },
         "form": {
             "department": "Oddział",
