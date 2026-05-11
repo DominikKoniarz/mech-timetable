@@ -16,7 +16,7 @@ export default function WelcomePageView({
 }: Props) {
     return (
         <main className="relative flex h-full w-full flex-col items-center justify-center">
-            <SettingsDialog className="absolute top-[12px] right-3" />
+            <SettingsDialog className="absolute top-4 right-3" />
             <WelcomeCTA departmentsAvailable={departments.length > 0} />
             {departments.length > 0 ? (
                 <WelcomeForm
