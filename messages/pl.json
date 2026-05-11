@@ -4,6 +4,11 @@
     "thank_you": "Dziękuję",
     "please": "Proszę",
     "welcomePage": {
+        "metadata": {
+            "title": "Wybór oddziału i grupy",
+            "description": "Wygodne przeglądanie planu dla wszystkich studentów Wydziału Mechnicznego Politechniki Krakowskiej",
+            "keywords": "Mech Timetable, Politechnika Krakowska, studenci PK, Wydział Mechaniczny, WM PK, wybór oddziału, wybór grupy, nieoficjalny plan zajęć, start planu PK, grupy studenckie"
+        },
         "cta": {
             "h1": "Witaj w MechTimetable",
             "text": "Wybierz oddział oraz odpowiednie grupy, aby zobaczyć plan zajęć"
@@ -27,6 +32,11 @@
         }
     },
     "mainPage": {
+        "metadata": {
+            "title": "Plan zajęć WM dla studentów Politechniki Krakowskiej",
+            "description": "Nieoficjalna aplikacja do przeglądania planu dla studentów Wydziału Mechanicznego Politechniki Krakowskiej. Przeglądaj harmonogram tygodniowy według grupy — aplikacja niezależna od uczelni.",
+            "keywords": "Mech Timetable, Politechnika Krakowska, studenci Politechniki Krakowskiej, Wydział Mechaniczny PK, WM PK, plan zajęć, nieoficjalny plan zajęć, harmonogram PK, plan WM PK, grupy studenckie PK"
+        },
         "header": {
             "startAgain": "Zacznij od nowa"
         },

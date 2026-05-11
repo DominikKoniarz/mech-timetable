@@ -2,6 +2,11 @@ import WelcomePageView from "@/views/welcome-page/welcome-page-view";
 import { getUserPreferences } from "@/lib/data/cookies/server-cookies";
 import { fetchDepartmentsList } from "@/lib/data/fetcher";
 import { parseDepartmentsList } from "@/lib/data/parser";
+import { buildWelcomeMetadata } from "@/lib/seo/page-metadata";
+
+export function generateMetadata() {
+    return buildWelcomeMetadata();
+}
 
 export default async function Welcome() {
     const [preferences, departmentsHtml] = await Promise.all([

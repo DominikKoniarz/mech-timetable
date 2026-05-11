@@ -16,28 +16,9 @@ const inter = Inter({
 export const metadata: Metadata = {
     metadataBase: new URL("https://mt.dominikkoniarz.pl"),
     title: {
-        default: "Mech Timetable | Faculty of Mechanical Engineering PK",
+        default: "Mech Timetable",
         template: "%s | Mech Timetable",
     },
-    description:
-        "Unofficial timetable tool for students of the Faculty of Mechanical Engineering at Cracow University of Technology. Quickly browse classes, groups and schedules.",
-    keywords: [
-        "Mech Timetable",
-        "Cracow University of Technology",
-        "Politechnika Krakowska",
-        "Faculty of Mechanical Engineering",
-        "Wydzial Mechaniczny PK",
-        "PK timetable",
-        "timetable",
-        "schedule",
-        "mechanical engineering",
-        "class schedule",
-        "student planner",
-        "student tools",
-        "pk plan zajęć",
-        "pk plan",
-        "mech pk plan",
-    ],
     authors: [
         {
             name: "Dominik Koniarz",
@@ -46,37 +27,11 @@ export const metadata: Metadata = {
     ],
     creator: "Dominik Koniarz",
     publisher: "Dominik Koniarz",
-    // alternates: {
-    //     canonical: "/",
-    // },
     robots: {
         index: true,
         follow: true,
         nocache: false,
-        // googleBot: {
-        //     index: true,
-        //     follow: true,
-        //     "max-image-preview": "large",
-        //     "max-snippet": -1,
-        //     "max-video-preview": -1,
-        // },
     },
-    // TODO: cover this
-    // openGraph: {
-    //     type: "website",
-    //     locale: "en_US",
-    //     siteName: "Mech Timetable",
-    //     title: "Mech Timetable | Faculty of Mechanical Engineering PK",
-    //     description:
-    //         "Timetable and schedule browser for students of the Faculty of Mechanical Engineering at Cracow University of Technology.",
-    //     url: "/",
-    // },
-    // twitter: {
-    //     card: "summary_large_image",
-    //     title: "Mech Timetable | Faculty of Mechanical Engineering PK",
-    //     description:
-    //         "Timetable and schedule browser for students of the Faculty of Mechanical Engineering at Cracow University of Technology.",
-    // },
 };
 
 export default async function RootLayout({
