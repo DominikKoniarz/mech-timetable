@@ -11,6 +11,8 @@ export const env = createEnv({
     server: {
         NODE_ENV: z.string(),
         RECAPTCHA_SECRET_KEY: z.string().min(1),
+
+        GOOGLE_SITE_VERIFICATION: z.string().min(1),
     },
     /*
      * Environment variables available on the client (and server).
@@ -42,5 +44,6 @@ export const env = createEnv({
             process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
         NEXT_PUBLIC_ENABLE_RECAPTCHA: process.env.NEXT_PUBLIC_ENABLE_RECAPTCHA,
         NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+        GOOGLE_SITE_VERIFICATION: process.env.GOOGLE_SITE_VERIFICATION,
     },
 });

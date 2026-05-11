@@ -6,6 +6,7 @@ import { getLocale, setRequestLocale } from "next-intl/server";
 import { Analytics } from "@vercel/analytics/next";
 import Providers from "@/components/providers/providers";
 import "../globals.css";
+import { env } from "@/env";
 
 const inter = Inter({
     subsets: ["latin", "latin-ext"],
@@ -31,6 +32,9 @@ export const metadata: Metadata = {
         index: true,
         follow: true,
         nocache: false,
+    },
+    other: {
+        "google-site-verification": env.GOOGLE_SITE_VERIFICATION,
     },
 };
 
