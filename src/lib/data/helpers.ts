@@ -1,4 +1,4 @@
-import type { PreferencesSchema } from "@/schema/preferences-schema";
+import type { PreferencesSchema } from "@/features/user/user-schema";
 import type { ClassesTuple } from "@/types/classes";
 import { WeekType } from "@/types/week";
 import { Temporal } from "temporal-polyfill";

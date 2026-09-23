@@ -1,4 +1,4 @@
-import type { PreferencesSchema } from "@/schema/preferences-schema";
+import type { PreferencesSchema } from "@/features/user/user-schema";
 import type { Department } from "@/types/departments";
 import type { GroupsByFirstLetter } from "@/types/groups";
 import type { TableRow } from "@/types/table-rows";

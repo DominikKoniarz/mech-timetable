@@ -1,17 +1,13 @@
-import { getUserPreferences } from "@/lib/data/cookies/server-cookies";
-import { fetchDepartmentData, fetchDepartmentsList } from "@/lib/data/fetcher";
-import { getProfileFromParams } from "@/lib/data/helpers";
 import {
-    parseDepartmentsList,
-    parseGroups,
-    parseRows,
-} from "@/lib/data/parser";
+    getDepartmentGroupsByName,
+    getDepartments,
+} from "@/features/department/department-queries";
+import { getTimetableForProfile } from "@/features/timetable/timetable-queries";
 import { Elysia, t } from "elysia";
 
 const app = new Elysia({ prefix: "/api" })
     .get("/departments", async () => {
-        const departmentsHtml = await fetchDepartmentsList();
-        const departments = parseDepartmentsList(departmentsHtml);
+        const departments = await getDepartments();
 
         return {
             departments,
@@ -20,29 +16,16 @@ const app = new Elysia({ prefix: "/api" })
     .get(
         "/departments/:departmentName/groups",
         async ({ params }) => {
-            const departmentsHtml = await fetchDepartmentsList();
-            const departments = parseDepartmentsList(departmentsHtml);
-
-            const foundDepartment = departments.find(
-                (department) => department.name === params.departmentName,
+            const result = await getDepartmentGroupsByName(
+                params.departmentName,
             );
 
-            if (!foundDepartment) {
+            if (!result) {
                 return new Response("Department not found", { status: 404 });
             }
-
-            const departmentHtml = await fetchDepartmentData(
-                foundDepartment.url,
-            );
-
-            if (!departmentHtml) {
-                return new Response("Department not found", { status: 404 });
-            }
-
-            const groupsByFirstLetter = parseGroups(departmentHtml);
 
             return {
-                groupsByFirstLetter,
+                groupsByFirstLetter: result.groupsByFirstLetter,
             };
         },
         {
@@ -54,50 +37,23 @@ const app = new Elysia({ prefix: "/api" })
     .get(
         "/timetable/:profileIndex",
         async ({ params }) => {
-            const profileIndexFromParams = params.profileIndex;
+            const result = await getTimetableForProfile(params.profileIndex);
 
-            const preferences = await getUserPreferences();
+            if ("error" in result) {
+                if (result.error === "bad-request") {
+                    return new Response("Bad request", { status: 400 });
+                }
 
-            if (!preferences) {
-                return new Response("Bad request", { status: 400 });
-            }
+                if (result.error === "profile-not-found") {
+                    return new Response("Profile not found", { status: 404 });
+                }
 
-            const result = getProfileFromParams(
-                profileIndexFromParams,
-                preferences,
-            );
-
-            if (!result) {
-                return new Response("Profile not found", { status: 404 });
-            }
-
-            const { profile, profileIndex } = result;
-
-            const departmentsHtml = await fetchDepartmentsList();
-
-            const departments = parseDepartmentsList(departmentsHtml);
-
-            const foundDepartment = departments.find(
-                (department) => department.name === profile.departmentName,
-            );
-
-            if (!foundDepartment) {
                 return new Response("Department not found", { status: 404 });
             }
-
-            const departmentHtml = await fetchDepartmentData(
-                foundDepartment.url,
-            );
-
-            if (!departmentHtml) {
-                return new Response("Department not found", { status: 404 });
-            }
-
-            const rows = parseRows(departmentHtml, profile.groups);
 
             return {
-                profileIndex,
-                rows,
+                profileIndex: result.profileIndex,
+                rows: result.rows,
             };
         },
         {
